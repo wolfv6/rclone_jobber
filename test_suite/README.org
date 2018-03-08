@@ -1,0 +1,128 @@
+* How the rclone_jobber.sh test suite works
+each of the following sections describes one test case, test script, and it's expected result
+
+test-script names start with "test_"
+each test_ script creates two directories
+    test_rclone_data
+    test_rclone_backup
+then the test_ script tests two or three job_ scripts 
+
+job-script names start with "job_"
+each job_ script calls the rclone_jobber.sh script
+
+test procedure for each test script
+- run the test script from the terminal
+- manually inspect output for expected results (listed in the sections below)
+
+the job_USB_ and job_1d_ scripts can be used as examples for a real backup job
+
+rlcone_jobber.sh was tested on Linux Fedora 27, Gnome 3.26.2, rclone v1.39
+
+* test_last_snapshot.sh
+testing:
+- filter exclude files ending with listed suffix
+- attempt to restore deleted sub-directory from last snapshot
+
+passed 2/21/18
+expected result:
+file names ending in "_old" are excluded from backup
+deleted directory direc1/direc1b/ can not be restored because move_old_files_to="delete"
+
+dependencies:
+- job_snapshot_backup_old_data_to_delete.sh
+- job_snapshot_restore_from_last_snapshot.sh
+- rclone_jobber.sh
+- filter_rules
+
+* test_restore_deleted_directory.sh
+this test is similar to test_onedrive.sh but w/o encryption
+
+testing:
+- move_old_files_to="typo" should give pop-up warning and default to "dated_directory"
+- attempt to back up a deleted top directory gets rclone message, and does not delete files
+- restore deleted sub-directory
+
+passed 2/21/18
+expected result:
+- 2 pop-up warnings
+    WARNING: Parameter move_old_files_to=typo, but should be...
+    WARNING: Parameter move_old_files_to=typo, but should be...
+- rclone_jobber.log (located in same directory as rclone_jobber.sh) contains a WARNINGs and a INFOs
+    WARNING: Parameter move_old_files_to=typo, but should be...
+    2018/02/19 16:17:51 INFO  : Local file system at /home/wolfv/test_rclone_backup/last_snapshot: ...
+- test will prompt for date_time of direc1b to restore
+- data contains restored direc1/direc1b_$old/f1b
+
+dependencies:
+- job_dir_backup_to_dated_directory.sh
+- job_dir_restore_from_dated_directory.sh
+- rclone_jobber.sh
+
+* test_USB.sh
+this test script uses environment variable USB, set it to your USB's path
+in Linux for example, add this line to ~/.bashrc file
+    export USB="/run/media/user/myUSB"
+and then from command line
+    $ source ~/.bashrc
+    $ echo $USB
+    /run/media/user/myUSB
+
+testing:
+- backup to USB
+- move_old_data="dated_files"
+- restore dated file
+
+passed 2/21/18
+expected result:
+- old f1 file is restored in f1_<date>
+
+dependencies:
+- job_USB_backup_to_USB.sh
+- job_USB_restore_from_USB.sh
+- rclone_jobber.sh
+
+* test_1d.sh
+"1d" means OneDrive
+this test is similar to test_restore_deleted_directory.sh but on encrypted OneDrive
+
+to set up a remote, follow instructions on https://rclone.org/onedrive/ substituting this value:
+- name> onedrive
+
+to set up encryption, follow instructions on https://rclone.org/crypt/ substituting these values:
+- name> onedrive_crypt
+- remote> onedrive:test_rclone_backup
+
+testing:
+- backup to encrypted OneDrive
+- same as [[*test_restore_deleted_directory.sh][test_restore_deleted_directory.sh]] 
+- abort if job is already running (maybe previous run didn't finish)
+
+manually test "job aborted because it is already running."
+after starting the test, call the backup job again while it is still running in the test
+(it takes 1 minute for a remote job to complete)
+    $ test_1d.sh
+    $ ./job_1d_backup_to_dated_directory.sh
+    job_1d_backup_to_dated_directory.sh aborted because it is already running.
+
+passed 2/21/18
+expected result:
+- see expected result listing in [[*test_restore_deleted_directory.sh][test_restore_deleted_directory.sh]]
+- the OneDrive backup has two copies of deleted files: dated directory and OneDrive Recycle bin
+  deleted files are moved to a dated directory, which is use for restoring a deleted directory
+  deleted files are moved to the OneDrive Recycle bin (most cloud storage providers don't or provide a way to turn it off)
+  you can manually empty the OneDrive Recycle bin from the OneDrive website
+
+dependencies:
+- job_1d_backup_to_dated_directory.sh
+- job_1d_restore_from_dated_directory.sh
+- rclone_jobber.sh
+
+* License
+[[http://creativecommons.org/publicdomain/zero/1.0/][http://i.creativecommons.org/p/zero/1.0/88x31.png]]\\
+This README file and other files contained in this test_suite directory are for testing rclone_jobber.sh.
+Written in 2018 by Wolfram Volpi, contact at https://github.com/wolfv6/rclone_jobber/issues.
+To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide.
+This software is distributed without any warranty.
+You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see http://creativecommons.org/publicdomain/zero/1.0/.
+
+rclone_jobber is not affiliated with rclone.

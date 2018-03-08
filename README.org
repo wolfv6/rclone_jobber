@@ -1,0 +1,52 @@
+* What is rclone_jobber.sh?
+rclone_jobber.sh is a script that calls [[https://rclone.org/commands/rclone_sync/][rclone sync]] to perform a backup.
+Rclone is a mature tool and many [[https://github.com/ncw/rclone/wiki/Third-Party-Integrations-with-rclone][third party tools integrate with rclone]].
+rclone_jobber.sh has been tested on Linux, and should also run on macOS and Windows.
+
+*rclone_jobber.sh features*
+- Move old files to dated_directory (easy to restore deleted directory)
+- Move old files to dated_files (easy to brows file history, like time machine)
+- Abort if job is already running (maybe previous run didn't finish)
+- Pop-up for error conditions
+- Logging
+- Free (open source Creative Commons zero license)
+
+*Rclone features*
+- MD5/SHA1 hashes checked at all times for file integrity
+- Timestamps preserved on files (but not directories)
+- rsync-like algorithm and interface
+- Sync (one way) mode to make a directory identical
+- Partial syncs supported on a whole file basis
+- Optional encryption (Crypt)
+- Back up to remote storage (over 30 providers to choose from)
+- Back up to local storage
+- Filter rules (to exclude or include files)
+- Free (open source MIT license)
+
+Both rclone and rclone_jobber.sh are command line.
+If you prefer a GUI, checkout [[https://mmozeiko.github.io/RcloneBrowser/][RcloneBrowser]].
+
+* rclone_jobber tutorial
+A [[file:rclone_jobber_tutorial.org][rclone_jobber_tutorial]] complete with backup-job examples.
+
+* Non-Linux operating systems
+rlcone_jobber.sh is a Bash script.
+Bash scripts can run on Linux, macOS, and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
+
+rlcone_jobber.sh has been tested on Linux.
+rlcone_jobber.sh uses notify-send, which is a popup notification on most Linux desktops.
+If you test rlcone_jobber.sh on a non-linux operating system, please post your results on https://github.com/wolfv6/rclone_jobber/issues.
+
+* Contact
+Submit issues to https://github.com/wolfv6/rclone_jobber/issues.
+
+Pull requests are welcome.
+
+* Licenses
+[[http://creativecommons.org/licenses/by-nc-sa/4.0/][https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png]]\\
+The content of the tutorial, including associated setup_test_data_directory.sh, are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 license.
+
+[[http://creativecommons.org/publicdomain/zero/1.0/][http://i.creativecommons.org/p/zero/1.0/88x31.png]]\\
+rclone_jobber.sh source code, including associated job files, filter_rules file, and test_suite, are licensed under the Creative Commons Zero 1.0 license.
+
+Rclone_jobber is not affiliated with rclone.

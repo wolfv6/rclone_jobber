@@ -1,0 +1,50 @@
+################################### license ##################################
+# filter_rules tell rclone which files to include or exclude.
+# Written in 2018 by Wolfram Volpi, contact at https://github.com/wolfv6/rclone_jobber/issues.
+# To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide.
+# This software is distributed without any warranty.
+# You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see http://creativecommons.org/publicdomain/zero/1.0/.
+# rclone_jobber is not affiliated with rclone.
+##############################################################################
+
+# paths in this file are from source="~/test_rclone_data/"
+########################## 1) include specific files #########################
+# include specific files that would otherwise not be included
+# include these files before they are excluded by section 2
+
+# config files
++ .bashrc
++ direc1/.thingrc
+
+# hidden directories
++ .*/**
+#+ .git/**
+
+########################## 2) exclude patterns ###############################
+# exclude these patterns before they are included by section 3
+
+# file names with extension
+- *.bak
+- *.log
+- *.tmp
+
+# file names ending in "_exc" without extension
+- *_exc
+
+# file names ending in "_exc." and any extension
+- *_exc.*
+
+# directory names ending in "_exc"
+- *_exc/**
+
+# hidden files and directories
+- .*
+
+########################## 3) include directories ############################
+# include these directories before they are excluded by section 4
++ dirc0/**
++ dirc1/**
+
+########################## 4) exclude everything else ########################
+# exclude all top directories and files
+- *

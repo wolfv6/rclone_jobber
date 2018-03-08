@@ -1,0 +1,33 @@
+#The rules are processed in the order that they are defined.
+
+########## include files not in top directories ###########
+#e.g. config files
++ direc1/.bashrc
+
+##################### exclude patterns ####################
+
+#file names with extension
+- *.bak
+- *.log
+- *.tmp
+
+#file names ending in "_exc" w/o extension
+- *_exc
+
+#file names ending in "_exc." and any extension
+- *_exc.*
+
+#directory names ending in "_exc"
+- *_exc/**
+
+#EMACS LOCKS exclude made redundant by HIDDEN FILES
+#- .#*
+
+#HIDDEN FILES
+- .*
+
+################ include top directories ###############
++ direc1/**
+
+#exclude all other top directories and files
+- *
