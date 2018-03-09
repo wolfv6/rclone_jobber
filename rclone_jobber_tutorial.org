@@ -343,6 +343,18 @@ To test your crypt remote, set your crypt remote path variable as described in t
     $ ~/rclone_jobber/examples/job_backup_to_remote.sh
 #+END_EXAMPLE
 
+** pathIsTooLong error
+Most cloud storage providers have a 254 character-path-length limit.
+Crypt limits encrypted paths to 151 characters with some cloud storage providers (this is a [[https://github.com/ncw/rclone/issues/637][known crypt issue]]).
+If rclone returns this ERROR:
+#+BEGIN_EXAMPLE
+    Failed to copy: invalidRequest: pathIsTooLong: Path exceeds maximum length
+#+END_EXAMPLE
+there are 3 work-a-rounds:
+- turn off "enrcrypt directory names" in rclone config (file names and file content can still be encrypted)
+- shorten your paths
+- Long Path Tool (I have not tried this)
+
 * Schedule backup jobs to run automatically
 After the backup jobs are scheduled, you will have an automated back up system that follows this workflow:
 1. a job scheduler calls a backup job script
@@ -367,7 +379,7 @@ Prevent your system from sleeping while backup is in progress.
 #+END_EXAMPLE
 
 * Example backup jobs
-The following system uses two backup jobs with a complementary attributes (this is how I backup my home PC).
+The following system uses two backup jobs with complementary attributes (this is how I backup my home PC).
 
 [[./examples/job_backup_to_USB.sh][examples/job_backup_to_USB.sh]] has attributes that make it convenient to brows file history:
 - local storage (for fast browsing)
@@ -375,9 +387,9 @@ The following system uses two backup jobs with a complementary attributes (this 
 - not encrypted (browsing files is more convenient that way) (unecrypted local storage is OK if storage is safe from theft, and useful if the remote storage password is lost)
 - schedule hourly, on the hour (this assumes the USB drive is always plugged in and mounted)
 
-[[./examples/job_backup_to_remote.sh][/examples/job_backup_to_remote.sh]] has attributes that make it secure and easy to restore directories:
+[[./examples/job_backup_to_remote.sh][/examples/job_backup_to_remote.sh]] has attributes that make it secure, and easy to restore a deleted sub-directory:
 - remote storage (off site is safe from on-site disaster)
-- move_old_files_to="dated_directory" (easy to restore a deleted directory e.g. Documents)
+- move_old_files_to="dated_directory" (easy to restore a deleted sub-directory e.g. Documents)
 - encrypted (please keep your password in a safe place)
 - schedule hourly, 30 min past the hour (for a back up every 30 minutes when combined with job_backup_to_USB.sh)
 
