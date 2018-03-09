@@ -355,6 +355,18 @@ there are 3 work-a-rounds:
 - shorten your paths
 - Long Path Tool (I have not tried this)
 
+** Backblaze b2 lifecycle
+rclone crypt file-name and directory-name encryption don’t work with Backblaze b2 lifecycle because:
+- b2 lifecycle appends date to end of file names
+- b2 doesn’t strip off the appended date before passing the file name back to rclone
+
+So then rclone can’t decrypt the file names.
+
+There are 2 work-a-rounds:
+- turn off "enrcrypt file names" and "enrcrypt directory names" in rclone config (file content can still be encrypted)
+- turn off b2 lifecycle, and set move_old_files_to="dated_directory" in backup job.
+  That makes it easy to manually delete very old files e.g. delete dated directories more than a year old.
+
 * Schedule backup jobs to run automatically
 After the backup jobs are scheduled, you will have an automated back up system that follows this workflow:
 1. a job scheduler calls a backup job script
