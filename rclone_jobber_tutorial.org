@@ -1,5 +1,5 @@
 * About this rclone_jobber tutorial
-This tutorial will walk you through the rclone and backup setup.
+This tutorial will guide you from setup to testing a backup.
 The final product will perform scheduled local and remote backups automatically.
 
 Both rclone and rclone_jobber.sh are command line tools.
