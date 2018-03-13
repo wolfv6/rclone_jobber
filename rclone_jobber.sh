@@ -60,6 +60,14 @@ if [ -z "$dest" ]; then
     exit 1
 fi
 
+#if source has no directories
+#using rclone lsd because it produces a smaller output than rclone ls
+#if your source has not directories, use rclone ls
+if ! test "$(rclone lsd $source)"; then
+    print_message "ERROR" "aborted because source is empty."
+    exit 1
+fi
+
 #if job is already running (maybe previous run didn't finish)
 if pidof -o $PPID -x "$job_name"; then
     print_message "WARNING" "aborted because it is already running."

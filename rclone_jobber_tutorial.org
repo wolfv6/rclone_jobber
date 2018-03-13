@@ -170,7 +170,7 @@ Argument to move old files to old_files directory, and append move date to file 
 #+END_EXAMPLE
 
 Old files are moved in their original hierarchy.
-This is makes it easy to brows a file's history, and restore a particular version of a file.
+This is makes it easy to browse a file's history, and restore a particular version of a file.
 #+BEGIN_EXAMPLE
     backup
     ├── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
@@ -318,7 +318,7 @@ To list all your rclone remotes:
 
 Most remote data-storage providers allow you to view your directory names and file names in a web browser.
 But that's not very useful if the directory and file names were encrypted by rclone.
-Use rclone to brows encrypted directory and file names.
+Use rclone to browse encrypted directory and file names.
 
 List directories in remote:
 #+BEGIN_EXAMPLE
@@ -394,7 +394,7 @@ Prevent your system from sleeping while backup is in progress.
 * Example backup jobs
 The following system uses two backup jobs with complementary attributes (this is how I backup my home PC).
 
-[[./examples/job_backup_to_USB.sh][examples/job_backup_to_USB.sh]] has attributes that make it convenient to brows file history:
+[[./examples/job_backup_to_USB.sh][examples/job_backup_to_USB.sh]] has attributes that make it convenient to browse file history:
 - local storage (for fast browsing)
 - move_old_files_to="dated_files" (old versions of a file are grouped together)
 - not encrypted (browsing files is more convenient that way) (unecrypted local storage is OK if storage is safe from theft, and useful if the remote storage password is lost)
