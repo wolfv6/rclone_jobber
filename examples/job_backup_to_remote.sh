@@ -15,9 +15,10 @@ rclone_jobber=${rclone_jobber} #path to rclone_jobber directory
 source="${HOME}/test_rclone_data"
 dest="${remote}:"
 move_old_files_to="dated_directory"
-options="--filter-from=${rclone_jobber}/examples/filter_rules --dry-run"
+options="--filter-from=${rclone_jobber}/examples/filter_rules --checksum --dry-run"
+monitoring_URL=""
 
-${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)"
+${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 
 #display test directories (comment these if calling from job scheduler)
 tree -a $source

@@ -39,11 +39,11 @@ tree ${HOME}/test_rclone_data
 #backup to USB
 ./job_USB_backup_to_USB.sh
 
-printf "\nbackup after back up, edit f1, and back up again:\n"
+printf "\nbackup after back up, edit f1, and back up again (f1_<timestamp> should be in old_files):\n"
 tree ${USB}/test_rclone_backup
 
 #restore old f1
 ./job_USB_restore_from_USB.sh
 
-printf "\ndata after restoring old f1 file:\n"
+printf "\ndata after restoring old f1 file (f1_<timestamp> and f1 should be in direc1):\n"
 tree ${HOME}/test_rclone_data

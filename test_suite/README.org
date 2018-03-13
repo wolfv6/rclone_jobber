@@ -23,9 +23,9 @@ testing:
 - filter exclude files ending with listed suffix
 - attempt to restore deleted sub-directory from last snapshot
 
-passed 2/21/18
+passed 3/13/18
 expected result:
-file names ending in "_old" are excluded from backup
+file names ending in "_exe" are excluded from backup
 deleted directory direc1/direc1b/ can not be restored because move_old_files_to="delete"
 
 dependencies:
@@ -42,16 +42,18 @@ testing:
 - attempt to back up a deleted top directory gets rclone message, and does not delete files
 - restore deleted sub-directory
 
-passed 2/21/18
+passed 3/13/18
 expected result:
 - 2 pop-up warnings
     WARNING: Parameter move_old_files_to=typo, but should be...
     WARNING: Parameter move_old_files_to=typo, but should be...
 - rclone_jobber.log (located in same directory as rclone_jobber.sh) contains a WARNINGs and a INFOs
     WARNING: Parameter move_old_files_to=typo, but should be...
+    ...
     2018/02/19 16:17:51 INFO  : Local file system at /home/wolfv/test_rclone_backup/last_snapshot: ...
+    ...
 - test will prompt for date_time of direc1b to restore
-- data contains restored direc1/direc1b_$old/f1b
+- data contains restored direc1/direc1b_$timestamp/f1b
 
 dependencies:
 - job_dir_backup_to_dated_directory.sh
@@ -60,7 +62,7 @@ dependencies:
 
 * test_USB.sh
 this test script uses environment variable USB, set it to your USB's path
-in Linux for example, add this line to ~/.bashrc file
+for example, in Linux add this line to ~/.bashrc file
     export USB="/run/media/user/myUSB"
 and then from command line
     $ source ~/.bashrc
@@ -73,7 +75,7 @@ testing:
 - restore dated file
 - --checksum option
 
-passed 2/21/18
+passed 3/13/18
 expected result:
 - old f1 file is restored in f1_<date>
 
@@ -100,13 +102,13 @@ testing:
 - --checksum option
 
 manually test "job aborted because it is already running."
-after starting the test, call the backup job again while it is still running in the test
+    $ ./test_1d.sh
 (it takes 1 minute for a remote job to complete)
-    $ test_1d.sh
+while that's running, call the backup job again from another terminal
     $ ./job_1d_backup_to_dated_directory.sh
     job_1d_backup_to_dated_directory.sh aborted because it is already running.
 
-passed 2/21/18
+passed 3/13/18
 expected result:
 - see expected result listing in [[*test_restore_deleted_directory.sh][test_restore_deleted_directory.sh]]
 - the OneDrive backup has two copies of deleted files: dated directory and OneDrive Recycle bin
@@ -126,6 +128,7 @@ testing:
 - null dest string
 - monitoring_URL
 
+passed 3/13/18
 expected result:
 - all 3 backup jobs generate an error message, no backups are made
 - monitoring_URL sends an email after 24 hrs grace period

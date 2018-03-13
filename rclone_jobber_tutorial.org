@@ -108,8 +108,9 @@ Here is a backup job with all the rclone_jobber arguments defined:
     dest="${USB}/test_rclone_backup"
     move_old_files_to="dated_files"
     options="--filter-from=${rclone_jobber}/examples/filter_rules --dry-run"
+    monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
 
-    ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)"
+    ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 #+END_EXAMPLE
 
 Rclone_jobber has 5 parameters, which are described in the next 5 sections:
@@ -157,7 +158,7 @@ Also convenient to manually delete very old files e.g. delete dated directories 
     backup
     ├── 2018-02-22_14:00:14   <<<<<<<< dated_directory contains old files
     │   └── direc1
-    │       └── f1            <<<<<<<< old version of file f1 moved here on dated_directory's date
+    │       └── f1            <<<<<<<< old version of file f1 moved here on directory's date
     └── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
         └── direc1
             └── f1
@@ -212,12 +213,13 @@ The other three options are generated in rclone_jobber.sh dynamically.
 
 Example options argument containing two rclone options:
 #+BEGIN_EXAMPLE
-    options="--filter-from=filter_rules --dry-run"
+    options="--filter-from=filter_rules --checksum --dry-run"
 #+END_EXAMPLE
 
 Rclone options used in this tutorial are:
 #+BEGIN_EXAMPLE
     --filter-from  (discussed in the "filter rules" section)
+    --checksum
     --dry-run
 #+END_EXAMPLE
 
@@ -234,6 +236,21 @@ If rclone_jobber is called directly (no job file) from a job scheduler or comman
 
 Rclone_jobber prints =job_name= in warnings and log entries.
 If the =job_name= argument is left undefined, then the origin of the job will be missing from the warnings and log entries.
+
+** 6) monitoring_URL
+The =monitoring_URL= argument specifies the job's ping URL for a cron-monitoring service.
+=monitoring_URL= is optional, and no two jobs should share the same =monitoring_URL=.
+
+Example =monitoring_URL=:
+#+BEGIN_EXAMPLE
+    monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
+#+END_EXAMPLE
+
+Every time rclone_jobber.sh completes a job without error, it pings the monitoring_URL.
+If the cron monitoring service hasn't been pinged within a set amount of time, then it sends you an email alert.
+Many cron monitoring services offer free plans.
+
+Some remote data-storage providers offer an integrated monitoring service, in which case =monitoring_URL= is not needed.
 
 * Filter rules (include and exclude files for backup)
 Filter rules tell rclone which files to include or exclude.

@@ -49,7 +49,7 @@ tree -a ~/test_rclone_backup
 #backup
 ./job_snapshot_backup_old_data_to_delete.sh
 
-printf "\nbackup after first back up:\n"
+printf "\nbackup after first back up (file names ending in _exe should be excluded):\n"
 tree -a ~/test_rclone_backup
 
 #remove direc1b

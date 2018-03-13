@@ -44,7 +44,7 @@ tree ~/test_rclone_data
 #backup
 ./job_1d_backup_to_dated_directory.sh
 
-printf "\nbackup after deleting direc0 and direc1b, and backing up again:\n"
+printf "\nbackup after deleting direc0 and direc1b, and backing up again (f0 and f1b should be moved to dated directory):\n"
 rclone ls onedrive_test_rclone_backup_crypt:
 
 #restore deleted directory

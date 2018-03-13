@@ -9,6 +9,7 @@ An [[file:rclone_jobber_tutorial.org][rclone_jobber_tutorial]] includes backup-j
 - Move old files to dated_files (easy to brows file history, like Time Machine)
 - Abort if job is already running (maybe previous run didn't finish)
 - Pop-up for error conditions
+- Option for a cron-monitoring service
 - Logging
 - Free (open source Creative Commons Zero license)
 

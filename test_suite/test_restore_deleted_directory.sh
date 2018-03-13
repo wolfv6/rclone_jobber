@@ -45,7 +45,7 @@ tree ~/test_rclone_data
 #backup
 ./job_dir_backup_to_dated_directory.sh
 
-printf "\nbackup after deleting direc0 and direc1b, and backing up again:\n"
+printf "\nbackup after deleting direc0 and direc1b, and backing up again (direc0 and direc1b should be moved to dated directory):\n"
 tree ~/test_rclone_backup
 
 #restore deleted directory

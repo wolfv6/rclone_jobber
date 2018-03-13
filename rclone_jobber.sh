@@ -63,6 +63,7 @@ fi
 #if source has no directories
 #using rclone lsd because it produces a smaller output than rclone ls
 #if your source has not directories, use rclone ls
+#rclone 1.40 will have lsf
 if ! test "$(rclone lsd $source)"; then
     print_message "ERROR" "aborted because source is empty."
     exit 1
