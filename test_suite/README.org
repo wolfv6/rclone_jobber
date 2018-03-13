@@ -71,6 +71,7 @@ testing:
 - backup to USB
 - move_old_data="dated_files"
 - restore dated file
+- --checksum option
 
 passed 2/21/18
 expected result:
@@ -82,7 +83,7 @@ dependencies:
 - rclone_jobber.sh
 
 * test_1d.sh
-"1d" means OneDrive
+"1d" means OneDrive remote
 this test is similar to test_restore_deleted_directory.sh but on encrypted OneDrive
 
 to set up a remote, follow instructions on https://rclone.org/onedrive/ substituting this value:
@@ -96,6 +97,7 @@ testing:
 - backup to encrypted OneDrive
 - same as [[*test_restore_deleted_directory.sh][test_restore_deleted_directory.sh]] 
 - abort if job is already running (maybe previous run didn't finish)
+- --checksum option
 
 manually test "job aborted because it is already running."
 after starting the test, call the backup job again while it is still running in the test
@@ -115,6 +117,23 @@ expected result:
 dependencies:
 - job_1d_backup_to_dated_directory.sh
 - job_1d_restore_from_dated_directory.sh
+- rclone_jobber.sh
+
+* test_check_range.sh
+testing:
+- empty source
+- null source string
+- null dest string
+- monitoring_URL
+
+expected result:
+- all 3 backup jobs generate an error message, no backups are made
+- monitoring_URL sends an email after 24 hrs grace period
+
+dependencies:
+- job_check_empty_source.sh
+- job_check_null_source.sh
+- job_check_null_dest.sh
 - rclone_jobber.sh
 
 * License

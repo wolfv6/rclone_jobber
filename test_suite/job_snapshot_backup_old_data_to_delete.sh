@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#define arguments at top of job file
 source="${HOME}/test_rclone_data"
 dest="${HOME}/test_rclone_backup"
 options="--filter-from=filter_rules"

@@ -1,4 +1,4 @@
-* What is rclone_jobber.sh?
+* About rclone_jobber.sh
 rclone_jobber.sh is an rclone script to perform a backup job.
 Rclone is a mature tool and many [[https://github.com/ncw/rclone/wiki/Third-Party-Integrations-with-rclone][third party tools integrate with rclone]].
 rclone_jobber.sh has been tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
@@ -19,7 +19,7 @@ An [[file:rclone_jobber_tutorial.org][rclone_jobber_tutorial]] includes backup-j
 - Sync (one way) mode to make a directory identical
 - Partial syncs supported on a whole file basis
 - Optional encryption (Crypt)
-- Back up to remote storage (over 30 providers to choose from)
+- Back up to remote storage (over 30 providers to choose from, so you're never locked into a provider)
 - Back up to local storage
 - Filter rules (to exclude or include files)
 - Free (open source MIT license)

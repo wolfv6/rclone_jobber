@@ -1,5 +1,6 @@
 #!/bin/bash
-#rclone_jobber.sh version 1.0
+#rclone_jobber.sh version 1.1
+#Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 
 ################################### license ##################################
 # rclone_jobber.sh is a script that calls rclone sync to perform a backup.
@@ -12,10 +13,11 @@
 ################################# parameters #################################
 source="$1"            #the directory to back up
 dest="$2"              #destination=$dest/last_snapshot
-move_old_files_to="$3"  #move_old_files_to is one of: "dated_directory", "dated_files", ""
-options="$4"           #rclone options like "--filter-from=filter_patterns --dry-run"
+move_old_files_to="$3" #move_old_files_to is one of: "dated_directory", "dated_files", ""
+options="$4"           #rclone options like "--filter-from=filter_patterns --checksum --dry-run"
                        #do not put these in options: --backup-dir, --suffix, --log-file, --log-level
 job_name="$5"          #job_name="$(basename $0)"
+monitoring_URL="$6"    #cron monitoring service URL to send email if cron or other errors prevented back up
 
 ################################ set variables ###############################
 #$new is the directory name of the current snapshot (the name "last_snapshot" makes more sense in the future)
@@ -34,21 +36,33 @@ log_level="INFO"   # outputs information about each transfer and prints stats on
 #log_level="ERROR"  # outputs only error messages
 
 ################################## functions #################################
-print_warning()
+print_message()
 {
-    warning="WARNING: $job_name $1"
+    label="$1"
+    msg="$2"
+    message="${label}: $job_name $msg"
 
-    echo "$warning"
-    echo "$(date +%F_%T) $warning" >> "$log_file"
+    echo "$message"
+    echo "$(date +%F_%T) $message" >> "$log_file"
     warning_icon="/usr/share/icons/Adwaita/32x32/emblems/emblem-synchronizing.png"
     #notify-send is a popup notification on most Linux desktops
-    notify-send --urgency critical --icon "$warning_icon" "$warning"
+    notify-send --urgency critical --icon "$warning_icon" "$message"
 }
 
-########################## if job is already running #########################
-#abort if job is already running (maybe previous run didn't finish)
+################################# range checks ################################
+if [ -z "$source" ]; then
+    print_message "ERROR" "aborted because source is empty string."
+    exit 1
+fi
+
+if [ -z "$dest" ]; then
+    print_message "ERROR" "aborted because dest is empty string."
+    exit 1
+fi
+
+#if job is already running (maybe previous run didn't finish)
 if pidof -o $PPID -x "$job_name"; then
-    print_warning "aborted because it is already running."
+    print_message "WARNING" "aborted because it is already running."
     exit 1
 fi
 
@@ -63,7 +77,7 @@ elif [ "$move_old_files_to" == "dated_files" ]; then
     #move deleted or changed files to old directory, and append _$timestamp to file name
     backup_dir="--backup-dir=$dest/old_files --suffix=_$timestamp"
 elif [ "$move_old_files_to" != "" ]; then
-    print_warning "Parameter move_old_files_to=$move_old_files_to, but should be dated_directory or dated_files.\
+    print_message "WARNING" "Parameter move_old_files_to=$move_old_files_to, but should be dated_directory or dated_files.\
   Moving old data to dated_directory."
     backup_dir="--backup-dir=$dest/$timestamp"
 fi
@@ -86,9 +100,10 @@ if [ "$exit_code" -eq 0 ]; then            #if no errors
         echo "$confirmation" >> "$log_file"
         echo "" >> "$log_file"
         exit 0
-     fi
+    fi
+    wget $monitoring_URL -O /dev/null
 else
-    print_warning "failed.  rclone exit_code=$exit_code"
+    print_message "ERROR" "failed.  rclone exit_code=$exit_code"
     echo "" >> "$log_file"
     exit 1
 fi

@@ -1,4 +1,4 @@
-* About this rclone_jobber tutorial
+* About this rclone_jobber.sh tutorial
 This tutorial will guide you from setup to testing a backup.
 The final product will perform scheduled local and remote backups automatically.
 
@@ -21,7 +21,7 @@ I am not responsible for any lost data.
 * Install rclone
 Download rclone from https://rclone.org/downloads/
 
-Or from Linux:
+Or from RPM-based Linux distributions:
 #+BEGIN_EXAMPLE
     $ sudo dnf install rclone
 #+END_EXAMPLE
@@ -351,7 +351,7 @@ If rclone returns this ERROR:
     Failed to copy: invalidRequest: pathIsTooLong: Path exceeds maximum length
 #+END_EXAMPLE
 there are 3 work-a-rounds:
-- turn off "enrcrypt directory names" in rclone config (file names and file content can still be encrypted)
+- turn off "enrcrypt directory names" in rclone config (file content can still be encrypted)
 - shorten your paths
 - Long Path Tool (I have not tried this)
 
@@ -362,10 +362,11 @@ rclone crypt file-name and directory-name encryption don’t work with Backblaze
 
 So then rclone can’t decrypt the file names.
 
-There are 2 work-a-rounds:
+There are 3 work-a-rounds:
 - turn off "enrcrypt file names" and "enrcrypt directory names" in rclone config (file content can still be encrypted)
 - turn off b2 lifecycle, and set move_old_files_to="dated_directory" in backup job.
   That makes it easy to manually delete very old files e.g. delete dated directories more than a year old.
+- use a different remote data-storage provider
 
 * Schedule backup jobs to run automatically
 After the backup jobs are scheduled, you will have an automated back up system that follows this workflow:
