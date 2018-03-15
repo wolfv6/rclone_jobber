@@ -29,10 +29,10 @@ Or from RPM-based Linux distributions:
 * Install rclone_jobber
 Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber repository]] to your home directory.
 
-Paths used in this tutorial assume that the rclone_jobber directory is in your home directory.
+This tutorial assume that the rclone_jobber directory is in your home directory.
 
 * Setup test directories and path variables
-The tutorial example scripts use test directories and path variables.
+The tutorial-example scripts use test directories and contain path variables.
 
 The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup the test directory.
 It recursively deletes the ~/test_rclone_data directory and rebuilds a fresh copy.
@@ -41,11 +41,11 @@ From the command line:
     $ ~/rclone_jobber/examples/setup_test_data_directory.sh
 #+END_EXAMPLE
 
-The tutorial example files contain path variables.
+The tutorial-example files contain path variables.
 Set "rclone_jobber" and "USB" path variables via one of:
 - Edit the rclone_jobber/examples/ files, manually replacing path variables with your system paths.
 - Set PATH environment variables.
-  If you're on Linux, add these lines to your .bashrc file, but with your system paths:
+  - If you're on Linux, add these lines to your .bashrc file, but with your system paths:
   #+BEGIN_EXAMPLE
     export rclone_jobber="/home/wolfv/rclone_jobber"
     export USB="/run/media/wolfv/USB_name"
@@ -62,7 +62,7 @@ Once you have the test directories and path variables setup, you can take rclone
 
 *Important:* Since a bad backup job can cause data loss, test first with the =--dry-run= flag to see exactly what would be copied and deleted.
 
-Open the [[./examples/job_backup_to_USB_minimal.sh][examples/job_backup_to_USB_minimal.sh]] in your favorite [[https://en.wikipedia.org/wiki/Text_editor][text editor]] and set =--dry-run=:
+Open the [[./examples/job_backup_to_USB_minimal.sh][examples/job_backup_to_USB_minimal.sh]] in your favorite [[https://en.wikipedia.org/wiki/Text_editor][text editor]] and set options to =--dry-run=:
 #+BEGIN_EXAMPLE
     options="--dry-run"
 #+END_EXAMPLE
@@ -73,10 +73,10 @@ Run the backup job:
 #+END_EXAMPLE
 
 Here are some more things you can try with backup job:
-1) Open rclone_jobber.log (rclone_jobber.log is in same directory as rclone_jobber.sh) so you can see what is happening.
-2) Run the backup job again, this time without =--dry-run=.
-3) Inspect changes in the destination files.
-4) Change some files in source:
+1. Open rclone_jobber.log (rclone_jobber.log is in same directory as rclone_jobber.sh) so you can see what is happening.
+2. Run the backup job again, this time without =--dry-run=.
+3. Inspect changes in the destination files.
+4. Change some files in source:
    - delete a file
    - edit a file
    - add a file
@@ -85,7 +85,7 @@ Here are some more things you can try with backup job:
 
 * Backup job and rclone_jobber.sh parameters
 ** Backup job script
-Here is a minimal backup job for rclone_jobber:
+Here is a minimal backup job script for rclone_jobber:
 #+BEGIN_EXAMPLE
     #!/bin/bash
 
@@ -134,7 +134,7 @@ Example =dest= argument for [[https://rclone.org/local/][local file system]] dat
     dest="/run/media/wolfv/USB/wolfv_backup"
 #+END_EXAMPLE
 
-Example for remote data storage:
+Example =dest= for remote data storage:
 #+BEGIN_EXAMPLE
     dest="onedrive_wolfv_backup_crypt:"
 #+END_EXAMPLE
@@ -209,7 +209,7 @@ You can put any [[https://rclone.org/docs/#options][rclone options]] in the opti
 You can edit =--log-level= in rclone_jobber.sh.
 The other three options are generated in rclone_jobber.sh dynamically.
 
-Example options argument containing two rclone options:
+Example options argument containing three rclone options:
 #+BEGIN_EXAMPLE
     options="--filter-from=filter_rules --checksum --dry-run"
 #+END_EXAMPLE
@@ -230,13 +230,13 @@ The =job_name= argument specifies the job's file name:
 The Bash command "$(basename $0)" will fill in the job's file name for you.
 
 Rclone_jobber guards against =job_name= running again before the previous run is finish.
-If rclone_jobber is called directly (no job file) from a job scheduler or command line, the guard will not work.
+If rclone_jobber is called directly (from a job scheduler or command line without a job file), the guard will not work.
 
 Rclone_jobber prints =job_name= in warnings and log entries.
 If the =job_name= argument is left undefined, then the origin of the job will be missing from the warnings and log entries.
 
 ** 6) monitoring_URL
-The =monitoring_URL= argument specifies the job's ping URL for a cron-monitoring service.
+The =monitoring_URL= argument specifies a ping URL for a cron-monitoring service.
 =monitoring_URL= is optional, and no two jobs should share the same =monitoring_URL=.
 
 Example =monitoring_URL=:
@@ -268,7 +268,7 @@ The sections alternate between include and exclude, progressing from fine to coa
 This filter-rules file has four sections, but any number of sections are possible.
 Most filter-rules files have fewer sections.
 
-The filter rules file is specified in the rclone_jobber =options= argument like this:
+The filter_rules file is specified in the rclone_jobber =options= argument like this:
 #+BEGIN_EXAMPLE
     options="--filter-from filter_rules"
 #+END_EXAMPLE
@@ -280,7 +280,7 @@ To see the example filter_rules file in action, run:
 #+END_EXAMPLE
 
 * Selecting a remote data-storage provider
-All the remote data-storage providers are listed on https://rclone.org/.
+All the rclone remote data-storage providers are listed on https://rclone.org/.
 Some of the remote data-storage-provider features are listed in two tables on https://rclone.org/overview/.
 
 * Remote configuration
@@ -289,11 +289,10 @@ Configuring a remote in rclone is surprisingly straightforward for the amount of
 
 There is one page of configuration instructions for each remote data-storage provider.
 Links to the configuration instructions are at https://rclone.org/docs/#configure and https://rclone.org/.
-Follow the instructions to configure your remote now, we will test it at the end of this section.
+Follow the instructions to configure your remote now, we will test the remote at the end of this section.
 
 Rclone stores all the configuration information you entered in the default location ~/.config/rclone/rclone.conf.
-
-*Important:* The remote's password is stored in the rclone.conf file.
+The remote's password is stored in the rclone.conf file, so be careful about giving people access to it.
 
 To list all your rclone remotes:
 #+BEGIN_EXAMPLE
@@ -302,7 +301,7 @@ To list all your rclone remotes:
 
 Set "remote" path variables via one of:
 - Edit the rclone_jobber/examples/ files, manually replacing $remote variable with your remote path.
-- Set PATH environment variables.
+- Set a PATH environment variable.
   If you're on Linux, add this line to your .bashrc file, but with your remote path:
   #+BEGIN_EXAMPLE
     export remote="onedrive_test_rclone_backup"
@@ -319,14 +318,14 @@ To test your remote, run:
 
 * Crypt configuration
 "crypt" is a kind of remote that:
-- encrypts and decrypts the data stream of an underlying remote
+- encrypts and decrypts the data stream for its underlying remote
 - performs encryption and decryption on client side
 - uses the same command interface as other kinds of remotes
 
 Instructions for configuring a crypt remote are at https://rclone.org/crypt/ and https://rclone.org/docs/#configuration-encryption.
 
 When configuring a crypt remote, rclone will ask you to give it a name.
-In the following example, the user names a crypt remote by concatenating the underlying remote and source-folder names:
+In the following example, the crypt remote name is a concatenation of its underlying remote name and source-folder name:
 #+BEGIN_EXAMPLE
     name> myremote_myfolder_crypt
 #+END_EXAMPLE
@@ -347,25 +346,25 @@ Most remote data-storage providers allow you to view your directory names and fi
 But that's not very useful if the directory and file names were encrypted by rclone.
 Use rclone to browse encrypted directory and file names.
 
-List directories in remote:
+To list directories in remote:
 #+BEGIN_EXAMPLE
     $ rclone lsd remote:
     $ rclone lsd remote:path
 #+END_EXAMPLE
 
-List top-level files in path:
+To list top-level files in path:
 #+BEGIN_EXAMPLE
     $ rclone ls remote:path --max-depth 1 
 #+END_EXAMPLE
 
-List all files in path recursively:
+To list all files in path recursively:
 #+BEGIN_EXAMPLE
     $ rclone ls remote:path
 #+END_EXAMPLE
 
 [[./examples/job_backup_to_remote.sh][/examples/job_backup_to_remote.sh]] uses a remote, which could be of type crypt.
 
-To test your crypt remote, set your crypt remote path variable as described in the "[[*Setup test directories and path variables][Setup test directories and path variables]]" section and then run:
+To test your crypt remote, set your crypt remote path variable as described in the "Remote configuration" section, and then run:
 #+BEGIN_EXAMPLE
     $ ~/rclone_jobber/examples/job_backup_to_remote.sh
 #+END_EXAMPLE
@@ -373,11 +372,11 @@ To test your crypt remote, set your crypt remote path variable as described in t
 ** pathIsTooLong error
 Most cloud storage providers have a 254 character-path-length limit.
 Crypt limits encrypted paths to 151 characters with some cloud storage providers (this is a [[https://github.com/ncw/rclone/issues/637][known crypt issue]]).
-If rclone returns this ERROR:
+If the path is too long, rclone returns this ERROR:
 #+BEGIN_EXAMPLE
     Failed to copy: invalidRequest: pathIsTooLong: Path exceeds maximum length
 #+END_EXAMPLE
-there are 3 work-a-rounds:
+There are 3 work-a-rounds:
 - turn off "enrcrypt directory names" in rclone config (file content can still be encrypted)
 - shorten your paths
 - Long Path Tool (I have not tried this)
@@ -391,8 +390,8 @@ So then rclone can’t decrypt the file names.
 
 There are 3 work-a-rounds:
 - turn off "enrcrypt file names" and "enrcrypt directory names" in rclone config (file content can still be encrypted)
-- turn off b2 lifecycle, and set move_old_files_to="dated_directory" in backup job.
-  That makes it easy to manually delete very old files e.g. delete dated directories more than a year old.
+- turn off b2 lifecycle, set move_old_files_to="dated_directory" in backup job,
+  and manually delete old files at end of life cycle
 - use a different remote data-storage provider
 
 * Schedule backup jobs to run automatically
@@ -402,7 +401,7 @@ After the backup jobs are scheduled, you will have an automated back up system t
 3. rclone_jobber.sh calls rclone
 4. rclone consults your filter rules, connects to a backup storage, and uploads your data
 
-Schedule your backup jobs on your favorite job scheduler.
+Schedule your backup jobs in your favorite job scheduler.
 
 The following example schedules jobs on cron (cron is a job scheduler installed on Linux).
 The first line runs a local job every hour on the hour.
@@ -414,8 +413,9 @@ The second line runs a remote job every hour, 30 minutes past the hour.
 #+END_EXAMPLE
 
 Prevent your system from sleeping while backup is in progress.
+On Linux Gnome desktop:
 #+BEGIN_EXAMPLE
-    On Linux Gnome desktop, right click > Settings > Power > Automatic suspend: Off
+    right click > Settings > Power > Automatic suspend: Off
 #+END_EXAMPLE
 
 * Example backup jobs

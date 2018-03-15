@@ -1,6 +1,7 @@
 * About rclone_jobber.sh
 rclone_jobber.sh is a Bash script that performs a backup job by calling rclone.
-Rclone is a mature tool and many [[https://github.com/ncw/rclone/wiki/Third-Party-Integrations-with-rclone][third party tools integrate with rclone]].
+Rclone is a mature tool and many [[https://github.com/ncw/rclone/wiki/Third-Party-Integrations-with-rclone][third party tools use rclone]].
+
 rclone_jobber.sh has been tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
 An [[file:rclone_jobber_tutorial.org][rclone_jobber_tutorial]] includes backup-job and restore-job examples for a home computer.
 
