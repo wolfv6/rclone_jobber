@@ -32,8 +32,7 @@ Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber r
 Paths used in this tutorial assume that the rclone_jobber directory is in your home directory.
 
 * Setup test directories and path variables
-In this section we setup test directories and path variables.
-At the end of this section we take rclone_jobber for a test drive.
+The tutorial example scripts use test directories and path variables.
 
 The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup the test directory.
 It recursively deletes the ~/test_rclone_data directory and rebuilds a fresh copy.
@@ -42,25 +41,24 @@ From the command line:
     $ ~/rclone_jobber/examples/setup_test_data_directory.sh
 #+END_EXAMPLE
 
-Now we set paths variables for the test jobs.
-If you're on Linux, add these lines to your .bashrc file, but with your system paths:
-#+BEGIN_EXAMPLE
+The tutorial example files contain path variables.
+Set "rclone_jobber" and "USB" path variables via one of:
+- Edit the rclone_jobber/examples/ files, manually replacing path variables with your system paths.
+- Set PATH environment variables.
+  If you're on Linux, add these lines to your .bashrc file, but with your system paths:
+  #+BEGIN_EXAMPLE
     export rclone_jobber="/home/wolfv/rclone_jobber"
     export USB="/run/media/wolfv/USB_name"
-    export remote="onedrive_test_rclone_backup"
-#+END_EXAMPLE
-
-For testing, you can use a home directory instead of a USB drive (export USB="/home/wolfv/test_rclone").
-You can wait to add the "export remote" line until after reading the "remote configuration" section.
-
-Reload .bachrc:
-#+BEGIN_EXAMPLE
+  #+END_EXAMPLE
+  And reload .bachrc:
+  #+BEGIN_EXAMPLE
     $ source ~/.bachrc
-#+END_EXAMPLE
+  #+END_EXAMPLE
 
-Alternatively, you can open all the files in rclone_jobber/examples directory and manually replace the path variables with your system paths.
+The USB path doesn't actually have to be a USB drive (e.g. export USB="/home/wolfv/test_rclone").
 
-Let's take rclone_jobber for a test drive.
+* Take rclone_jobber for a test drive
+Once you have the test directories and path variables setup, you can take rclone_jobber for a test drive.
 
 *Important:* Since a bad backup job can cause data loss, test first with the =--dry-run= flag to see exactly what would be copied and deleted.
 
@@ -74,17 +72,16 @@ Run the backup job:
     $ ~/rclone_jobber/examples/job_backup_to_USB_minimal.sh
 #+END_EXAMPLE
 
-Inspect rclone_jobber.log (rclone_jobber.log is in same directory as rclone_jobber.sh).
-
-Run the backup job without =--dry-run= and inspect changes in the destination files.
-
-Change files in source:
-- delete a file
-- edit a file
-- add a file
-- move a file
-
-And run the backup job again.
+Here are some more things you can try with backup job:
+1) Open rclone_jobber.log (rclone_jobber.log is in same directory as rclone_jobber.sh) so you can see what is happening.
+2) Run the backup job again, this time without =--dry-run=.
+3) Inspect changes in the destination files.
+4) Change some files in source:
+   - delete a file
+   - edit a file
+   - add a file
+   - move a file
+   And run the backup job again.
 
 * Backup job and rclone_jobber.sh parameters
 ** Backup job script
@@ -97,9 +94,9 @@ Here is a minimal backup job for rclone_jobber:
 
     ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)"
 #+END_EXAMPLE
-
 The last line calls rclone_jobber.sh with arguments.
 =source= and =dest= are required, the remaining arguments can be "" or undefined.
+
 Here is a backup job with all the rclone_jobber arguments defined:
 #+BEGIN_EXAMPLE
     #!/bin/bash
@@ -107,18 +104,19 @@ Here is a backup job with all the rclone_jobber arguments defined:
     source="${HOME}/test_rclone_data"
     dest="${USB}/test_rclone_backup"
     move_old_files_to="dated_files"
-    options="--filter-from=${rclone_jobber}/examples/filter_rules --dry-run"
+    options="--filter-from=${rclone_jobber}/examples/filter_rules --checksum --dry-run"
     monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
 
     ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 #+END_EXAMPLE
 
-Rclone_jobber has 5 parameters, which are described in the next 5 sections:
+Rclone_jobber has 6 parameters, which are described in the next 6 sections:
 1) source
 2) dest
 3) move_old_files_to
 4) options
 5) job_name
+6) monitoring_URL
 
 ** 1) source
 =source= is the directory to back up.
@@ -286,11 +284,11 @@ All the remote data-storage providers are listed on https://rclone.org/.
 Some of the remote data-storage-provider features are listed in two tables on https://rclone.org/overview/.
 
 * Remote configuration
-Once you have an account with your chosen data-storage provider, the next step is to configure the remote.
+Once you have an account with your chosen data-storage provider, the next step is to configure a remote.
 Configuring a remote in rclone is surprisingly straightforward for the amount of under-the-covers authentication it does.
+
 There is one page of configuration instructions for each remote data-storage provider.
 Links to the configuration instructions are at https://rclone.org/docs/#configure and https://rclone.org/.
-
 Follow the instructions to configure your remote now, we will test it at the end of this section.
 
 Rclone stores all the configuration information you entered in the default location ~/.config/rclone/rclone.conf.
@@ -302,7 +300,19 @@ To list all your rclone remotes:
     $ rclone listremotes
 #+END_EXAMPLE
 
-To test your remote, set your remote path variable as described in the "[[*Setup test directories and path variables][Setup test directories and path variables]]" section and then run:
+Set "remote" path variables via one of:
+- Edit the rclone_jobber/examples/ files, manually replacing $remote variable with your remote path.
+- Set PATH environment variables.
+  If you're on Linux, add this line to your .bashrc file, but with your remote path:
+  #+BEGIN_EXAMPLE
+    export remote="onedrive_test_rclone_backup"
+  #+END_EXAMPLE
+  And reload .bachrc:
+  #+BEGIN_EXAMPLE
+    $ source ~/.bachrc
+  #+END_EXAMPLE
+
+To test your remote, run:
 #+BEGIN_EXAMPLE
     $ ~/rclone_jobber/examples/job_backup_to_remote.sh
 #+END_EXAMPLE
