@@ -47,12 +47,12 @@ Set "rclone_jobber" and "USB" path variables via one of:
 - set PATH environment variables.
   - if you're on Linux, add these lines to your .bashrc file, but with your system paths:
   #+BEGIN_EXAMPLE
-    export rclone_jobber="/home/wolfv/rclone_jobber"
-    export USB="/run/media/wolfv/USB_name"
+        export rclone_jobber="/home/wolfv/rclone_jobber"
+        export USB="/run/media/wolfv/USB_name"
   #+END_EXAMPLE
-  - And reload .bachrc:
+  - and reload .bachrc:
   #+BEGIN_EXAMPLE
-    $ source ~/.bachrc
+        $ source ~/.bachrc
   #+END_EXAMPLE
 
 The USB path doesn't actually have to be a USB drive (e.g. export USB="/home/wolfv/test_rclone").
@@ -304,11 +304,11 @@ Set "remote" path variables via one of:
 - set a PATH environment variable
   - if you're on Linux, add this line to your .bashrc file, but with your remote path:
   #+BEGIN_EXAMPLE
-    export remote="onedrive_test_rclone_backup"
+        export remote="onedrive_test_rclone_backup"
   #+END_EXAMPLE
   - and reload .bachrc:
   #+BEGIN_EXAMPLE
-    $ source ~/.bachrc
+        $ source ~/.bachrc
   #+END_EXAMPLE
 
 To test your remote, run:
