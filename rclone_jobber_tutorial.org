@@ -43,14 +43,14 @@ From the command line:
 
 The tutorial-example files contain path variables.
 Set "rclone_jobber" and "USB" path variables via one of:
-- Edit the rclone_jobber/examples/ files, manually replacing path variables with your system paths.
-- Set PATH environment variables.
-  - If you're on Linux, add these lines to your .bashrc file, but with your system paths:
+- edit the rclone_jobber/examples/ files, manually replacing path variables with your system paths
+- set PATH environment variables.
+  - if you're on Linux, add these lines to your .bashrc file, but with your system paths:
   #+BEGIN_EXAMPLE
     export rclone_jobber="/home/wolfv/rclone_jobber"
     export USB="/run/media/wolfv/USB_name"
   #+END_EXAMPLE
-  And reload .bachrc:
+  - And reload .bachrc:
   #+BEGIN_EXAMPLE
     $ source ~/.bachrc
   #+END_EXAMPLE
@@ -300,13 +300,13 @@ To list all your rclone remotes:
 #+END_EXAMPLE
 
 Set "remote" path variables via one of:
-- Edit the rclone_jobber/examples/ files, manually replacing $remote variable with your remote path.
-- Set a PATH environment variable.
-  If you're on Linux, add this line to your .bashrc file, but with your remote path:
+- edit the rclone_jobber/examples/ files, manually replacing $remote variable with your remote path
+- set a PATH environment variable
+  - if you're on Linux, add this line to your .bashrc file, but with your remote path:
   #+BEGIN_EXAMPLE
     export remote="onedrive_test_rclone_backup"
   #+END_EXAMPLE
-  And reload .bachrc:
+  - and reload .bachrc:
   #+BEGIN_EXAMPLE
     $ source ~/.bachrc
   #+END_EXAMPLE
