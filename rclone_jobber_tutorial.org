@@ -19,12 +19,19 @@ This tutorial and associated scripts are distributed without any warranty.
 I am not responsible for any lost data.
 
 * Install rclone
-Download rclone from https://rclone.org/downloads/
-
-Or on RPM-based Linux distributions:
+On Debian-based Linux distributions:
 #+BEGIN_EXAMPLE
+    $ apt-cache policy rclone
+    $ sudo apt-get install rclone
+#+END_EXAMPLE
+
+On RPM-based Linux distributions:
+#+BEGIN_EXAMPLE
+    $ dnf info rclone
     $ sudo dnf install rclone
 #+END_EXAMPLE
+
+Or download the latest rclone from https://rclone.org/downloads/
 
 * Install rclone_jobber
 Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber repository]] to your home directory.
@@ -147,6 +154,7 @@ Argument to move deleted or changed files to a dated directory:
     move_old_files_to="dated_directory" 
 #+END_EXAMPLE
 
+It's a kind of incremental backup.
 Old files are moved in their original hierarchy.
 This is makes it easy to restore a deleted sub-directory.
 Also convenient to manually delete very old files e.g. delete dated directories more than a year old.
@@ -166,6 +174,7 @@ Argument to move old files to old_files directory, and append move date to file 
     move_old_files_to="dated_files"
 #+END_EXAMPLE
 
+It's a kind of incremental backup.
 Old files are moved in their original hierarchy.
 This is makes it easy to browse a file's history, and restore a particular version of a file.
 #+BEGIN_EXAMPLE
@@ -348,6 +357,11 @@ To list directories in remote:
 #+BEGIN_EXAMPLE
     $ rclone lsd remote:
     $ rclone lsd remote:path
+#+END_EXAMPLE
+
+To list objects and directories of path (requires rclone-v1.40):
+#+BEGIN_EXAMPLE
+    $ rclone lsf remote:path
 #+END_EXAMPLE
 
 To list top-level files in path:
