@@ -62,7 +62,7 @@ fi
 
 #if source is empty
 if ! test "$(rclone ls $source)"; then    #rclone ls lists all files of source recursively
-#if ! test "$(rclone lsf $source)"; then  #rclone lsf in rclone 1.40 released 3/19/18
+#if ! test "$(rclone lsf $source)"; then  #rclone lsf requires rclone 1.40 or later
 #if ! test "$(rclone lsd $source)"; then  #rclone lsd produces a smaller output, but needs a sub-directory
     print_message "ERROR" "aborted because source is empty."
     exit 1

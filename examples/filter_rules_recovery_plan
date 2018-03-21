@@ -1,0 +1,11 @@
+#this file is for rclone --filter-from
+#paths in this file are from source="/home/wolfv/Documents/pc_maintenance"
+
+########################## include specific files ######################
++ /fedora_27/fedora_27_install.org
++ /fedora_27/fedora_notes.org
++ /backup_systems/rclone_jobber/rclone_jobber_tutorial.org
++ /backup_systems/rclone_wolf/job_restore_last_snapshot.sh
+
+########################## exclude everything else #####################
+- *

@@ -39,9 +39,9 @@ Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber r
 This tutorial assume that the rclone_jobber directory is in your home directory.
 
 * Setup test directories and path variables
-The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup a test directory that is used in this tutorial.
+The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup a test directory used in this tutorial.
 It recursively deletes the ~/test_rclone_data directory and rebuilds a fresh copy.
-From the command line:
+To setup a test directory from the command line:
 #+BEGIN_EXAMPLE
     $ ~/rclone_jobber/examples/setup_test_data_directory.sh
 #+END_EXAMPLE
@@ -306,7 +306,7 @@ To list all your rclone remotes:
     $ rclone listremotes
 #+END_EXAMPLE
 
-Set "remote" path variables via one of:
+For this tutorial example, set "remote" path variables via one of:
 - edit the rclone_jobber/examples/ files, manually replacing $remote variable with your remote path
 - set a PATH environment variable (recommended)
   - if you're on Linux, add this line to your .bashrc file, but with your remote path:
@@ -359,7 +359,7 @@ To list directories in remote:
     $ rclone lsd remote:path
 #+END_EXAMPLE
 
-To list objects and directories of path (requires rclone-v1.40):
+To list objects and directories of path (requires rclone-v1.40 or later):
 #+BEGIN_EXAMPLE
     $ rclone lsf remote:path
 #+END_EXAMPLE
@@ -433,6 +433,7 @@ On Linux Gnome desktop:
 
 * Example backup jobs
 The following system uses two backup jobs with complementary attributes (this is how I backup my home PC).
+The latest snapshot can be easily restored from either backup.
 
 [[./examples/job_backup_to_USB.sh][examples/job_backup_to_USB.sh]] has attributes that make it convenient to browse file history:
 - local storage (for fast navigation)
@@ -446,6 +447,9 @@ The following system uses two backup jobs with complementary attributes (this is
 - encrypted (please keep your password in a safe place)
 - schedule hourly, 30 min past the hour (for a back up every 30 minutes when combined with job_backup_to_USB.sh)
 
+In addition, job_backup_recovery_plan_to_remote.sh stores recovery-plan files off-site unecrypted.
+Recovery-plan files are listed in the "Recovery plan" section.
+
 * Example restore-data jobs
 Here are three ways to restore data:
 - [[./examples/job_restore_last_snapshot.sh][examples/job_restore_last_snapshot.sh]]
@@ -453,52 +457,70 @@ Here are three ways to restore data:
 - use a file manager to copy a single file from local backup
 
 * Test backup jobs and test restore-data jobs
-It's human nature to neglect data recovery until after you need it.
+It's human nature to neglect data recovery until it's too late.
 Better to test your entire data recovery system end to end, testing both the data backup and data recovery together.
+The following commands test the example backup and restore jobs.
+Don't worry, the test environment is setup to make testing painless.
 
-The following files are all located in ~/rclone_jobber/examples/.
-
-Example backup jobs:
+Previous tests modified the test directories.
+Clear and setup test directories in preparation for a new test run:
 #+BEGIN_EXAMPLE
-    job_backup_to_remote.sh
-    job_backup_to_USB_minimal.sh
-    job_backup_to_USB.sh
+    $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
+    $ ~/rclone_jobber/examples/clear_remote_test_backup.sh
+    $ ~/rclone_jobber/examples/setup_test_data_directory.sh
 #+END_EXAMPLE
 
-Example restore jobs:
+Back up data:
 #+BEGIN_EXAMPLE
-    job_restore_directory_from_remote.sh
-    job_restore_last_snapshot.sh
+    $ ~/rclone_jobber/examples/job_backup_to_USB.sh
+    $ ~/rclone_jobber/examples/job_backup_to_remote.sh
 #+END_EXAMPLE
 
-These scripts make testing the example jobs easier:
+Open job_restore_last_snapshot.sh and edit source variable to restore data from, and save your edit.
+Then restore data:
 #+BEGIN_EXAMPLE
-    clear_remote_test_backup.sh
-    clear_USB_test_backup.sh
-    setup_test_data_directory.sh
+    $ ~/rclone_jobber/examples/job_restore_last_snapshot.sh
 #+END_EXAMPLE
 
-Restoring files to the ~/test_rclone_data directory will modify it.
-To reset ~/test_rclone_data to its initial condition, run setup_test_data_directory.sh again.
-It will recursively delete the ~/test_rclone_data directory and rebuild a fresh copy.
+Verify that the files were faithfully restored:
+#+BEGIN_EXAMPLE
+    $ diff -r ${HOME}/test_rclone_data /home/${USER}/last_snapshot
+#+END_EXAMPLE
+Notice that rclone does not back up empty directories.
 
-*Important:* Since a bad backup job can cause data loss, test first with the =--dry-run= flag to see exactly what would be copied and deleted.
+Follow a similar procedure when you practice your recovery plan, but with real data.
 
 * Recovery plan
 Example recovery plan:
-1. Retrieve recovery_plan files from on-site or off-site location
- - notes for installing OS
- - recovery plan
- - job_restore_last_snapshot.sh
- - ~/.config/rclone/rclone.conf
+1. Retrieve recovery-plan files from on-site or off-site location
+   - notes for installing OS
+   - recovery plan (this file)
+   - job_restore_last_snapshot.sh
+   - ~/.config/rclone/rclone.conf
 2. Install OS
-3. [[*Install rclone][Install rclone]]
-4. [[*Configure a remote][Configure a remote]]
-5. Run job_restore_last_snapshot.sh
+3. Install rclone
+4. Restore ~/.config/rclone/rclone.conf
+5. Edit source variable in job_restore_last_snapshot.sh, and then run job_restore_last_snapshot.sh
+
+The rclone.conf configuration file should be in a secure location because it contains the encryption key for backup.
+I keep rclone.conf in my password manager (LastPass).
+The other recovery-plan files (listed in item 1.) are not encrypted so that they can be accessed before the OS or rclone are installed.
+With this setup, all I need to bootstrap the recovery process is a web browser and my LastPass master password.
+
+Here is how to setup the recovery-plan files for easy access.
+For each backup location, place the recovery-plan files in a directory to be backed up.
+- If a backup is not encrypted, then the recovery-plan files will be accessible in the backup.
+- If a backup is encrypted, create an unecrypted backup job to the same underlying remote, like this example:
+  [[rclone_jobber/examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]] and
+  [[rclone_jobber/examples/filter_rules_recovery_plan][filter_rules_recovery_plan]]
+  And schedule the job to insure that your backup-recovery-plan files are always up-to date.
+
+That way the recovery-plan files are with the backups, and accessible without rclone.
 
 Practice the recovery plan.
 Start from scratch with a blank environment (or use a different location on current machine).
 You’ll run into snags, and that is the point.  Workout the snags BEFORE data is lost.
+If you have enough disk space, restore all your data to a different directory, and then use diff to verify the accuracy of the restored data.
 
 * Monitoring
 ** Check backups

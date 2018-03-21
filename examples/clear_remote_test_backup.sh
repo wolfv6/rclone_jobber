@@ -9,4 +9,4 @@ remote=${remote}
 rclone purge ${remote}:
 
 #display empty test backup
-$ rclone ls ${remote}:
+rclone ls ${remote}:

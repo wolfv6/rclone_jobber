@@ -16,9 +16,8 @@
 + .bashrc
 + direc1/.thingrc
 
-# hidden directories
-+ .*/**
-#+ .git/**
+# hidden directories to backup
++ .git/**
 
 ########################## 2) exclude patterns ###############################
 # exclude these patterns before they are included by section 3
@@ -39,11 +38,13 @@
 
 # hidden files and directories
 - .*
+- .*/**
 
 ########################## 3) include directories ############################
 # include these directories before they are excluded by section 4
-+ dirc0/**
-+ dirc1/**
++ direc_empty/**
++ direc0/**
++ direc1/**
 
 ########################## 4) exclude everything else ########################
 # exclude all top directories and files

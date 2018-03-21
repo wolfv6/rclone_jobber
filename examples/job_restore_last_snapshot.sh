@@ -9,13 +9,15 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-#select a source and replace ${USB} or ${remote} with path on your system
+#replace ${USB} or ${remote} with path on your system
+
+#edit the source to restore data from:
 #source="${USB}/test_rclone_backup/last_snapshot"
-#source="${remote}:last_snapshot"
+source="${remote}:last_snapshot"
 
-destination="/home/${USER}_last_snapshot"
+destination="/home/${USER}/last_snapshot"
 
-cmd="rclone copy $source $destination --dry-run"
+cmd="rclone copy $source $destination"
 echo "$cmd"
 
 read -p ">>>>>>>>>>>>>>> Run the above command? (y) <<<<<<<<<<<<<<<<< " -n 1 -r

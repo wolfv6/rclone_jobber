@@ -13,6 +13,8 @@
 rm -r ~/test_rclone_data
 mkdir ~/test_rclone_data
 
+mkdir ~/test_rclone_data/direc_empty
+
 mkdir ~/test_rclone_data/direc0
 touch ~/test_rclone_data/direc0/f0
 
