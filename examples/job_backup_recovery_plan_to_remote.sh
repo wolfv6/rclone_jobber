@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 rclone_wolf="/home/wolfv/Documents/pc_maintenance/backup_systems/rclone_wolf"
 

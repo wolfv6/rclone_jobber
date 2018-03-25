@@ -503,7 +503,7 @@ Example recovery plan:
 5. Edit source variable in job_restore_last_snapshot.sh, and then run job_restore_last_snapshot.sh
 
 The rclone.conf configuration file should be in a secure location because it contains the encryption key for backup.
-I keep rclone.conf in my password manager (LastPass).
+I keep my backup rclone.conf in a password manager (LastPass).
 The other recovery-plan files (listed in item 1.) are not encrypted so that they can be accessed before the OS or rclone are installed.
 With this setup, all I need to bootstrap the recovery process is a web browser and my LastPass master password.
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ################################### license ##################################
 # job_backup_to_USB_minimal.sh calls rclone_jobber to perform a backup to USB.

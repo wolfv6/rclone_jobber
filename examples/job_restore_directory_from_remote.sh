@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ################################### license ##################################
 # job_restore_directory_from_remote.sh restores directory in path from onedrive to it's original location, with "_last_snapshot" appended to directory name

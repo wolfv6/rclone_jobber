@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #rclone_jobber.sh version 1.1
 #Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 
@@ -78,10 +78,10 @@ fi
 #deleted or changed files are removed or moved, depending on value of move_old_files_to variable
 #default move_old_files_to="" is deleted or changed files are removed
 #--backup-dir is a rclone option that moves deleted or changed files
-if [ "$move_old_files_to" == "dated_directory" ]; then
+if [ "$move_old_files_to" = "dated_directory" ]; then
     #move deleted or changed files to $timestamp directory
     backup_dir="--backup-dir=$dest/$timestamp"
-elif [ "$move_old_files_to" == "dated_files" ]; then
+elif [ "$move_old_files_to" = "dated_files" ]; then
     #move deleted or changed files to old directory, and append _$timestamp to file name
     backup_dir="--backup-dir=$dest/old_files --suffix=_$timestamp"
 elif [ "$move_old_files_to" != "" ]; then

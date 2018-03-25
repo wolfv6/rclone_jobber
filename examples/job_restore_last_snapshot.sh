@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ################################### license ##################################
 # job_restore_last_snapshot.sh restores last_snapshot to home, with "_last_snapshot" appended to user name

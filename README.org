@@ -15,15 +15,16 @@ An [[file:rclone_jobber_tutorial.org][rclone_jobber_tutorial]] includes backup-j
 - Free (open source Creative Commons Zero license)
 
 *Rclone features:*
-- Back up to remote storage (over 30 cloud-storage providers to choose from, so you're never locked into a provider)
+- Back up to remote cloud storage (safe from local disaster)
+- Over 30 cloud-storage providers to choose from (so you're never locked into a provider)
 - Back up to local storage
-- Filter rules (to exclude or include files)
+- Optional encryption (Crypt)
 - MD5/SHA1 hashes checked at all times for file integrity
 - Timestamps preserved on files
+- Filter rules (to exclude or include files)
 - rsync-like algorithm and interface
 - Sync (one way) mode to make a directory identical
 - Partial syncs supported on a whole file basis
-- Optional encryption (Crypt)
 - Free (open source MIT license)
 
 Both rclone and rclone_jobber.sh are command line tools.
