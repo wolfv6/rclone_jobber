@@ -58,13 +58,13 @@ send_to_log()
 
 print_message()
 {
-    label="$1"
+    urgency="$1"
     msg="$2"
-    message="${label}: $job_name $msg"
+    message="${urgency}: $job_name $msg"
 
     echo "$message"
     send_to_log "$(date +%F_%T) $message"
-    warning_icon="/usr/share/icons/Adwaita/32x32/emblems/emblem-synchronizing.png"
+    warning_icon="/usr/share/icons/Adwaita/32x32/emblems/emblem-synchronizing.png"   #path in Fedora 27
     #notify-send is a popup notification on most Linux desktops
     notify-send --urgency critical --icon "$warning_icon" "$message"
 }

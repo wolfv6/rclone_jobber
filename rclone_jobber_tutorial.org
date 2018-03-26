@@ -1,4 +1,4 @@
-* About this rclone_jobber.sh tutorial
+* About this rclone_jobber tutorial
 This tutorial will guide you from setup to testing a backup.
 The final product will perform scheduled local and remote backups automatically.
 
@@ -62,7 +62,7 @@ Set "rclone_jobber" and "USB" path variables via one of:
 
 The USB is just a path name used in the examples, it doesn't actually have to be a USB drive (e.g. export USB="/home/wolfv/test_rclone").
 
-* Take rclone_jobber for a test drive
+* Take rclone_jobber.sh for a test drive
 Once you have the test directories and path variables setup, you can take rclone_jobber for a test drive.
 
 *Important:* Since a bad backup job can cause data loss, test first with the =--dry-run= flag to see exactly what would be copied and deleted.
@@ -432,8 +432,8 @@ On Linux Gnome desktop:
 * Logging options
 You can skip this section if you like the default logging.
 
-Logging options in rclone_logger.sh are headed by "#set" comments, with default values set on following line.
-You can edit the variables following the "#set" comments.
+In rclone_logger.sh, logging options are headed by "#set" comments, with a variable set to default value on the following line.
+You can change the values to non-default values.
 
 ** Log output
 Look for these "#set" comments in rclone_jobber.sh:
@@ -443,9 +443,8 @@ Look for these "#set" comments in rclone_jobber.sh:
 #+END_EXAMPLE
 
 ** Log file location
-rclone_jobber.log is in the same directory as rclone_jobber.sh
-
 In rclone_jobber.sh, variable log_file contains the log file's path.
+The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh.
 You can change log_file to any path you like.
 #+BEGIN_EXAMPLE
     #set log_file
@@ -464,7 +463,7 @@ In this example, rclone_jobber.log ownership is given to wolfv:
     -rw-rw-rw-. 1 wolfv root 19 Mar 21 13:58 /var/log/rclone_jobber.log
 #+END_EXAMPLE
 
-In rclone_jobber.sh, set the new log_file value:
+In rclone_jobber.sh, set the new log_file path:
 #+BEGIN_EXAMPLE
     #set log_file
     log_file="/var/log/rclone_jobber.log"
