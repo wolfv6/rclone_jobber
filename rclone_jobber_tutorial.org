@@ -596,8 +596,8 @@ Example monthly backup check.
 
 For each backup job:
 - check that recently changed files are in the backup
-    $ rclone lsl my_remote_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
-    $ ls -l /run/media/wolfv/my_USB/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
+  - $ rclone lsl my_remote_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
+  - $ ls -l /run/media/wolfv/my_USB/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
 - check space usage and available space
 - check rclone_jobber.log
 
