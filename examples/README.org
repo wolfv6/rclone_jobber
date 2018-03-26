@@ -1,0 +1,20 @@
+The files in this directory are examples used in rclone_jobber_tutorial.org
+
+The example scripts place environment path variables inside "${}" e.g.
+#+BEGIN_EXAMPLE
+    source="${HOME}/test_rclone_data"
+    dest="${USB}/test_rclone_backup"
+    options="--filter-from=${rclone_jobber}/examples/filter_rules --checksum"
+#+END_EXAMPLE
+That way you can run the examples scripts with a minimum of typing.
+Follow the tutorial to see how that works.
+
+The example scripts use these environment path variables:
+- HOME
+- USER
+- rclone_jobber
+- USB
+- remote
+
+You can set your system's environment variables, or you can manually replace occurrences of "${}" with your system's paths.
+Your production backup scripts will have different paths than the examples.

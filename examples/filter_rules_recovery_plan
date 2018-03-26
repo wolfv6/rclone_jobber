@@ -1,4 +1,5 @@
 #this file is for rclone --filter-from
+#used by job_backup_recovery_plan_to_remote.sh
 #paths in this file are from source="/home/wolfv/Documents/pc_maintenance"
 
 ########################## include specific files ######################

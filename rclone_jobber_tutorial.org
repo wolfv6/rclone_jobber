@@ -429,6 +429,76 @@ On Linux Gnome desktop:
     right click > Settings > Power > Automatic suspend: Off
 #+END_EXAMPLE
 
+* Logging options
+You can skip this section if you like the default logging.
+
+Logging options in rclone_logger.sh are headed by "#set", with default on next line.
+You can edit the variables under the "#set" headings.
+
+** Log output
+Look for these "#set" headings in rclone_jobber.sh:
+#+BEGIN_EXAMPLE
+    #set rclone log-level for desired amount of information in log entries
+    #set optional verbose logging
+#+END_EXAMPLE
+
+** Log file location
+rclone_jobber.log is in the same directory as rclone_jobber.sh
+
+Variable log_file contains the log file's path.
+You can set log_file to any path you like.
+
+** Logging to Linux /var/log/rclone_jobber.log
+Here is how to set the rclone_jobber log location to /var/log/.
+Create the log file and give it the user's ownership and rw permission.
+In this example, rclone_jobber.log ownership is given to wolfv:
+#+BEGIN_EXAMPLE
+    $ sudo touch       /var/log/rclone_jobber.log
+    $ sudo chown wolfv /var/log/rclone_jobber.log
+    $ sudo chmod 0666  /var/log/rclone_jobber.log
+    $ sudo ls -l       /var/log/rclone_jobber.log
+    -rw-rw-rw-. 1 wolfv root 19 Mar 21 13:58 /var/log/rclone_jobber.log
+#+END_EXAMPLE
+
+In rclone_jobber.sh, set log_file value to /var/log/rclone_jobber.log
+
+** Linux Logrotate
+Over time a log file can grow to unwieldy size.
+The logrotate utility can automatically archive the current log, start a fresh log, and delete older logs.
+
+All you have to do is setup /var/log/rclone_jobber.log (described in previous section) and create a logrotate configuration file.
+Here is creating a logrotate configuration file:
+#+BEGIN_EXAMPLE
+    $ sudo vi /etc/logrotate.d/rclone_jobber
+#+END_EXAMPLE
+And inserting text something like this:
+#+BEGIN_EXAMPLE
+    /var/log/rclone_jobber.log {
+    weekly
+    rotate 3
+    size 1M
+    compress
+    delaycompress
+    }
+#+END_EXAMPLE
+
+More options are listed in man:
+#+BEGIN_EXAMPLE
+    $ man logrotate
+#+END_EXAMPLE
+
+Execute a dry-run to see what logrotate would do:
+#+BEGIN_EXAMPLE
+    $ logrotate -d /etc/logrotate.d/rclone_jobber
+#+END_EXAMPLE
+
+** log to systemd journal
+Linux and macOS can send all log output to systemd journal.
+All you have to do is setup /var/log/rclone_jobber.log (described in a previous section) and make 3 changes to rclone_jobber.sh script:
+1. set log_file="/var/log/rclone_jobber.log"
+2. set log_option="--syslog"
+3. in send_to_log() function, send msg to systemd journal
+
 * Example backup jobs
 The following system uses two backup jobs with complementary attributes (this is how I backup my home PC).
 The latest snapshot can be easily restored from either backup.
@@ -526,6 +596,8 @@ Example monthly backup check.
 
 For each backup job:
 - check that recently changed files are in the backup
+    $ rclone lsl my_remote_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
+    $ ls -l /run/media/wolfv/my_USB/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
 - check space usage and available space
 - check rclone_jobber.log
 
@@ -544,85 +616,6 @@ Example yearly recovery-plan check:
     3) job_backup_to_remote.sh
     4) delete the ~/test_data_directory
     5) job_restore_last_snapshot.sh
-
-* Logging options
-** Log output
-Look for "set" in rclone_jobber.sh, for example:
-#+BEGIN_EXAMPLE
-    #set rclone log-level for desired amount of information in log entries
-    #set optional verbose logging
-#+END_EXAMPLE
-
-** Log file location
-rclone_jobber.log is in the same directory as rclone_jobber.sh
-
-Variable log_file contains the log file's path.
-You can change log_file to any path you like.
-
-** Logging to Linux /var/log/rclone_jobber.log
-Here is how to set the rclone_jobber log location to /var/log/.
-Create the log file and give it the user's ownership and rw permission.
-In this example, change "wolfv" to your user name:
-#+BEGIN_EXAMPLE
-    $ sudo touch       /var/log/rclone_jobber.log
-    $ sudo chown wolfv /var/log/rclone_jobber.log
-    $ sudo chmod 0666  /var/log/rclone_jobber.log
-    $ sudo ls -l       /var/log/rclone_jobber.log
-    -rw-rw-rw-. 1 wolfv root 19 Mar 21 13:58 /var/log/rclone_jobber.log
-#+END_EXAMPLE
-
-In rclone_jobber.sh, change log_file value to /var/log/rclone_jobber.log
-
-** Linux Logrotate
-Over time a log file can grow to unwieldy size.
-The logrotate utility can automatically archive the current log, start a fresh log, and delete older logs.
-
-All you have to do is setup /var/log/rclone_jobber.log (described in previous section) and create a logrotate configuration file.
-Here is creating a logrotate configuration file:
-#+BEGIN_EXAMPLE
-    $ sudo vi /etc/logrotate.d/rclone_jobber
-#+END_EXAMPLE
-And inserting text something like this:
-#+BEGIN_EXAMPLE
-    /var/log/rclone_jobber.log {
-    weekly
-    rotate 3
-    size 1M
-    compress
-    delaycompress
-    }
-#+END_EXAMPLE
-
-More options are listed in man:
-#+BEGIN_EXAMPLE
-    $ man logrotate
-#+END_EXAMPLE
-
-Execute a dry-run to see what logrotate would do:
-#+BEGIN_EXAMPLE
-    $ logrotate -d /etc/logrotate.d/rclone_jobber
-#+END_EXAMPLE
-
-** log to systemd journal
-Linux and macOS can send all log output to systemd journal by making the following changes to rclone_jobber.sh script.
-
-Find lines containing "log_file" and change all appends to log_file from something that looks like this:
-#+BEGIN_EXAMPLE
-    echo "$message" >> "$log_file"
-#+END_EXAMPLE
-to this:
-#+BEGIN_EXAMPLE
-   printf "$message" | systemd-cat -t RCLONE_JOBBER -p info
-#+END_EXAMPLE
-
-In cmd="rclone sync ..", change this option:
-#+BEGIN_EXAMPLE
-    --log-file=$log_file
-#+END_EXAMPLE
-to this:
-#+BEGIN_EXAMPLE
-    --syslog
-#+END_EXAMPLE
 
 * License
 [[http://creativecommons.org/licenses/by-nc-sa/4.0/][https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png]]\\

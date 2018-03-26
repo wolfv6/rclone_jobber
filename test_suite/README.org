@@ -26,7 +26,7 @@ testing:
 passed 3/13/18
 expected result:
 file names ending in "_exe" are excluded from backup
-deleted directory direc1/direc1b/ can not be restored because move_old_files_to="delete"
+deleted directory direc1/direc1b/ can not be restored because move_old_files_to=""
 
 dependencies:
 - job_snapshot_backup_old_data_to_delete.sh

@@ -5,9 +5,11 @@
 ################################### license ##################################
 # rclone_jobber.sh is a script that calls rclone sync to perform a backup.
 # Written in 2018 by Wolfram Volpi, contact at https://github.com/wolfv6/rclone_jobber/issues
-# To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide.
+# To the extent possible under law, the author(s) have dedicated all copyright and related and
+# neighboring rights to this software to the public domain worldwide.
 # This software is distributed without any warranty.
-# You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see http://creativecommons.org/publicdomain/zero/1.0/.
+# You should have received a copy of the CC0 Public Domain Dedication along with this software.
+# If not, see http://creativecommons.org/publicdomain/zero/1.0/.
 # rclone_jobber is not affiliated with rclone.
 
 ################################# parameters #################################
@@ -34,13 +36,26 @@ path="$(realpath $0)"           #log file in same directory as this script
 log_file="${path%.*}.log"       #replace this file's extension with "log"
 #log_file="/var/log/rclone_jobber.log"
 
+#set rclone log_option
+log_option="--log-file=$log_file"
+#log_option="--syslog"
+
 #set rclone log-level for desired amount of information in log entries  https://rclone.org/docs/#log-level-level
 #log_level="DEBUG"  # outputs lots of debug info - useful for bug reports and really finding out what rclone is doing
-log_level="INFO"   # outputs information about each transfer and prints stats once a minute
-#log_level="NOTICE" # outputs warnings and significant events, which is very little when things are working normally
+#log_level="INFO"   # outputs information about each transfer and prints stats once a minute
+log_level="NOTICE" # outputs warnings and significant events, which is very little when things are working normally
 #log_level="ERROR"  # outputs only error messages
 
 ################################## functions #################################
+send_to_log()
+{
+    msg="$1"
+
+    #set, send msg to one of these logs
+    echo "$msg" >> "$log_file"                             #send msg to log_file
+    #printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
+}
+
 print_message()
 {
     label="$1"
@@ -48,7 +63,7 @@ print_message()
     message="${label}: $job_name $msg"
 
     echo "$message"
-    echo "$(date +%F_%T) $message" >> "$log_file"
+    send_to_log "$(date +%F_%T) $message"
     warning_icon="/usr/share/icons/Adwaita/32x32/emblems/emblem-synchronizing.png"
     #notify-send is a popup notification on most Linux desktops
     notify-send --urgency critical --icon "$warning_icon" "$message"
@@ -95,15 +110,15 @@ elif [ "$move_old_files_to" != "" ]; then
 fi
 
 ################################### back up ##################################
-cmd="rclone sync $source $dest/$new $backup_dir --log-file=$log_file --log-level=$log_level $options"
+cmd="rclone sync $source $dest/$new $backup_dir $log_option --log-level=$log_level $options"
 
 #progress message
 echo "Back up in progress $timestamp $job_name"
 echo "$cmd"
 
 #set optional verbose logging
-#echo "$timestamp $job_name" >> "$log_file"
-#echo "$cmd" >> "$log_file"
+#send_to_log "$timestamp $job_name"
+#send_to_log "$cmd"
 
 $cmd
 exit_code=$?
@@ -113,13 +128,13 @@ if [ "$exit_code" -eq 0 ]; then            #if no errors
     confirmation="$(date +%F_%T) completed $job_name"
     echo "$confirmation"
     if [ "$log_level" != "INFO" ]; then     #if rclone log_level not already giving enough information
-        echo "$confirmation" >> "$log_file"
-        echo "" >> "$log_file"
+        send_to_log "$confirmation"
+        send_to_log ""
         exit 0
     fi
     wget $monitoring_URL -O /dev/null
 else
     print_message "ERROR" "failed.  rclone exit_code=$exit_code"
-    echo "" >> "$log_file"
+    send_to_log ""
     exit 1
 fi
