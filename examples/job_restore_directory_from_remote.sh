@@ -19,9 +19,10 @@ destination="${HOME}/${path}_last_snapshot"
 cmd="rclone copy $source $destination --dry-run"
 echo "$cmd"
 
-read -p ">>>>>>>>>>>>>>> Run the above command? (y) <<<<<<<<<<<<<<<<< " -n 1 -r
-echo      #move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
+echo ">>>>>>>>>>>>>>> Run the above command? (y) <<<<<<<<<<<<<<<<< "
+read reply
+#echo      #move to a new line   todo not needed?
+if [ "$reply" =~ ^[Yy]$ ]
 then
     $cmd  #restore directory
 fi

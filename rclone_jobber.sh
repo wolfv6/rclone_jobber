@@ -1,5 +1,5 @@
 #!/bin/sh
-#rclone_jobber.sh version 1.1
+#rclone_jobber.sh version 1.2
 #Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 
 ################################### license ##################################
@@ -13,7 +13,10 @@
 ################################# parameters #################################
 source="$1"            #the directory to back up
 dest="$2"              #destination=$dest/last_snapshot
-move_old_files_to="$3" #move_old_files_to is one of: "dated_directory", "dated_files", ""
+move_old_files_to="$3" #move_old_files_to is one of:
+                       # "dated_directory" - move old files to a dated directory (an incremental backup)
+                       # "dated_files"     - move old files to old_files directory, and append move date to file names (an incremental backup)
+                       # ""                - old files are overwritten or deleted (a plain one-way sync backup)
 options="$4"           #rclone options like "--filter-from=filter_patterns --checksum --dry-run"
                        #do not put these in options: --backup-dir, --suffix, --log-file, --log-level
 job_name="$5"          #job_name="$(basename $0)"
@@ -26,10 +29,12 @@ new="last_snapshot"
 timestamp="$(date +%F_%T)"
 #timestamp="$(date +%F_%H%M%S)" #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
 
-path="$(realpath $0)"      #log file in same directory as this script
-log_file="${path%.*}.log"  #replace this file's extension with "log"
+#set log_file
+path="$(realpath $0)"           #log file in same directory as this script
+log_file="${path%.*}.log"       #replace this file's extension with "log"
+#log_file="/var/log/rclone_jobber.log"
 
-#set rclone log_level for desired amount of information in log entries  https://rclone.org/docs/#log-level-level
+#set rclone log-level for desired amount of information in log entries  https://rclone.org/docs/#log-level-level
 #log_level="DEBUG"  # outputs lots of debug info - useful for bug reports and really finding out what rclone is doing
 log_level="INFO"   # outputs information about each transfer and prints stats once a minute
 #log_level="NOTICE" # outputs warnings and significant events, which is very little when things are working normally
@@ -76,8 +81,7 @@ fi
 
 ############################### move_old_files_to #############################
 #deleted or changed files are removed or moved, depending on value of move_old_files_to variable
-#default move_old_files_to="" is deleted or changed files are removed
-#--backup-dir is a rclone option that moves deleted or changed files
+#default move_old_files_to="" will remove deleted or changed files from backup
 if [ "$move_old_files_to" = "dated_directory" ]; then
     #move deleted or changed files to $timestamp directory
     backup_dir="--backup-dir=$dest/$timestamp"
@@ -93,9 +97,13 @@ fi
 ################################### back up ##################################
 cmd="rclone sync $source $dest/$new $backup_dir --log-file=$log_file --log-level=$log_level $options"
 
-message="$timestamp $job_name command: $cmd"
-echo "Back up in progress $message"
-echo "$message" >> "$log_file"
+#progress message
+echo "Back up in progress $timestamp $job_name"
+echo "$cmd"
+
+#set optional verbose logging
+#echo "$timestamp $job_name" >> "$log_file"
+#echo "$cmd" >> "$log_file"
 
 $cmd
 exit_code=$?

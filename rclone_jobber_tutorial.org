@@ -5,7 +5,7 @@ The final product will perform scheduled local and remote backups automatically.
 Both rclone and rclone_jobber.sh are command line tools.
 This tutorial assumes:
 - the reader has basic command-line skills
-- the computer can run Bash scripts (Bash scripts can run on Linux, macOS, and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]])
+- the computer can run shell scripts (shell scripts can run on Linux, macOS, and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]])
 
 The examples are for making backups for a home PC.
 The rclone_jobber.sh and job scripts can be adapted to suit your own backup needs.
@@ -92,7 +92,7 @@ Here are some more things you can try with rclone_jobber:
 ** Backup job script
 Here is a minimal backup job script for rclone_jobber:
 #+BEGIN_EXAMPLE
-    #!/bin/bash
+    #!/bin/sh
 
     source="${HOME}/test_rclone_data"
     dest="${USB}/test_rclone_backup"
@@ -104,7 +104,7 @@ The last line calls rclone_jobber.sh with arguments.
 
 Here is a backup job with all the rclone_jobber arguments defined:
 #+BEGIN_EXAMPLE
-    #!/bin/bash
+    #!/bin/sh
 
     source="${HOME}/test_rclone_data"
     dest="${USB}/test_rclone_backup"
@@ -212,9 +212,7 @@ You can put any [[https://rclone.org/docs/#options][rclone options]] in the opti
     --log-file
     --log-level
 #+END_EXAMPLE
-
-You can edit =--log-level= in rclone_jobber.sh.
-The other three options are generated in rclone_jobber.sh dynamically.
+The those options are set in rclone_jobber.sh.
 
 Example options argument containing three rclone options:
 #+BEGIN_EXAMPLE
@@ -234,7 +232,7 @@ The =job_name= argument specifies the job's file name:
    job_name="$(basename $0)"
 #+END_EXAMPLE
 
-The Bash command "$(basename $0)" will fill in the job's file name for you.
+The shell command "$(basename $0)" will fill in the job's file name for you.
 
 Rclone_jobber guards against =job_name= running again before the previous run is finished.
 If rclone_jobber is called directly (from a job scheduler or command line without a job file), the guard will not work.
@@ -546,6 +544,85 @@ Example yearly recovery-plan check:
     3) job_backup_to_remote.sh
     4) delete the ~/test_data_directory
     5) job_restore_last_snapshot.sh
+
+* Logging options
+** Log output
+Look for "set" in rclone_jobber.sh, for example:
+#+BEGIN_EXAMPLE
+    #set rclone log-level for desired amount of information in log entries
+    #set optional verbose logging
+#+END_EXAMPLE
+
+** Log file location
+rclone_jobber.log is in the same directory as rclone_jobber.sh
+
+Variable log_file contains the log file's path.
+You can change log_file to any path you like.
+
+** Logging to Linux /var/log/rclone_jobber.log
+Here is how to set the rclone_jobber log location to /var/log/.
+Create the log file and give it the user's ownership and rw permission.
+In this example, change "wolfv" to your user name:
+#+BEGIN_EXAMPLE
+    $ sudo touch       /var/log/rclone_jobber.log
+    $ sudo chown wolfv /var/log/rclone_jobber.log
+    $ sudo chmod 0666  /var/log/rclone_jobber.log
+    $ sudo ls -l       /var/log/rclone_jobber.log
+    -rw-rw-rw-. 1 wolfv root 19 Mar 21 13:58 /var/log/rclone_jobber.log
+#+END_EXAMPLE
+
+In rclone_jobber.sh, change log_file value to /var/log/rclone_jobber.log
+
+** Linux Logrotate
+Over time a log file can grow to unwieldy size.
+The logrotate utility can automatically archive the current log, start a fresh log, and delete older logs.
+
+All you have to do is setup /var/log/rclone_jobber.log (described in previous section) and create a logrotate configuration file.
+Here is creating a logrotate configuration file:
+#+BEGIN_EXAMPLE
+    $ sudo vi /etc/logrotate.d/rclone_jobber
+#+END_EXAMPLE
+And inserting text something like this:
+#+BEGIN_EXAMPLE
+    /var/log/rclone_jobber.log {
+    weekly
+    rotate 3
+    size 1M
+    compress
+    delaycompress
+    }
+#+END_EXAMPLE
+
+More options are listed in man:
+#+BEGIN_EXAMPLE
+    $ man logrotate
+#+END_EXAMPLE
+
+Execute a dry-run to see what logrotate would do:
+#+BEGIN_EXAMPLE
+    $ logrotate -d /etc/logrotate.d/rclone_jobber
+#+END_EXAMPLE
+
+** log to systemd journal
+Linux and macOS can send all log output to systemd journal by making the following changes to rclone_jobber.sh script.
+
+Find lines containing "log_file" and change all appends to log_file from something that looks like this:
+#+BEGIN_EXAMPLE
+    echo "$message" >> "$log_file"
+#+END_EXAMPLE
+to this:
+#+BEGIN_EXAMPLE
+   printf "$message" | systemd-cat -t RCLONE_JOBBER -p info
+#+END_EXAMPLE
+
+In cmd="rclone sync ..", change this option:
+#+BEGIN_EXAMPLE
+    --log-file=$log_file
+#+END_EXAMPLE
+to this:
+#+BEGIN_EXAMPLE
+    --syslog
+#+END_EXAMPLE
 
 * License
 [[http://creativecommons.org/licenses/by-nc-sa/4.0/][https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png]]\\

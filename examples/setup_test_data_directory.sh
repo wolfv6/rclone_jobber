@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ########################## License ########################################
 # setup_test_data_directory.sh by Wolfram Volpi is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.

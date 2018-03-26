@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 source=""
 dest="${USB}/test_rclone_backup"

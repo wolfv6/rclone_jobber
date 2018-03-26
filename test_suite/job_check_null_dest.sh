@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 source="${HOME}/test_rclone_data"
 dest=""
