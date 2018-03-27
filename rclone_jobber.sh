@@ -31,16 +31,16 @@ new="last_snapshot"
 timestamp="$(date +%F_%T)"
 #timestamp="$(date +%F_%H%M%S)" #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
 
-#set log_file
+#set log_file path
 path="$(realpath $0)"           #log file in same directory as this script
 log_file="${path%.*}.log"       #replace this file's extension with "log"
 #log_file="/var/log/rclone_jobber.log"
 
-#set rclone log_option
+#set log_option for rclone
 log_option="--log-file=$log_file"
 #log_option="--syslog"
 
-#set rclone log-level for desired amount of information in log entries  https://rclone.org/docs/#log-level-level
+#set log_level for desired amount of information in rclone log entries  https://rclone.org/docs/#log-level-level
 #log_level="DEBUG"  # outputs lots of debug info - useful for bug reports and really finding out what rclone is doing
 #log_level="INFO"   # outputs information about each transfer and prints stats once a minute
 log_level="NOTICE" # outputs warnings and significant events, which is very little when things are working normally
@@ -51,7 +51,7 @@ send_to_log()
 {
     msg="$1"
 
-    #set, send msg to one of these logs
+    #set log - send msg to log
     echo "$msg" >> "$log_file"                             #send msg to log_file
     #printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 }
@@ -116,7 +116,7 @@ cmd="rclone sync $source $dest/$new $backup_dir $log_option --log-level=$log_lev
 echo "Back up in progress $timestamp $job_name"
 echo "$cmd"
 
-#set optional verbose logging
+#set logging to verbose
 #send_to_log "$timestamp $job_name"
 #send_to_log "$cmd"
 

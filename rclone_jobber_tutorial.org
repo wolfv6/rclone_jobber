@@ -432,14 +432,14 @@ On Linux Gnome desktop:
 * Logging options
 You can skip this section if you like the default logging.
 
-In rclone_logger.sh, logging options are headed by "#set" comments, with a variable set to default value on the following line.
+In rclone_logger.sh, logging options are headed by "#set log" comments, with a variable set to default value on the following line.
 You can change the values to non-default values.
 
 ** Log output
-Look for these "#set" comments in rclone_jobber.sh:
+Look for these "#set log" comments in rclone_jobber.sh:
 #+BEGIN_EXAMPLE
-    #set rclone log-level for desired amount of information in log entries
-    #set optional verbose logging
+    #set log_level for desired amount of information in rclone log entries
+    #set logging to verbose
 #+END_EXAMPLE
 
 ** Log file location
@@ -447,7 +447,7 @@ In rclone_jobber.sh, variable log_file contains the log file's path.
 The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh.
 You can change log_file to any path you like.
 #+BEGIN_EXAMPLE
-    #set log_file
+    #set log_file path
     path="$(realpath $0)"           #log file in same directory as this script
     log_file="${path%.*}.log"       #replace this file's extension with "log"
 #+END_EXAMPLE
@@ -465,7 +465,7 @@ In this example, rclone_jobber.log ownership is given to wolfv:
 
 In rclone_jobber.sh, set the new log_file path:
 #+BEGIN_EXAMPLE
-    #set log_file
+    #set log_file path
     log_file="/var/log/rclone_jobber.log"
 #+END_EXAMPLE
 
@@ -503,15 +503,15 @@ Execute a dry-run to see what logrotate would do:
 Linux and macOS can send all log output to systemd journal.
 All you have to do is setup /var/log/rclone_jobber.log (described in section "Logging to Linux /var/log/rclone_jobber.log") and make these 3 changes to rclone_jobber.sh script:
 #+BEGIN_EXAMPLE
-    #set log_file
+    #set log_file path
     log_file="/var/log/rclone_jobber.log"
 
-    #set rclone log_option
+    #set log_option for rclone
     log_option="--syslog"
 
     ...
 
-    #set, send msg to one of these logs
+    #set log - send msg to log
     printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 #+END_EXAMPLE
 
