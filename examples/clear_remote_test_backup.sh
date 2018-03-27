@@ -8,5 +8,5 @@ remote=${remote}
 #delete test backup
 rclone purge ${remote}:
 
-#display empty test backup
+#verify empty, should say "Failed to ls: directory not found"
 rclone ls ${remote}:

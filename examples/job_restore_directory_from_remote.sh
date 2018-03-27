@@ -12,17 +12,15 @@
 #assign relative path of directory to restore
 path="relative path of directory to restore"
 
-#replace ${remote} and ${HOME} with paths on your system
+#replace ${HOME} and ${remote} with paths on your system
 source="${remote}:last_snapshot/${path}"
 destination="${HOME}/${path}_last_snapshot"
 
 cmd="rclone copy $source $destination --dry-run"
-echo "$cmd"
 
-echo ">>>>>>>>>>>>>>> Run the above command? (y) <<<<<<<<<<<<<<<<< "
+echo "$cmd"
+echo ">>>>>>>>>>>>>>> Run the above rclone command? (y) <<<<<<<<<<<<<<<<< "
 read reply
-#echo      #move to a new line   todo not needed?
-if [ "$reply" =~ ^[Yy]$ ]
-then
-    $cmd  #restore directory
-fi
+case "$reply" in ^[Yy]$)
+    $cmd  #restore last_snapshot
+esac

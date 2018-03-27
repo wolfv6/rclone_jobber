@@ -268,20 +268,20 @@ Rclone has a sophisticated set of [[https://rclone.org/filtering/][filter rules]
 For each file, the rules are processed in the order that they are defined.
 If the matcher fails to find a match after testing all the filter rules, then the path is included.
 
-In the example filter_rules file, each section starts with a ###### heading ######.
+In the example filter_rules_exc file, each section starts with a ###### heading ######.
 The sections alternate between include and exclude, progressing from fine to coarse grained.
 This example has four sections, but any number of sections are possible.
 Most filter-rules files have fewer sections.
 
-The filter_rules file is specified in the rclone_jobber =options= argument like this:
+The filter_rules_exc file is specified in the rclone_jobber =options= argument like this:
 #+BEGIN_EXAMPLE
-    options="--filter-from filter_rules"
+    options="--filter-from filter_rules_exc"
 #+END_EXAMPLE
 
-To see the example filter_rules file in action, run:
+To see the example filter_rules_exc file in action, run:
 #+BEGIN_EXAMPLE
     $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
-    $ ~/rclone_jobber/examples/job_backup_to_USB.sh
+    $ ~/rclone_jobber/examples/job_backup_to_USB_exc.sh
 #+END_EXAMPLE
 
 * Select a remote data-storage provider
@@ -544,7 +544,7 @@ Here are three ways to restore data:
 It's human nature to neglect data recovery until it's too late.
 Better to test your entire data recovery system end to end, testing both the data backup and data recovery together.
 The following commands test the example backup and restore jobs.
-Don't worry, the test environment is setup to make testing painless.
+Don't worry, the tutorial's environment is setup to make testing painless.
 
 Previous tests modified the test directories.
 Clear and setup test directories in preparation for a new test run:
@@ -568,7 +568,7 @@ Then restore data:
 
 Verify that the files were faithfully restored:
 #+BEGIN_EXAMPLE
-    $ diff -r ${HOME}/test_rclone_data /home/${USER}/last_snapshot
+    $ diff -r ${HOME}/test_rclone_data/direc0 /home/${USER}/last_snapshot/direc0
 #+END_EXAMPLE
 Notice that rclone does not back up empty directories.
 

@@ -5,5 +5,5 @@
 ############################################
 USB=${USB}
 
-#delete and recreate test backup
+#delete test backup
 rm -r ${USB}/test_rclone_backup
