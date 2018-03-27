@@ -7,7 +7,7 @@ rclone_jobber.sh has been tested on Linux, and should also run on macOS and [[ht
 An [[file:rclone_jobber_tutorial.org][rclone_jobber_tutorial]] includes backup-job and restore-job examples for a home computer.
 
 *rclone_jobber.sh features:*
-- Options for incremental backup
+- Options to archive old backup files in their original hierarchy
 - Abort if job is already running (maybe previous run didn't finish)
 - Pop-up for error conditions
 - Option for a cron-monitoring service

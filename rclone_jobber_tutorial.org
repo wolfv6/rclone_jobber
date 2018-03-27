@@ -154,8 +154,7 @@ Argument to move deleted or changed files to a dated directory:
     move_old_files_to="dated_directory" 
 #+END_EXAMPLE
 
-It's a kind of incremental backup.
-Old files are moved in their original hierarchy.
+Old files are moved to the dated directory in their original hierarchy.
 This is makes it easy to restore a deleted sub-directory.
 Also convenient to manually delete very old files e.g. delete dated directories more than a year old.
 #+BEGIN_EXAMPLE
@@ -174,8 +173,7 @@ Argument to move old files to old_files directory, and append move date to file 
     move_old_files_to="dated_files"
 #+END_EXAMPLE
 
-It's a kind of incremental backup.
-Old files are moved in their original hierarchy.
+Old files are moved to the old_files directory in their original hierarchy.
 This is makes it easy to browse a file's history, and restore a particular version of a file.
 #+BEGIN_EXAMPLE
     backup
