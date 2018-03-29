@@ -39,7 +39,9 @@ Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber r
 This tutorial assume that the rclone_jobber directory is in your home directory.
 
 * Setup test directories and path variables
-The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup a test directory used in this tutorial.
+This tutorial uses example scripts that backup a small test directory.
+
+The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup a small test directory.
 It recursively deletes the ~/test_rclone_data directory and rebuilds a fresh copy.
 To setup a test directory from the command line:
 #+BEGIN_EXAMPLE
@@ -47,11 +49,11 @@ To setup a test directory from the command line:
 #+END_EXAMPLE
 
 The examples directory contains all the scripts used by this tutorial.
-The example scripts place environment path variables inside "${}" e.g.
+The example scripts have path variables inside "${}" e.g.
 #+BEGIN_EXAMPLE
     dest="${USB}/test_rclone_backup"
 #+END_EXAMPLE
-You can set your system's environment variables (recommended), or you can manually replace occurrences of "${}" with your system's paths.
+You can set the variables in your system's environment (recommended), or you can manually replace occurrences of "${}" with your system's paths.
 
 The example scripts use the following environment path variables:
 - HOME
@@ -110,7 +112,7 @@ Here are some more things you can try with rclone_jobber:
 
 * Backup job and rclone_jobber.sh parameters
 ** Backup job script
-Here is a backup job with all the rclone_jobber arguments defined:
+Here is an example backup job with all the rclone_jobber arguments defined:
 #+BEGIN_EXAMPLE
     #!/bin/sh
 
@@ -123,7 +125,7 @@ Here is a backup job with all the rclone_jobber arguments defined:
     ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 #+END_EXAMPLE
 The last line calls rclone_jobber.sh with arguments.
-=source= and =dest= are required, the remaining arguments can be "" or undefined.
+=source= and =dest= are required, the remaining arguments can be =""= or undefined.
 
 Rclone_jobber has 6 parameters, which are described in the next 6 sections:
 1) source
@@ -312,14 +314,13 @@ To list all your rclone remotes:
     $ rclone listremotes
 #+END_EXAMPLE
 
-For this tutorial example, set "remote" path variables via one of:
-- edit the rclone_jobber/examples/ files, manually replacing $remote variable with your remote path
-- set a PATH environment variable (recommended)
-  - if you're on Linux, add this line to your .bashrc file, but with your remote path:
+You can set the "remote" variable in your system's environment (recommended), or you can manually replace occurrences of "${remote}" with your remote path.
+
+If you're on Linux, add this line to your .bashrc file, but with your remote path:
   #+BEGIN_EXAMPLE
         export remote="onedrive_test_rclone_backup"
   #+END_EXAMPLE
-  - and reload .bachrc:
+and reload .bachrc:
   #+BEGIN_EXAMPLE
         $ source ~/.bachrc
   #+END_EXAMPLE
@@ -382,7 +383,7 @@ To list all files in path recursively:
 
 [[./examples/job_backup_to_remote.sh][/examples/job_backup_to_remote.sh]] uses a remote, which could be of type crypt.
 
-To test your crypt remote, set your crypt remote path variable as described in the "Configure a remote" section, and then run:
+To test your crypt remote, set the path variable as described in the "Configure a remote" section, and then run:
 #+BEGIN_EXAMPLE
     $ ~/rclone_jobber/examples/job_backup_to_remote.sh
 #+END_EXAMPLE
