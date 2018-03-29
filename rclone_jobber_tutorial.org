@@ -24,10 +24,8 @@ On Debian-based Linux distributions:
 : $ sudo apt-get install rclone
 
 On RPM-based Linux distributions:
-#+BEGIN_EXAMPLE
-    $ dnf info rclone
-    $ sudo dnf install rclone
-#+END_EXAMPLE
+: $ dnf info rclone
+: $ sudo dnf install rclone
 
 Or download the latest rclone from https://rclone.org/downloads/
 
@@ -42,15 +40,11 @@ This tutorial uses example scripts that backup a small test directory.
 The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup a small test directory.
 It recursively deletes the ~/test_rclone_data directory and rebuilds a fresh copy.
 To setup a test directory from the command line:
-#+BEGIN_EXAMPLE
-    $ ~/rclone_jobber/examples/setup_test_data_directory.sh
-#+END_EXAMPLE
+: $ ~/rclone_jobber/examples/setup_test_data_directory.sh
 
 The examples directory contains all the scripts used by this tutorial.
 The example scripts have path variables inside \"${}\" e.g.
-#+BEGIN_EXAMPLE
-    dest="${USB}/test_rclone_backup"
-#+END_EXAMPLE
+: dest="${USB}/test_rclone_backup"
 You can set the variables in your system's environment (recommended), or you can replace occurrences of \"${}\" with your system's paths.
 
 The example scripts use the following environment path variables:
@@ -60,14 +54,10 @@ The example scripts use the following environment path variables:
 - USB
 
 If you're on Linux, add these lines to your .bashrc file, but with your system paths:
-  #+BEGIN_EXAMPLE
-        export rclone_jobber="/home/wolfv/rclone_jobber"
-        export USB="/run/media/wolfv/USB_name"
-  #+END_EXAMPLE
+: export rclone_jobber="/home/wolfv/rclone_jobber"
+: export USB="/run/media/wolfv/USB_name"
 and reload .bachrc:
-  #+BEGIN_EXAMPLE
-        $ source ~/.bachrc
-  #+END_EXAMPLE
+: $ source ~/.bachrc
 
 The USB is just a path name used in the examples, it doesn't actually have to be a USB drive (e.g. export USB=\"/home/wolfv/test_rclone\").
 
@@ -75,27 +65,21 @@ The USB is just a path name used in the examples, it doesn't actually have to be
 Once you have the test directories and path variables setup, you can take rclone_jobber for a test drive.
 
 Here is a minimal backup job script for rclone_jobber:
-#+BEGIN_EXAMPLE
-    #!/bin/sh
+: #!/bin/sh
 
-    source="${HOME}/test_rclone_data"
-    dest="${USB}/test_rclone_backup"
+: source="${HOME}/test_rclone_data"
+: dest="${USB}/test_rclone_backup"
 
-    ${rclone_jobber}/rclone_jobber.sh "$source" "$dest"
-#+END_EXAMPLE
+: ${rclone_jobber}/rclone_jobber.sh "$source" "$dest"
 The last line calls rclone_jobber.sh with arguments =source= and =dest=.
 
 *Important:* Since a bad backup job can cause data loss, test first with the =--dry-run= flag to see exactly what would be copied and deleted.
 
 Open the [[./examples/job_backup_to_USB_minimal.sh][examples/job_backup_to_USB_minimal.sh]] in your favorite [[https://en.wikipedia.org/wiki/Text_editor][text editor]] and set options to =--dry-run=:
-#+BEGIN_EXAMPLE
-    options="--dry-run"
-#+END_EXAMPLE
+: options="--dry-run"
 
 Run the backup job:
-#+BEGIN_EXAMPLE
-    $ ~/rclone_jobber/examples/job_backup_to_USB_minimal.sh
-#+END_EXAMPLE
+: $ ~/rclone_jobber/examples/job_backup_to_USB_minimal.sh
 
 Here are some more things you can try with rclone_jobber:
 1. Open rclone_jobber.log (rclone_jobber.log is in same directory as rclone_jobber.sh) so you can see what is happening.
@@ -111,17 +95,15 @@ Here are some more things you can try with rclone_jobber:
 * Backup job and rclone_jobber.sh parameters
 ** Backup job script
 Here is an example backup job with all the rclone_jobber arguments defined:
-#+BEGIN_EXAMPLE
-    #!/bin/sh
+: #!/bin/sh
 
-    source="${HOME}/test_rclone_data"
-    dest="${USB}/test_rclone_backup"
-    move_old_files_to="dated_files"
-    options="--filter-from=${rclone_jobber}/examples/filter_rules --checksum --dry-run"
-    monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
+: source="${HOME}/test_rclone_data"
+: dest="${USB}/test_rclone_backup"
+: move_old_files_to="dated_files"
+: options="--filter-from=${rclone_jobber}/examples/filter_rules --checksum --dry-run"
+: monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
 
-    ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
-#+END_EXAMPLE
+: ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 The last line calls rclone_jobber.sh with arguments.
 =source= and =dest= are required, the remaining arguments can be \"\" or undefined.
 
@@ -137,22 +119,16 @@ Rclone_jobber has 6 parameters, which are described in the next 6 sections:
 =source= is the directory to back up.
 
 Example =source= argument:
-#+BEGIN_EXAMPLE
-    source="/home/wolfv"
-#+END_EXAMPLE
+: source="/home/wolfv"
 
 ** 2) dest
 Data is backed up to =destination=$dest/last_snapshot=.
 
 Example =dest= argument for [[https://rclone.org/local/][local file system]] data storage:
-#+BEGIN_EXAMPLE
-    dest="/run/media/wolfv/USB/wolfv_backup"
-#+END_EXAMPLE
+: dest="/run/media/wolfv/USB/wolfv_backup"
 
 Example =dest= for remote data storage:
-#+BEGIN_EXAMPLE
-    dest="onedrive_wolfv_backup_crypt:"
-#+END_EXAMPLE
+: dest="onedrive_wolfv_backup_crypt:"
 
 ** 3) move_old_files_to
 When a file is changed or deleted, the old version already in backup is either moved or removed.
@@ -160,85 +136,65 @@ The =move_old_files_to= parameter specifies what happens to the old files.
 
 *** move_old_files_to=\"dated_directory\"
 Argument to move deleted or changed files to a dated directory:
-#+BEGIN_EXAMPLE
-    move_old_files_to="dated_directory" 
-#+END_EXAMPLE
+: move_old_files_to="dated_directory" 
 
 Old files are moved to the dated directory in their original hierarchy.
 This is makes it easy to restore a deleted sub-directory.
 Also convenient to manually delete very old files e.g. delete dated directories more than a year old.
-#+BEGIN_EXAMPLE
-    backup
-    ├── 2018-02-22_14:00:14   <<<<<<<< dated_directory contains old files
-    │   └── direc1
-    │       └── f1            <<<<<<<< old version of file f1 moved here on directory's date
-    └── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
-        └── direc1
-            └── f1
-#+END_EXAMPLE
+: backup
+: ├── 2018-02-22_14:00:14   <<<<<<<< dated_directory contains old files
+: │   └── direc1
+: │       └── f1            <<<<<<<< old version of file f1 moved here on directory's date
+: └── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
+:     └── direc1
+:         └── f1
 
 *** move_old_files_to=\"dated_files\"
 Argument to move old files to old_files directory, and append move date to file names:
-#+BEGIN_EXAMPLE
-    move_old_files_to="dated_files"
-#+END_EXAMPLE
+: move_old_files_to="dated_files"
 
 Old files are moved to the old_files directory in their original hierarchy.
 This is makes it easy to browse a file's history, and restore a particular version of a file.
-#+BEGIN_EXAMPLE
-    backup
-    ├── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
-    │   └── direc1
-    │       └── f1
-    └── old_files             <<<<<<<< old_files directory contains old dated_files
-        └── direc1
-            ├── f1_2018-02-22_14:00:14  <<<<<<<<< old version of file f1 moved here on appended date
-            └── f1_2018-02-22_15:00:14
-#+END_EXAMPLE
+: backup
+: ├── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
+: │   └── direc1
+: │       └── f1
+: └── old_files             <<<<<<<< old_files directory contains old dated_files
+:     └── direc1
+:         ├── f1_2018-02-22_14:00:14  <<<<<<<<< old version of file f1 moved here on appended date
+:         └── f1_2018-02-22_15:00:14
 
 *** move_old_files_to=\"\"
 Argument to remove old files from backup:
-#+BEGIN_EXAMPLE
-    move_old_files_to=""
-#+END_EXAMPLE
+: move_old_files_to=""
 
 Only the most recent version of each file remains in the backup.
 This can save a little storage space.
-#+BEGIN_EXAMPLE
-    backup
-    └── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
-        └── direc1
-            └── f1            <<<<<<<< old versions of file f1 are overwritten or removed
-#+END_EXAMPLE
+: backup
+: └── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
+:     └── direc1
+:         └── f1            <<<<<<<< old versions of file f1 are overwritten or removed
 
 ** 4) options
 The =options= argument can contain any number of rclone options.
 You can put any [[https://rclone.org/docs/#options][rclone options]] in the options argument, except for these four:
-#+BEGIN_EXAMPLE
-    --backup-dir
-    --suffix
-    --log-file
-    --log-level
-#+END_EXAMPLE
+: --backup-dir
+: --suffix
+: --log-file
+: --log-level
 The those options are set in rclone_jobber.sh.
 
 Example options argument containing three rclone options:
-#+BEGIN_EXAMPLE
-    options="--filter-from=filter_rules --checksum --dry-run"
-#+END_EXAMPLE
+: options="--filter-from=filter_rules --checksum --dry-run"
 
 Rclone options used in this tutorial are:
-#+BEGIN_EXAMPLE
-    --filter-from  (discussed in the "filter rules" section)
-    --checksum
-    --dry-run
-#+END_EXAMPLE
+: --filter-from  (discussed in the "filter rules" section)
+: --checksum
+: --dry-run
 
 ** 5) job_name
 The =job_name= argument specifies the job's file name:
-#+BEGIN_EXAMPLE
-   job_name="$(basename $0)"
-#+END_EXAMPLE
+: job_name="$(basename $0)"
 
 The shell command \"$(basename $0)\" will fill in the job's file name for you.
 
@@ -253,9 +209,7 @@ The =monitoring_URL= argument specifies a ping URL for a cron-monitoring service
 =monitoring_URL= is optional, and no two jobs should share the same =monitoring_URL=.
 
 Example =monitoring_URL=:
-#+BEGIN_EXAMPLE
-    monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
-#+END_EXAMPLE
+: monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
 
 Every time rclone_jobber.sh completes a job without error, it pings the monitoring_URL.
 If the cron monitoring service hasn't been pinged within a set amount of time, then it sends you an email alert.
@@ -267,10 +221,8 @@ Some remote data-storage providers offer an integrated monitoring service, in wh
 Filter rules tell rclone which files to include or exclude.
 Open the [[./examples/filter_rules][examples/filter_rules]] file.
 Each rule starts with a "+ " or "- ", followed by a pattern.
-#+BEGIN_EXAMPLE
-    A leading "+" means include if the pattern matches.
-    A leading "-" means exclude if the pattern matches.
-#+END_EXAMPLE
+: A leading "+" means include if the pattern matches.
+: A leading "-" means exclude if the pattern matches.
 
 Rclone has a sophisticated set of [[https://rclone.org/filtering/][filter rules]].
 For each file, the rules are processed in the order that they are defined.
@@ -282,15 +234,11 @@ This example has four sections, but any number of sections are possible.
 Most filter-rules files have fewer sections.
 
 The filter_rules_exc file is specified in the rclone_jobber =options= argument like this:
-#+BEGIN_EXAMPLE
-    options="--filter-from filter_rules_exc"
-#+END_EXAMPLE
+: options="--filter-from filter_rules_exc"
 
 To see the example filter_rules_exc file in action, run:
-#+BEGIN_EXAMPLE
-    $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
-    $ ~/rclone_jobber/examples/job_backup_to_USB_exc.sh
-#+END_EXAMPLE
+: $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
+: $ ~/rclone_jobber/examples/job_backup_to_USB_exc.sh
 
 * Select a remote data-storage provider
 All the rclone remote data-storage providers are listed on https://rclone.org/.
@@ -308,25 +256,17 @@ Rclone stores all the configuration information you entered in the default locat
 The remote's password is stored in the rclone.conf file, so be careful about giving people access to it.
 
 To list all your rclone remotes:
-#+BEGIN_EXAMPLE
-    $ rclone listremotes
-#+END_EXAMPLE
+: $ rclone listremotes
 
 You can set the "remote" variable in your system's environment (recommended), or you can manually replace occurrences of \"${remote}\" with your remote path.
 
 If you're on Linux, add this line to your .bashrc file, but with your remote path:
-  #+BEGIN_EXAMPLE
-        export remote="onedrive_test_rclone_backup"
-  #+END_EXAMPLE
+: export remote="onedrive_test_rclone_backup"
 and reload .bachrc:
-  #+BEGIN_EXAMPLE
-        $ source ~/.bachrc
-  #+END_EXAMPLE
+: $ source ~/.bachrc
 
 To test your remote, run:
-#+BEGIN_EXAMPLE
-    $ ~/rclone_jobber/examples/job_backup_to_remote.sh
-#+END_EXAMPLE
+: $ ~/rclone_jobber/examples/job_backup_to_remote.sh
 
 * Configure a crypt
 "crypt" is a kind of remote that:
@@ -339,60 +279,42 @@ Instructions for configuring a crypt remote are at https://rclone.org/crypt/ and
 When configuring a crypt remote, rclone will ask you to give it a name.
 Put some thought into naming your remotes.
 In the following example, the crypt remote name is a concatenation of its underlying remote name and source-folder name:
-#+BEGIN_EXAMPLE
-    name> myremote_myfolder_crypt
-#+END_EXAMPLE
+: name> myremote_myfolder_crypt
 
 And then rclone will ask for the name of an underlying remote:
-#+BEGIN_EXAMPLE
-    remote> myremote:myfolder
-#+END_EXAMPLE
+: remote> myremote:myfolder
 You can always rename a remote later via rclone config.
 
 To list all your rclone remotes:
-#+BEGIN_EXAMPLE
-    $ rclone listremotes
-#+END_EXAMPLE
+: $ rclone listremotes
 
 Most remote data-storage providers allow you to view your directory names and file names in a web browser.
 But that's not very useful if the directory and file names were encrypted by rclone.
 Use rclone to browse encrypted directory and file names.
 
 To list directories in remote:
-#+BEGIN_EXAMPLE
-    $ rclone lsd remote:
-    $ rclone lsd remote:path
-#+END_EXAMPLE
+: $ rclone lsd remote:
+: $ rclone lsd remote:path
 
 To list objects and directories of path (requires rclone-v1.40 or later):
-#+BEGIN_EXAMPLE
-    $ rclone lsf remote:path
-#+END_EXAMPLE
+: $ rclone lsf remote:path
 
 To list top-level files in path:
-#+BEGIN_EXAMPLE
-    $ rclone ls remote:path --max-depth 1 
-#+END_EXAMPLE
+: $ rclone ls remote:path --max-depth 1 
 
 To list all files in path recursively:
-#+BEGIN_EXAMPLE
-    $ rclone ls remote:path
-#+END_EXAMPLE
+: $ rclone ls remote:path
 
 [[./examples/job_backup_to_remote.sh][/examples/job_backup_to_remote.sh]] uses a remote, which could be of type crypt.
 
 To test your crypt remote, set the path variable as described in the "[[*Configure a remote][Configure a remote]]" section, and then run:
-#+BEGIN_EXAMPLE
-    $ ~/rclone_jobber/examples/job_backup_to_remote.sh
-#+END_EXAMPLE
+: $ ~/rclone_jobber/examples/job_backup_to_remote.sh
 
 *** pathIsTooLong error
 Most cloud storage providers have a 254 character-path-length limit.
 Crypt limits encrypted paths to 151 characters with some cloud storage providers (this is a [[https://github.com/ncw/rclone/issues/637][known crypt issue]]).
 If the path is too long, rclone returns this ERROR:
-#+BEGIN_EXAMPLE
-    Failed to copy: invalidRequest: pathIsTooLong: Path exceeds maximum length
-#+END_EXAMPLE
+: Failed to copy: invalidRequest: pathIsTooLong: Path exceeds maximum length
 There are 3 work-a-rounds:
 - turn off "enrcrypt directory names" in rclone config (file content can still be encrypted)
 - shorten your paths
@@ -423,19 +345,15 @@ Schedule your backup jobs in your favorite job scheduler.
 The following example schedules jobs on cron (cron is a job scheduler installed on Linux).
 The first line runs a local job every hour on the hour.
 The second line runs a remote job every hour, 30 minutes past the hour.
-#+BEGIN_EXAMPLE
-	  $ crontab -e
-    00 * * * * /home/wolfv/rclone_jobber/job_backup_to_USB.sh
-    30 * * * * /home/wolfv/rclone_jobber/job_backup_to_remote.sh
-#+END_EXAMPLE
+: $ crontab -e
+: 00 * * * * /home/wolfv/rclone_jobber/job_backup_to_USB.sh
+: 30 * * * * /home/wolfv/rclone_jobber/job_backup_to_remote.sh
 
 The initial backup will take a long time (subsequent backups are much shorter).
 If your computer goes to sleep while a backup is in progress, the backup will not finish.
 Consider disabling sleep on your computer.
 On Linux Gnome desktop:
-#+BEGIN_EXAMPLE
-    right click > Settings > Power > Automatic suspend: Off
-#+END_EXAMPLE
+: right click > Settings > Power > Automatic suspend: Off
 
 * Logging options
 You can skip this section if you like the default logging.
@@ -445,37 +363,29 @@ You can change the values to non-default values.
 
 ** Log output
 To change amount of information logged, look for these "#set log" comments in rclone_jobber.sh:
-#+BEGIN_EXAMPLE
-    #set log_level for desired amount of information in rclone log entries
-    #set logging to verbose
-#+END_EXAMPLE
+: #set log_level for desired amount of information in rclone log entries
+: #set logging to verbose
 
 ** Log file location
 In rclone_jobber.sh, variable log_file contains the log file's path.
 The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh.
 You can change log_file to any path you like.
-#+BEGIN_EXAMPLE
-    #set log_file path
-    path="$(realpath $0)"           #log file in same directory as this script
-    log_file="${path%.*}.log"       #replace this file's extension with "log"
-#+END_EXAMPLE
+: #set log_file path
+: path="$(realpath $0)"           #log file in same directory as this script
+: log_file="${path%.*}.log"       #replace this file's extension with "log"
 
 ** Logging to Linux /var/log/rclone_jobber.log
 To set the rclone_jobber log location to /var/log/, create the log file and give it the user's ownership and read-write permission.
 In this example, rclone_jobber.log ownership is given to wolfv:
-#+BEGIN_EXAMPLE
-    $ sudo touch       /var/log/rclone_jobber.log
-    $ sudo chown wolfv /var/log/rclone_jobber.log
-    $ sudo chmod 0666  /var/log/rclone_jobber.log
-    $ sudo ls -l       /var/log/rclone_jobber.log
-    -rw-rw-rw-. 1 wolfv root 19 Mar 21 13:58 /var/log/rclone_jobber.log
-#+END_EXAMPLE
+: $ sudo touch       /var/log/rclone_jobber.log
+: $ sudo chown wolfv /var/log/rclone_jobber.log
+: $ sudo chmod 0666  /var/log/rclone_jobber.log
+: $ sudo ls -l       /var/log/rclone_jobber.log
+: -rw-rw-rw-. 1 wolfv root 19 Mar 21 13:58 /var/log/rclone_jobber.log
 
 In rclone_jobber.sh, set the new log_file path:
-#+BEGIN_EXAMPLE
-    #set log_file path
-    log_file="/var/log/rclone_jobber.log"
-#+END_EXAMPLE
+: #set log_file path
+: log_file="/var/log/rclone_jobber.log"
 
 ** Linux Logrotate
 Over time a log file can grow to unwieldy size.
@@ -483,45 +393,35 @@ The logrotate utility can automatically archive the current log, start a fresh l
 
 All you have to do is setup /var/log/rclone_jobber.log (described in previous section) and create a logrotate configuration file.
 Here is creating a logrotate configuration file:
-#+BEGIN_EXAMPLE
-    $ sudo vi /etc/logrotate.d/rclone_jobber
-#+END_EXAMPLE
+: $ sudo vi /etc/logrotate.d/rclone_jobber
 And insert text something like this:
-#+BEGIN_EXAMPLE
-    /var/log/rclone_jobber.log {
-    monthly
-    rotate 2
-    size 1M
-    compress
-    delaycompress
-    }
-#+END_EXAMPLE
+: /var/log/rclone_jobber.log {
+: monthly
+: rotate 2
+: size 1M
+: compress
+: delaycompress
+: }
 
 More options are listed in man:
-#+BEGIN_EXAMPLE
-    $ man logrotate
-#+END_EXAMPLE
+: $ man logrotate
 
 Execute a dry-run to see what logrotate would do:
-#+BEGIN_EXAMPLE
-    $ logrotate -d /etc/logrotate.d/rclone_jobber
-#+END_EXAMPLE
+: $ logrotate -d /etc/logrotate.d/rclone_jobber
 
 ** log to systemd journal
 Linux and macOS can send all log output to systemd journal.
 All you have to do is setup /var/log/rclone_jobber.log (described in section "[[*Logging to Linux /var/log/rclone_jobber.log][Logging to Linux /var/log/rclone_jobber.log]]") and make these 3 changes to rclone_jobber.sh script:
-#+BEGIN_EXAMPLE
-    #set log_file path
-    log_file="/var/log/rclone_jobber.log"
+: #set log_file path
+: log_file="/var/log/rclone_jobber.log"
 
-    #set log_option for rclone
-    log_option="--syslog"
+: #set log_option for rclone
+: log_option="--syslog"
 
-    ...
+: ...
 
-    #set log - send msg to log
-    printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
-#+END_EXAMPLE
+: #set log - send msg to log
+: printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 
 * Example backup jobs
 The following system uses two backup jobs with complementary attributes (this is how I backup my home PC).
@@ -556,28 +456,20 @@ Don't worry, the tutorial's environment is setup to make testing painless.
 
 Previous tests modified the test directories.
 Clear and setup test directories in preparation for a new test run:
-#+BEGIN_EXAMPLE
-    $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
-    $ ~/rclone_jobber/examples/clear_remote_test_backup.sh
-    $ ~/rclone_jobber/examples/setup_test_data_directory.sh
-#+END_EXAMPLE
+: $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
+: $ ~/rclone_jobber/examples/clear_remote_test_backup.sh
+: $ ~/rclone_jobber/examples/setup_test_data_directory.sh
 
 Back up data:
-#+BEGIN_EXAMPLE
-    $ ~/rclone_jobber/examples/job_backup_to_USB.sh
-    $ ~/rclone_jobber/examples/job_backup_to_remote.sh
-#+END_EXAMPLE
+: $ ~/rclone_jobber/examples/job_backup_to_USB.sh
+: $ ~/rclone_jobber/examples/job_backup_to_remote.sh
 
 Open job_restore_last_snapshot.sh and edit source variable to restore data from, and save your edit.
 Then restore data:
-#+BEGIN_EXAMPLE
-    $ ~/rclone_jobber/examples/job_restore_last_snapshot.sh
-#+END_EXAMPLE
+: $ ~/rclone_jobber/examples/job_restore_last_snapshot.sh
 
 Verify that the files were faithfully restored:
-#+BEGIN_EXAMPLE
-    $ diff -r ${HOME}/test_rclone_data/direc0 /home/${USER}/last_snapshot/direc0
-#+END_EXAMPLE
+: $ diff -r ${HOME}/test_rclone_data/direc0 /home/${USER}/last_snapshot/direc0
 Notice that rclone does not back up empty directories.
 
 Follow a similar procedure when you practice your recovery plan, but with real data.
@@ -624,9 +516,7 @@ For each backup job:
 :    $ ls -l /run/media/wolfv/Fedora/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
 - check space usage and available space
 - check rclone_jobber.log
-#+BEGIN_EXAMPLE
-    $ cat /var/log/rclone_jobber.log
-#+END_EXAMPLE
+: $ cat /var/log/rclone_jobber.log
 - make sure monitoring URLs are still active
 
 Do not rely solely on warning messages or rclone_jobber.log for monitoring; they do not prove that data was saved to destination.
