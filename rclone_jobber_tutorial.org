@@ -46,16 +46,25 @@ To setup a test directory from the command line:
     $ ~/rclone_jobber/examples/setup_test_data_directory.sh
 #+END_EXAMPLE
 
-The tutorial-example files contain path variables.
-Set "rclone_jobber" and "USB" path variables via one of:
-- edit the rclone_jobber/examples/ files, manually replacing path variables with your system paths
-- set PATH environment variables (recommended)
-  - if you're on Linux, add these lines to your .bashrc file, but with your system paths:
+The examples directory contains all the scripts used by this tutorial.
+The example scripts place environment path variables inside "${}" e.g.
+#+BEGIN_EXAMPLE
+    dest="${USB}/test_rclone_backup"
+#+END_EXAMPLE
+You can set your system's environment variables (recommended), or you can manually replace occurrences of "${}" with your system's paths.
+
+The example scripts use the following environment path variables:
+- HOME
+- USER
+- rclone_jobber
+- USB
+
+If you're on Linux, add these lines to your .bashrc file, but with your system paths:
   #+BEGIN_EXAMPLE
         export rclone_jobber="/home/wolfv/rclone_jobber"
         export USB="/run/media/wolfv/USB_name"
   #+END_EXAMPLE
-  - and reload .bachrc:
+and reload .bachrc:
   #+BEGIN_EXAMPLE
         $ source ~/.bachrc
   #+END_EXAMPLE
@@ -64,6 +73,17 @@ The USB is just a path name used in the examples, it doesn't actually have to be
 
 * Take rclone_jobber.sh for a test drive
 Once you have the test directories and path variables setup, you can take rclone_jobber for a test drive.
+
+Here is a minimal backup job script for rclone_jobber:
+#+BEGIN_EXAMPLE
+    #!/bin/sh
+
+    source="${HOME}/test_rclone_data"
+    dest="${USB}/test_rclone_backup"
+
+    ${rclone_jobber}/rclone_jobber.sh "$source" "$dest"
+#+END_EXAMPLE
+The last line calls rclone_jobber.sh with arguments =source= and =dest=.
 
 *Important:* Since a bad backup job can cause data loss, test first with the =--dry-run= flag to see exactly what would be copied and deleted.
 
@@ -90,18 +110,6 @@ Here are some more things you can try with rclone_jobber:
 
 * Backup job and rclone_jobber.sh parameters
 ** Backup job script
-Here is a minimal backup job script for rclone_jobber:
-#+BEGIN_EXAMPLE
-    #!/bin/sh
-
-    source="${HOME}/test_rclone_data"
-    dest="${USB}/test_rclone_backup"
-
-    ${rclone_jobber}/rclone_jobber.sh "$source" "$dest"
-#+END_EXAMPLE
-The last line calls rclone_jobber.sh with arguments.
-=source= and =dest= are required, the remaining arguments can be "" or undefined.
-
 Here is a backup job with all the rclone_jobber arguments defined:
 #+BEGIN_EXAMPLE
     #!/bin/sh
@@ -114,6 +122,8 @@ Here is a backup job with all the rclone_jobber arguments defined:
 
     ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 #+END_EXAMPLE
+The last line calls rclone_jobber.sh with arguments.
+=source= and =dest= are required, the remaining arguments can be "" or undefined.
 
 Rclone_jobber has 6 parameters, which are described in the next 6 sections:
 1) source
@@ -420,6 +430,7 @@ The second line runs a remote job every hour, 30 minutes past the hour.
     30 * * * * /home/wolfv/rclone_jobber/job_backup_to_remote.sh
 #+END_EXAMPLE
 
+The initial backup will take a long time (subsequent backups are much shorter).
 If your computer goes to sleep while a backup is in progress, the backup will not finish.
 Consider disabling sleep on your computer.
 On Linux Gnome desktop:
@@ -434,7 +445,7 @@ In rclone_logger.sh, logging options are headed by "#set log" comments, with a v
 You can change the values to non-default values.
 
 ** Log output
-Look for these "#set log" comments in rclone_jobber.sh:
+To change amount of information logged, look for these "#set log" comments in rclone_jobber.sh:
 #+BEGIN_EXAMPLE
     #set log_level for desired amount of information in rclone log entries
     #set logging to verbose
@@ -451,7 +462,7 @@ You can change log_file to any path you like.
 #+END_EXAMPLE
 
 ** Logging to Linux /var/log/rclone_jobber.log
-To set the rclone_jobber log location to /var/log/, create the log file and give it the user's ownership and rw permission.
+To set the rclone_jobber log location to /var/log/, create the log file and give it the user's ownership and read-write permission.
 In this example, rclone_jobber.log ownership is given to wolfv:
 #+BEGIN_EXAMPLE
     $ sudo touch       /var/log/rclone_jobber.log

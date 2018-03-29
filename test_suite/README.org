@@ -1,20 +1,19 @@
 * How the rclone_jobber test suite works
-each of the following sections describes one test case, test script, and it's expected result
+Each of the following sections describes one test case, test script, and it's expected result
 
-test-script names start with "test_"
-each test_ script creates two directories
-    test_rclone_data
-    test_rclone_backup
-then the test_ script tests two or three job_ scripts 
+test-script names start with "test_".
+Each test_ script creates two directories:
+- test_rclone_data
+- test_rclone_backup
 
-job-script names start with "job_"
-each job_ script calls the rclone_jobber.sh script
+Then the test_ script tests two or three job_ scripts.
 
-test procedure for each test script
-- run the test script from the terminal
-- manually inspect output for expected results (listed in the sections below)
+job-script names start with "job_".
+Each job_ script calls the rclone_jobber.sh script
 
-the job_USB_ and job_1d_ scripts can be used as examples for a real backup job
+Test procedure for each test script:
+1. run the test script from the terminal
+2. manually inspect output for expected results (expected results are listed in test output and enclosed in parenthesis)
 
 rlcone_jobber.sh was tested on Linux Fedora 27, Gnome 3.26.2, rclone v1.39
 
@@ -24,9 +23,10 @@ testing:
 - attempt to restore deleted sub-directory from last snapshot
 
 passed 3/28/18
+
 expected result:
-file names ending in "_exe" are excluded from backup
-deleted directory direc1/direc1b/ can not be restored because move_old_files_to=""
+- file names ending in "_exe" are excluded from backup
+- deleted directory direc1/direc1b/ can not be restored because move_old_files_to=""
 
 dependencies:
 - job_snapshot_backup_old_data_to_delete.sh
@@ -35,7 +35,7 @@ dependencies:
 - filter_rules
 
 * test_restore_deleted_directory.sh
-this test is similar to test_onedrive.sh but w/o encryption
+This test is similar to test_onedrive.sh but w/o encryption.
 
 testing:
 - move_old_files_to="typo" should give pop-up warning and default to "dated_directory"
@@ -43,6 +43,7 @@ testing:
 - restore deleted sub-directory
 
 passed 3/28/18
+
 expected result:
 - 2 pop-up warnings
     WARNING: Parameter move_old_files_to=typo, but should be...
@@ -85,13 +86,13 @@ dependencies:
 - rclone_jobber.sh
 
 * test_1d.sh
-"1d" means OneDrive remote
-this test is similar to test_restore_deleted_directory.sh but on encrypted OneDrive
+"1d" means OneDrive remote.
+This test is similar to test_restore_deleted_directory.sh but on encrypted OneDrive.
 
-to set up a remote, follow instructions on https://rclone.org/onedrive/ substituting this value:
+To set up a remote, follow instructions on https://rclone.org/onedrive/ substituting this value:
 - name> onedrive
 
-to set up encryption, follow instructions on https://rclone.org/crypt/ substituting these values:
+To set up encryption, follow instructions on https://rclone.org/crypt/ substituting these values:
 - name> onedrive_crypt
 - remote> onedrive:test_rclone_backup
 
@@ -129,6 +130,7 @@ testing:
 - monitoring_URL
 
 passed 3/28/18
+
 expected result:
 - all 3 backup jobs generate an error message, no backups are made
 - monitoring_URL sends an email after 24 hrs grace period

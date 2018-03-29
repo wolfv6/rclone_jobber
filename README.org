@@ -4,7 +4,8 @@ It performs a backup job by calling rclone.
 Rclone is a mature tool and many [[https://github.com/ncw/rclone/wiki/Third-Party-Integrations-with-rclone][third party tools use rclone]].
 
 rclone_jobber.sh has been tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
-An [[file:rclone_jobber_tutorial.org][rclone_jobber_tutorial]] includes backup-job and restore-job examples for a home computer.
+
+The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-job and restore-job examples for a home computer.
 
 *rclone_jobber.sh features:*
 - Options to archive old backup files in their original hierarchy
@@ -35,8 +36,6 @@ If you prefer a GUI, checkout [[https://mmozeiko.github.io/RcloneBrowser/][Rclon
 rlcone_jobber.sh is a shell script.
 Shell scripts can run on Linux, macOS, and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
 
-rlcone_jobber.sh has been tested on Linux.
-rlcone_jobber.sh uses notify-send, which is a popup notification on most Linux desktops.
 If you test rlcone_jobber.sh on a non-linux operating system, please post your results on https://github.com/wolfv6/rclone_jobber/issues.
 
 * Contact
