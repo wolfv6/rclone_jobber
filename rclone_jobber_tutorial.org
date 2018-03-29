@@ -20,8 +20,8 @@ I am not responsible for any lost data.
 
 * Install rclone
 On Debian-based Linux distributions:
-:    $ apt-cache policy rclone
-:    $ sudo apt-get install rclone
+: $ apt-cache policy rclone
+    : $ sudo apt-get install rclone
 
 On RPM-based Linux distributions:
 #+BEGIN_EXAMPLE
