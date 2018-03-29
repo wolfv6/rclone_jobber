@@ -1,6 +1,6 @@
-* Example scripts use environment variables for "${path}"
+* Example scripts use environment variables for ="${path}"=
 The files in this directory are examples used by rclone_jobber_tutorial.org.
-The example scripts have path variables inside "${}" e.g.
+The example scripts have path variables inside ="${}"= e.g.
 #+BEGIN_EXAMPLE
     source="${HOME}/test_rclone_data"
     dest="${USB}/test_rclone_backup"
