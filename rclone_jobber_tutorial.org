@@ -66,10 +66,10 @@ Once you have the test directories and path variables setup, you can take rclone
 
 Here is a minimal backup job script for rclone_jobber:
 : #!/bin/sh
-:
+: 
 : source="${HOME}/test_rclone_data"
 : dest="${USB}/test_rclone_backup"
-:
+: 
 : ${rclone_jobber}/rclone_jobber.sh "$source" "$dest"
 The last line calls rclone_jobber.sh with arguments =source= and =dest=.
 
@@ -96,13 +96,13 @@ Here are some more things you can try with rclone_jobber:
 ** Backup job script
 Here is an example backup job with all the rclone_jobber arguments defined:
 : #!/bin/sh
-:
+: 
 : source="${HOME}/test_rclone_data"
 : dest="${USB}/test_rclone_backup"
 : move_old_files_to="dated_files"
 : options="--filter-from=${rclone_jobber}/examples/filter_rules --checksum --dry-run"
 : monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
-:
+: 
 : ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 The last line calls rclone_jobber.sh with arguments.
 =source= and =dest= are required, the remaining arguments can be \"\" or undefined.
@@ -416,12 +416,12 @@ Linux and macOS can send all log output to systemd journal.
 All you have to do is setup /var/log/rclone_jobber.log (described in section "[[*Logging to Linux /var/log/rclone_jobber.log][Logging to Linux /var/log/rclone_jobber.log]]") and make these 3 changes to rclone_jobber.sh script:
 : #set log_file path
 : log_file="/var/log/rclone_jobber.log"
-:
+: 
 : #set log_option for rclone
 : log_option="--syslog"
-:
+: 
 : ...
-:
+: 
 : #set log - send msg to log
 : printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 
