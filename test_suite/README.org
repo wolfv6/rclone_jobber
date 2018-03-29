@@ -45,14 +45,18 @@ Testing:
 Passed 3/28/18
 
 Expected result:
-- 2 pop-up warnings
+- 2 pop-up warnings:
+#+BEGIN_EXAMPLE
     WARNING: Parameter move_old_files_to=typo, but should be...
     WARNING: Parameter move_old_files_to=typo, but should be...
-- rclone_jobber.log (located in same directory as rclone_jobber.sh) contains a WARNINGs and a INFOs
+#+END_EXAMPLE
+- rclone_jobber.log (located in same directory as rclone_jobber.sh) contains a WARNINGs and a INFOs:
+#+BEGIN_EXAMPLE
     WARNING: Parameter move_old_files_to=typo, but should be...
     ...
     2018/02/19 16:17:51 INFO  : Local file system at /home/wolfv/test_rclone_backup/last_snapshot: ...
     ...
+#+END_EXAMPLE
 - test will prompt for date_time of direc1b to restore
 - data contains restored direc1/direc1b_$timestamp/f1b
 
@@ -62,12 +66,12 @@ Dependencies:
 - rclone_jobber.sh
 
 * test_USB.sh
-This test script uses environment variable USB, set it to your USB's path
-For example, in Linux add this line to ~/.bashrc file
+This test script uses environment variable USB, set it to your USB's path.
+For example, in Linux add this line to ~/.bashrc file:
 #+BEGIN_EXAMPLE
     export USB="/run/media/user/myUSB"
 #+END_EXAMPLE
-and then from command line
+and then from command line:
 #+BEGIN_EXAMPLE
     $ source ~/.bashrc
     $ echo $USB
@@ -110,7 +114,7 @@ Testing:
 Manually test "job aborted because it is already running."
     $ ./test_1d.sh
 (it takes 1 minute for a remote job to complete)
-While that's running, call the backup job again from another terminal
+While that's running, call the backup job again from another terminal:
 #+BEGIN_EXAMPLE
     $ ./job_1d_backup_to_dated_directory.sh
     job_1d_backup_to_dated_directory.sh aborted because it is already running.
