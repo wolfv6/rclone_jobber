@@ -23,31 +23,32 @@ rclone purge onedrive_test_rclone_backup_crypt:
 
 ################## call jobs #####################
 
-printf "backup before first back up (should be: directory not found):\n"
+printf "*** backup (should be: directory not found) ***\n"
 rclone ls onedrive_test_rclone_backup_crypt:
 
-#backup
+printf "\n*** performing first backup (should have pop-up WARNING: job_1d_backup_to_dated_directory.sh) ***\n"
 ./job_1d_backup_to_dated_directory.sh
 
-printf "\nbackup after first back up:\n"
+printf "\n*** backup ***\n"
 rclone ls onedrive_test_rclone_backup_crypt:
 
-#delete top directory
-rm -r ~/test_rclone_data/direc0
-
-#delete sub-directory
-rm -r ~/test_rclone_data/direc1/direc1b
-
-printf "\ndata after deleting direc0 and direc1b:\n"
+printf "\n*** data directory ***\n"
 tree ~/test_rclone_data
 
-#backup
+printf "\n*** deleting top directory direc0 ***\n"
+rm -r ~/test_rclone_data/direc0
+
+printf "*** deleting sub-directory direc1b ***\n"
+rm -r ~/test_rclone_data/direc1/direc1b
+
+printf "*** data directory (should be missing direc0 and direc1b) ***\n"
+tree ~/test_rclone_data
+
+printf "\n*** performing second backup (should have pop-up WARNING: job_1d_backup_to_dated_directory.sh) ***\n"
 ./job_1d_backup_to_dated_directory.sh
 
-printf "\nbackup after deleting direc0 and direc1b, and backing up again (f0 and f1b should be moved to dated directory):\n"
+printf "\n*** backup (f0 and f1b should be moved to dated directory) ***\n"
 rclone ls onedrive_test_rclone_backup_crypt:
 
-#restore deleted directory
+#prompt for deleted direc1b timestamp, restore, and output data directory
 ./job_1d_restore_from_dated_directory.sh
-
-#output for testing is at end of job_1d_restore_from_dated_directory.sh

@@ -17,24 +17,27 @@ mkdir ${USB}/test_rclone_backup
 
 ################## call jobs #####################
 
-printf "backup before first back up (should be empty):\n"
+printf "*** backup (should be empty) ***\n"
 tree ${USB}/test_rclone_backup
 
-#back up
+printf "\n*** performing backup from null string (should have pop-up ERROR: job_check_null_source.sh aborted) ***\n"
 ./job_check_null_source.sh
-printf "\nbackup after null source (should be empty):\n"
+
+printf "\n*** backup (should be empty) ***\n"
 tree ${USB}/test_rclone_backup
 
-#back up
+printf "\n*** performing backup to null string (should have pop-up ERROR: job_check_null_source.sh aborted) ***\n"
 ./job_check_null_dest.sh
-printf "\nbackup after null dest (should be empty):\n"
+
+printf "\n*** backup (should be empty) ***\n"
 tree ${USB}/test_rclone_backup
 
-#empty ~/test_rclone_data directory
+printf "\n*** deleting data directory ***\n"
 rm -r ~/test_rclone_data
 mkdir ~/test_rclone_data
 
-#back up
+printf "*** performing backup from empty source (should have pop-up ERROR: job_check_null_source.sh aborted) ***\n"
 ./job_check_empty_source.sh
-printf "\nbackup after empty source (should be empty):\n"
+
+printf "\n*** backup (should be empty) ***\n"
 tree ${USB}/test_rclone_backup

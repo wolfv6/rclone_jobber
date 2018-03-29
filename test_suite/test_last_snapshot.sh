@@ -40,30 +40,30 @@ mkdir ~/test_rclone_backup
 
 ################## call jobs #####################
 
-printf "data, with _exc files to be excluded from backup:\n"
+printf "\n*** data directory, with _exc files to be excluded from backup ***\n"
 tree -a ~/test_rclone_data
 
-printf "backup before first back up (should be empty):\n"
+printf "\n*** backup (should be empty) ***\n"
 tree -a ~/test_rclone_backup
 
-#backup
+printf "\n*** performing first backup ***\n"
 ./job_snapshot_backup_old_data_to_delete.sh
 
-printf "\nbackup after first back up (file names ending in _exe should be excluded):\n"
+printf "\n*** backup (file names ending in _exc should be excluded) ***\n"
 tree -a ~/test_rclone_backup
 
-#remove direc1b
+printf "\n*** removing direc1b ***\n"
 rm -r ~/test_rclone_data/direc1/direc1b
 
-#backup
+printf "*** performing second backup ***\n"
 ./job_snapshot_backup_old_data_to_delete.sh
 
-printf "\nbackup after removing direc1b and back up again (direc1b should be missing):\n"
+printf "\n*** backup (direc1b should be missing) ***\n"
 tree -a ~/test_rclone_backup
 
-#restore direc1 from last snapshot
+printf "\n*** attempting to restore direc1 from last snapshot ***\n"
 ./job_snapshot_restore_from_last_snapshot.sh
 
-printf "\ndata after attempted restore (direc1b should be missing):\n"
+printf "\n*** data directory (direc1b should be missing) ***\n"
 tree -a ~/test_rclone_data
 

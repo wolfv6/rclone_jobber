@@ -1,4 +1,4 @@
-* How the rclone_jobber.sh test suite works
+* How the rclone_jobber test suite works
 each of the following sections describes one test case, test script, and it's expected result
 
 test-script names start with "test_"
@@ -23,7 +23,7 @@ testing:
 - filter exclude files ending with listed suffix
 - attempt to restore deleted sub-directory from last snapshot
 
-passed 3/13/18
+passed 3/28/18
 expected result:
 file names ending in "_exe" are excluded from backup
 deleted directory direc1/direc1b/ can not be restored because move_old_files_to=""
@@ -42,7 +42,7 @@ testing:
 - attempt to back up a deleted top directory gets rclone message, and does not delete files
 - restore deleted sub-directory
 
-passed 3/13/18
+passed 3/28/18
 expected result:
 - 2 pop-up warnings
     WARNING: Parameter move_old_files_to=typo, but should be...
@@ -75,7 +75,7 @@ testing:
 - restore dated file
 - --checksum option
 
-passed 3/13/18
+passed 3/28/18
 expected result:
 - old f1 file is restored in f1_<date>
 
@@ -108,7 +108,7 @@ while that's running, call the backup job again from another terminal
     $ ./job_1d_backup_to_dated_directory.sh
     job_1d_backup_to_dated_directory.sh aborted because it is already running.
 
-passed 3/13/18
+passed 3/28/18
 expected result:
 - see expected result listing in [[*test_restore_deleted_directory.sh][test_restore_deleted_directory.sh]]
 - the OneDrive backup has two copies of deleted files: dated directory and OneDrive Recycle bin
@@ -128,7 +128,7 @@ testing:
 - null dest string
 - monitoring_URL
 
-passed 3/13/18
+passed 3/28/18
 expected result:
 - all 3 backup jobs generate an error message, no backups are made
 - monitoring_URL sends an email after 24 hrs grace period

@@ -24,26 +24,26 @@ mkdir ${USB}/test_rclone_backup
 
 ################## call jobs #####################
 
-printf "backup before first back up (should be empty):\n"
+printf "*** backup (should be empty) ***\n"
 tree ${USB}/test_rclone_backup
 
-#backup to USB
+printf "\n*** performing first backup ***\n"
 ./job_USB_backup_to_USB.sh
 
-#edit f1 file
+printf "\n*** editing f1 file ***\n"
 printf "edited" > ~/test_rclone_data/direc1/f1
 
-printf "\ndata after edit f1 file:\n"
+printf "*** data directory ***\n"
 tree ${HOME}/test_rclone_data
 
-#backup to USB
+printf "\n*** performing second backup ***\n"
 ./job_USB_backup_to_USB.sh
 
-printf "\nbackup after back up, edit f1, and back up again (f1_<timestamp> should be in old_files):\n"
+printf "\n*** backup (f1_<timestamp> should be in old_files) ***\n"
 tree ${USB}/test_rclone_backup
 
-#restore old f1
+printf "\n*** restoring old f1 ***\n"
 ./job_USB_restore_from_USB.sh
 
-printf "\ndata after restoring old f1 file (f1_<timestamp> and f1 should be in direc1):\n"
+printf "*** data directory (f1_<timestamp> and f1 should be in direc1) ***\n"
 tree ${HOME}/test_rclone_data

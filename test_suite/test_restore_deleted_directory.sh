@@ -24,32 +24,32 @@ mkdir ~/test_rclone_backup
 
 ################## call jobs #####################
 
-printf "backup before first back up (should be empty):\n"
+printf "\n*** backup (should be empty) ***\n"
 tree ~/test_rclone_backup
 
-#backup
+printf "\n*** performing first backup (should have pop-up WARNING: Parameter move_old_files_to=typo) ***\n"
 ./job_dir_backup_to_dated_directory.sh
 
-printf "\nbackup after first back up:\n"
+printf "\n*** backup ***\n"
 tree ~/test_rclone_backup
 
-#delete top directory
+printf "\n*** deleting top directory direc0 ***\n"
 rm -r ~/test_rclone_data/direc0
 
-#delete sub-directory
+printf "*** deleting sub-directory direc1b ***\n"
 rm -r ~/test_rclone_data/direc1/direc1b
 
-printf "\ndata after deleting direc0 and direc1b:\n"
+printf "*** data directory (should be missing direc0 and direc1b) ***\n"
 tree ~/test_rclone_data
 
-#backup
+printf "\n*** performing second backup (should have pop-up WARNING: Parameter move_old_files_to=typo) ***\n"
 ./job_dir_backup_to_dated_directory.sh
 
-printf "\nbackup after deleting direc0 and direc1b, and backing up again (direc0 and direc1b should be moved to dated directory):\n"
+printf "\n*** backup (direc0 and direc1b should be moved to dated directory) ***\n"
 tree ~/test_rclone_backup
 
-#restore deleted directory
+#prompts for date_time of direc1b
 ./job_dir_restore_from_dated_directory.sh
 
-printf "\ndata after restoring dated direc1b:\n"
+printf "*** data directory (should have restored directory direc1b_<timestamp>) ***\n"
 tree ~/test_rclone_data

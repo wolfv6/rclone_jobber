@@ -611,11 +611,14 @@ Example monthly backup check.
 For each backup job:
 - check that recently changed files are in the backup
 #+BEGIN_EXAMPLE
-    $ rclone lsl my_remote_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
-    $ ls -l /run/media/wolfv/my_USB/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
+    $ rclone lsl onedrive_wolfv_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
+    $ ls -l /run/media/wolfv/Fedora/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
 #+END_EXAMPLE
 - check space usage and available space
 - check rclone_jobber.log
+#+BEGIN_EXAMPLE
+    $ cat /var/log/rclone_jobber.log
+#+END_EXAMPLE
 
 Do not rely solely on warning messages or rclone_jobber.log for monitoring; they do not prove that data was saved to destination.
 Check the actual backup.
