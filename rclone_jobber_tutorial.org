@@ -20,10 +20,8 @@ I am not responsible for any lost data.
 
 * Install rclone
 On Debian-based Linux distributions:
-#+BEGIN_EXAMPLE
-    $ apt-cache policy rclone
-    $ sudo apt-get install rclone
-#+END_EXAMPLE
+:    $ apt-cache policy rclone
+:    $ sudo apt-get install rclone
 
 On RPM-based Linux distributions:
 #+BEGIN_EXAMPLE
@@ -53,7 +51,7 @@ The example scripts have path variables inside \"${}\" e.g.
 #+BEGIN_EXAMPLE
     dest="${USB}/test_rclone_backup"
 #+END_EXAMPLE
-You can set the variables in your system's environment (recommended), or you can manually replace occurrences of \"${}\" with your system's paths.
+You can set the variables in your system's environment (recommended), or you can replace occurrences of \"${}\" with your system's paths.
 
 The example scripts use the following environment path variables:
 - HOME
