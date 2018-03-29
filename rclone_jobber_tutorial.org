@@ -21,7 +21,7 @@ I am not responsible for any lost data.
 * Install rclone
 On Debian-based Linux distributions:
 : $ apt-cache policy rclone
-    : $ sudo apt-get install rclone
+: $ sudo apt-get install rclone
 
 On RPM-based Linux distributions:
 #+BEGIN_EXAMPLE
@@ -620,10 +620,8 @@ Example monthly backup check.
 
 For each backup job:
 - check that recently changed files are in the backup
-#+BEGIN_EXAMPLE
-    $ rclone lsl onedrive_wolfv_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
-    $ ls -l /run/media/wolfv/Fedora/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
-#+END_EXAMPLE
+:    $ rclone lsl onedrive_wolfv_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
+:    $ ls -l /run/media/wolfv/Fedora/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
 - check space usage and available space
 - check rclone_jobber.log
 #+BEGIN_EXAMPLE
