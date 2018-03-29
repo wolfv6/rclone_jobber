@@ -66,10 +66,10 @@ Once you have the test directories and path variables setup, you can take rclone
 
 Here is a minimal backup job script for rclone_jobber:
 : #!/bin/sh
-
+:
 : source="${HOME}/test_rclone_data"
 : dest="${USB}/test_rclone_backup"
-
+:
 : ${rclone_jobber}/rclone_jobber.sh "$source" "$dest"
 The last line calls rclone_jobber.sh with arguments =source= and =dest=.
 
@@ -96,13 +96,13 @@ Here are some more things you can try with rclone_jobber:
 ** Backup job script
 Here is an example backup job with all the rclone_jobber arguments defined:
 : #!/bin/sh
-
+:
 : source="${HOME}/test_rclone_data"
 : dest="${USB}/test_rclone_backup"
 : move_old_files_to="dated_files"
 : options="--filter-from=${rclone_jobber}/examples/filter_rules --checksum --dry-run"
 : monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
-
+:
 : ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 The last line calls rclone_jobber.sh with arguments.
 =source= and =dest= are required, the remaining arguments can be \"\" or undefined.
@@ -315,6 +315,7 @@ Most cloud storage providers have a 254 character-path-length limit.
 Crypt limits encrypted paths to 151 characters with some cloud storage providers (this is a [[https://github.com/ncw/rclone/issues/637][known crypt issue]]).
 If the path is too long, rclone returns this ERROR:
 : Failed to copy: invalidRequest: pathIsTooLong: Path exceeds maximum length
+
 There are 3 work-a-rounds:
 - turn off "enrcrypt directory names" in rclone config (file content can still be encrypted)
 - shorten your paths
@@ -394,6 +395,7 @@ The logrotate utility can automatically archive the current log, start a fresh l
 All you have to do is setup /var/log/rclone_jobber.log (described in previous section) and create a logrotate configuration file.
 Here is creating a logrotate configuration file:
 : $ sudo vi /etc/logrotate.d/rclone_jobber
+
 And insert text something like this:
 : /var/log/rclone_jobber.log {
 : monthly
@@ -414,12 +416,12 @@ Linux and macOS can send all log output to systemd journal.
 All you have to do is setup /var/log/rclone_jobber.log (described in section "[[*Logging to Linux /var/log/rclone_jobber.log][Logging to Linux /var/log/rclone_jobber.log]]") and make these 3 changes to rclone_jobber.sh script:
 : #set log_file path
 : log_file="/var/log/rclone_jobber.log"
-
+:
 : #set log_option for rclone
 : log_option="--syslog"
-
+:
 : ...
-
+:
 : #set log - send msg to log
 : printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 
@@ -516,7 +518,7 @@ For each backup job:
 :    $ ls -l /run/media/wolfv/Fedora/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
 - check space usage and available space
 - check rclone_jobber.log
-: $ cat /var/log/rclone_jobber.log
+:    $ cat /var/log/rclone_jobber.log
 - make sure monitoring URLs are still active
 
 Do not rely solely on warning messages or rclone_jobber.log for monitoring; they do not prove that data was saved to destination.
