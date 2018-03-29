@@ -45,6 +45,7 @@ To setup a test directory from the command line:
 The examples directory contains all the scripts used by this tutorial.
 The example scripts have path variables inside \"${}\" e.g.
 : dest="${USB}/test_rclone_backup"
+
 You can set the variables in your system's environment (recommended), or you can replace occurrences of \"${}\" with your system's paths.
 
 The example scripts use the following environment path variables:
@@ -71,6 +72,7 @@ Here is a minimal backup job script for rclone_jobber:
 : dest="${USB}/test_rclone_backup"
 : 
 : ${rclone_jobber}/rclone_jobber.sh "$source" "$dest"
+
 The last line calls rclone_jobber.sh with arguments =source= and =dest=.
 
 *Important:* Since a bad backup job can cause data loss, test first with the =--dry-run= flag to see exactly what would be copied and deleted.
@@ -104,6 +106,7 @@ Here is an example backup job with all the rclone_jobber arguments defined:
 : monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
 : 
 : ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
+
 The last line calls rclone_jobber.sh with arguments.
 =source= and =dest= are required, the remaining arguments can be \"\" or undefined.
 
@@ -182,6 +185,7 @@ You can put any [[https://rclone.org/docs/#options][rclone options]] in the opti
 : --suffix
 : --log-file
 : --log-level
+
 The those options are set in rclone_jobber.sh.
 
 Example options argument containing three rclone options:
@@ -472,6 +476,7 @@ Then restore data:
 
 Verify that the files were faithfully restored:
 : $ diff -r ${HOME}/test_rclone_data/direc0 /home/${USER}/last_snapshot/direc0
+
 Notice that rclone does not back up empty directories.
 
 Follow a similar procedure when you practice your recovery plan, but with real data.
@@ -497,8 +502,7 @@ Here is how to setup the recovery-plan files for easy access.
 For each backup location, place the recovery-plan files in a directory to be backed up.
 - If a backup is not encrypted, then the recovery-plan files will be accessible in the backup.
 - If a backup is encrypted, create an unecrypted backup job to the same underlying remote, like this example:
-  [[rclone_jobber/examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]] and
-  [[rclone_jobber/examples/filter_rules_recovery_plan][filter_rules_recovery_plan]]
+  [[rclone_jobber/examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]] and [[rclone_jobber/examples/filter_rules_recovery_plan][filter_rules_recovery_plan]].
   And schedule the job to insure that your backup-recovery-plan files are always up-to date.
 
 That way the recovery-plan files are with the backups, and accessible without rclone.
