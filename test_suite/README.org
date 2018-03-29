@@ -6,10 +6,8 @@ Each test_ script creates two directories:
 - test_rclone_data
 - test_rclone_backup
 
-Then the test_ script tests two or three job_ scripts.
-
+Each test_ script tests two or three job_ scripts.
 Job-script names start with "job_".
-Each job_ script calls the rclone_jobber.sh script
 
 Test procedure for each test script:
 1. run the test script from the terminal
@@ -27,6 +25,9 @@ Passed 3/28/18
 Expected result:
 - file names ending in "_exe" are excluded from backup
 - deleted directory direc1/direc1b/ can not be restored because move_old_files_to=\"\"
+ =move_old_files_to=""=
+ =move_old_files_to=test=
+ =move_old_files_to\=test=
 
 Dependencies:
 - job_snapshot_backup_old_data_to_delete.sh
