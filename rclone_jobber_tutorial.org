@@ -49,11 +49,11 @@ To setup a test directory from the command line:
 #+END_EXAMPLE
 
 The examples directory contains all the scripts used by this tutorial.
-The example scripts have path variables inside "${}" e.g.
+The example scripts have path variables inside \"${}\" e.g.
 #+BEGIN_EXAMPLE
     dest="${USB}/test_rclone_backup"
 #+END_EXAMPLE
-You can set the variables in your system's environment (recommended), or you can manually replace occurrences of "${}" with your system's paths.
+You can set the variables in your system's environment (recommended), or you can manually replace occurrences of \"${}\" with your system's paths.
 
 The example scripts use the following environment path variables:
 - HOME
@@ -71,7 +71,7 @@ and reload .bachrc:
         $ source ~/.bachrc
   #+END_EXAMPLE
 
-The USB is just a path name used in the examples, it doesn't actually have to be a USB drive (e.g. export USB="/home/wolfv/test_rclone").
+The USB is just a path name used in the examples, it doesn't actually have to be a USB drive (e.g. export USB=\"/home/wolfv/test_rclone\").
 
 * Take rclone_jobber.sh for a test drive
 Once you have the test directories and path variables setup, you can take rclone_jobber for a test drive.
@@ -125,7 +125,7 @@ Here is an example backup job with all the rclone_jobber arguments defined:
     ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 #+END_EXAMPLE
 The last line calls rclone_jobber.sh with arguments.
-=source= and =dest= are required, the remaining arguments can be =""= or undefined.
+=source= and =dest= are required, the remaining arguments can be \"\" or undefined.
 
 Rclone_jobber has 6 parameters, which are described in the next 6 sections:
 1) source
@@ -242,7 +242,7 @@ The =job_name= argument specifies the job's file name:
    job_name="$(basename $0)"
 #+END_EXAMPLE
 
-The shell command "$(basename $0)" will fill in the job's file name for you.
+The shell command \"$(basename $0)\" will fill in the job's file name for you.
 
 Rclone_jobber guards against =job_name= running again before the previous run is finished.
 If rclone_jobber is called directly (from a job scheduler or command line without a job file), the guard will not work.
@@ -314,7 +314,7 @@ To list all your rclone remotes:
     $ rclone listremotes
 #+END_EXAMPLE
 
-You can set the "remote" variable in your system's environment (recommended), or you can manually replace occurrences of "${remote}" with your remote path.
+You can set the "remote" variable in your system's environment (recommended), or you can manually replace occurrences of \"${remote}\" with your remote path.
 
 If you're on Linux, add this line to your .bashrc file, but with your remote path:
   #+BEGIN_EXAMPLE
@@ -383,7 +383,7 @@ To list all files in path recursively:
 
 [[./examples/job_backup_to_remote.sh][/examples/job_backup_to_remote.sh]] uses a remote, which could be of type crypt.
 
-To test your crypt remote, set the path variable as described in the "Configure a remote" section, and then run:
+To test your crypt remote, set the path variable as described in the "[[*Configure a remote][Configure a remote]]" section, and then run:
 #+BEGIN_EXAMPLE
     $ ~/rclone_jobber/examples/job_backup_to_remote.sh
 #+END_EXAMPLE
@@ -409,7 +409,7 @@ So then rclone can’t decrypt the file names.
 
 There are 3 work-a-rounds:
 - turn off "enrcrypt file names" and "enrcrypt directory names" in rclone config (file content can still be encrypted)
-- turn off b2 lifecycle, set move_old_files_to="dated_directory" in backup job,
+- turn off b2 lifecycle, set move_old_files_to=\"dated_directory\" in backup job,
   and manually delete old files at end of life
 - use a different remote data-storage provider
 
@@ -511,7 +511,7 @@ Execute a dry-run to see what logrotate would do:
 
 ** log to systemd journal
 Linux and macOS can send all log output to systemd journal.
-All you have to do is setup /var/log/rclone_jobber.log (described in section "Logging to Linux /var/log/rclone_jobber.log") and make these 3 changes to rclone_jobber.sh script:
+All you have to do is setup /var/log/rclone_jobber.log (described in section "[[*Logging to Linux /var/log/rclone_jobber.log][Logging to Linux /var/log/rclone_jobber.log]]") and make these 3 changes to rclone_jobber.sh script:
 #+BEGIN_EXAMPLE
     #set log_file path
     log_file="/var/log/rclone_jobber.log"
@@ -531,18 +531,18 @@ The latest snapshot can be easily restored from either backup.
 
 [[./examples/job_backup_to_USB.sh][examples/job_backup_to_USB.sh]] has attributes that make it convenient to browse file history:
 - local storage (for fast navigation)
-- move_old_files_to="dated_files" (old versions of a file are grouped together)
+- move_old_files_to=\"dated_files\" (old versions of a file are grouped together)
 - not encrypted (brows files in a file manager) (unecrypted local storage is OK if storage is safe from theft, and useful if the remote storage password is lost)
 - schedule hourly, on the hour (this assumes the USB drive is always plugged in and mounted)
 
 [[./examples/job_backup_to_remote.sh][/examples/job_backup_to_remote.sh]] has attributes that make it secure, and easy to restore a deleted sub-directory:
 - remote storage (off site is safe from on-site disaster)
-- move_old_files_to="dated_directory" (easy to restore a deleted sub-directory e.g. Documents)
+- move_old_files_to=\"dated_directory\" (easy to restore a deleted sub-directory e.g. Documents)
 - encrypted (please keep your password in a safe place)
 - schedule hourly, 30 min past the hour (for a back up every 30 minutes when combined with job_backup_to_USB.sh)
 
 In addition, job_backup_recovery_plan_to_remote.sh stores recovery-plan files off-site unecrypted.
-Recovery-plan files are listed in the "Recovery plan" section.
+Recovery-plan files are listed in the "[[*Recovery plan][Recovery plan]]" section.
 
 * Example restore-data jobs
 Here are three ways to restore data:
@@ -631,6 +631,7 @@ For each backup job:
 #+BEGIN_EXAMPLE
     $ cat /var/log/rclone_jobber.log
 #+END_EXAMPLE
+- make sure monitoring URLs are still active
 
 Do not rely solely on warning messages or rclone_jobber.log for monitoring; they do not prove that data was saved to destination.
 Check the actual backup.
