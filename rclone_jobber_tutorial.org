@@ -362,11 +362,12 @@ On Linux Gnome desktop:
 
 * Logging options
 You can skip this section if you like the default logging.
+The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh.
 
 In rclone_logger.sh, logging options are headed by "#set log" comments, with a variable set to default value on the following line.
 You can change the values to non-default values.
 
-** Log output
+** Amount of information logged
 To change amount of information logged, look for these "#set log" comments in rclone_jobber.sh:
 : #set log_level for desired amount of information in rclone log entries
 : #set logging to verbose
@@ -379,7 +380,7 @@ You can change log_file to any path you like.
 : path="$(realpath $0)"           #log file in same directory as this script
 : log_file="${path%.*}.log"       #replace this file's extension with "log"
 
-** Logging to Linux /var/log/rclone_jobber.log
+** Linux logging to /var/log/rclone_jobber.log
 To set the rclone_jobber log location to /var/log/, create the log file and give it the user's ownership and read-write permission.
 In this example, rclone_jobber.log ownership is given to wolfv:
 : $ sudo touch       /var/log/rclone_jobber.log
@@ -415,7 +416,7 @@ More options are listed in man:
 Execute a dry-run to see what logrotate would do:
 : $ logrotate -d /etc/logrotate.d/rclone_jobber
 
-** log to systemd journal
+** Linux log to systemd journal
 Linux and macOS can send all log output to systemd journal.
 All you have to do is setup /var/log/rclone_jobber.log (described in section "[[*Logging to Linux /var/log/rclone_jobber.log][Logging to Linux /var/log/rclone_jobber.log]]") and make these 3 changes to rclone_jobber.sh script:
 : #set log_file path

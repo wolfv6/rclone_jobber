@@ -130,9 +130,9 @@ if [ "$exit_code" -eq 0 ]; then            #if no errors
     if [ "$log_level" != "INFO" ]; then     #if rclone log_level not already giving enough information
         send_to_log "$confirmation"
         send_to_log ""
-        exit 0
     fi
     wget $monitoring_URL -O /dev/null
+    exit 0
 else
     print_message "ERROR" "failed.  rclone exit_code=$exit_code"
     send_to_log ""
