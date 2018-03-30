@@ -1,5 +1,5 @@
 #!/bin/sh
-#rclone_jobber.sh version 1.2
+#rclone_jobber.sh version 1.3
 #Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 
 ################################### license ##################################
