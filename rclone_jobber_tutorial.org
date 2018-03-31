@@ -257,7 +257,7 @@ Some remote data-storage providers offer an integrated monitoring service, in wh
 
 * Filter rules
 Filter rules tell rclone which files to include or exclude.
-Open the [[./examples/filter_rules][examples/filter_rules]] file.
+Open the [[./examples/filter_rules_exc][examples/filter_rules_exc]] file.
 Each rule starts with a "+ " or "- ", followed by a pattern.
 : A leading "+" means include if the pattern matches.
 : A leading "-" means exclude if the pattern matches.
@@ -269,7 +269,7 @@ If the matcher fails to find a match after testing all the filter rules, then th
 In the example filter_rules_exc file, each section starts with a ###### heading ######.
 The sections alternate between include and exclude, progressing from fine to coarse grained.
 This example has four sections, but any number of sections are possible.
-Most filter-rules files have fewer sections.
+[[filter_rules][examples/filter_rules]] has two sections.
 
 The filter_rules_exc file is specified in the rclone_jobber =options= argument like this:
 : options="--filter-from filter_rules_exc"
@@ -398,7 +398,7 @@ On Linux Gnome desktop:
 You can skip this section if you like the default logging.
 The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh.
 
-In rclone_logger.sh, logging options are headed by "#set log" comments, with a variable set to default value on the following line.
+Logging options are headed by "#set log" comments in rclone_logger.sh, with a variable set to default value on the following line.
 You can change the values to non-default values.
 
 ** Amount of information logged
