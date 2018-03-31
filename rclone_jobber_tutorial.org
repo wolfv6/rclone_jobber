@@ -18,6 +18,40 @@ Unless you know exactly what you are doing, please work this tutorial on a spare
 This tutorial and associated scripts are distributed without any warranty.
 I am not responsible for any lost data.
 
+* Table of Contents                                           :TOC_2:
+- [[#about-this-rclone_jobber-tutorial][About this rclone_jobber tutorial]]
+- [[#install-rclone][Install rclone]]
+- [[#install-rclone_jobber][Install rclone_jobber]]
+- [[#setup-test-directories-and-path-variables][Setup test directories and path variables]]
+- [[#take-rclone_jobbersh-for-a-test-drive][Take rclone_jobber.sh for a test drive]]
+- [[#backup-job-and-rclone_jobbersh-parameters][Backup job and rclone_jobber.sh parameters]]
+  - [[#backup-job-script][Backup job script]]
+  - [[#1-source][1) source]]
+  - [[#2-dest][2) dest]]
+  - [[#3-move_old_files_to][3) move_old_files_to]]
+  - [[#4-options][4) options]]
+  - [[#5-job_name][5) job_name]]
+  - [[#6-monitoring_url][6) monitoring_URL]]
+- [[#filter-rules][Filter rules]]
+- [[#select-a-remote-data-storage-provider][Select a remote data-storage provider]]
+- [[#configure-a-remote][Configure a remote]]
+- [[#configure-a-crypt][Configure a crypt]]
+- [[#schedule-backup-jobs-to-run-automatically][Schedule backup jobs to run automatically]]
+- [[#logging-options][Logging options]]
+  - [[#amount-of-information-logged][Amount of information logged]]
+  - [[#log-file-location][Log file location]]
+  - [[#linux-logging-to-varlogrclone_jobberlog][Linux logging to /var/log/rclone_jobber.log]]
+  - [[#linux-logrotate][Linux Logrotate]]
+  - [[#linux-log-to-systemd-journal][Linux log to systemd journal]]
+- [[#example-backup-jobs][Example backup jobs]]
+- [[#example-restore-data-jobs][Example restore-data jobs]]
+- [[#test-backup-jobs-and-test-restore-data-jobs][Test backup jobs and test restore-data jobs]]
+- [[#recovery-plan][Recovery plan]]
+- [[#monitoring][Monitoring]]
+  - [[#check-backups][Check backups]]
+  - [[#check-recovery-plan][Check recovery plan]]
+- [[#license][License]]
+
 * Install rclone
 On Debian-based Linux distributions:
 : $ apt-cache policy rclone
