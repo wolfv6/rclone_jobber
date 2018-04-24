@@ -25,22 +25,25 @@ job_name="$5"          #job_name="$(basename $0)"
 monitoring_URL="$6"    #cron monitoring service URL to send email if cron or other errors prevented back up
 
 ################################ set variables ###############################
-#$new is the directory name of the current snapshot (the name "last_snapshot" makes more sense in the future)
-#$timestamp is time that old file was moved out of new (not time file was copied from source)
+# $new is the directory name of the current snapshot (the name "last_snapshot" makes more sense in the future)
+# $timestamp is time that old file was moved out of new (not time file was copied from source)
 new="last_snapshot"
 timestamp="$(date +%F_%T)"
 #timestamp="$(date +%F_%H%M%S)" #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
 
-#set log_file path
+# $archive_dir_name is the directory where the dated directories of moved files will be stored. $(date +%Y) adds a yearly directory i.e archive/2018
+archive_dir_name="archive/$(date +%Y)"
+
+# set log_file path
 path="$(realpath $0)"           #log file in same directory as this script
 log_file="${path%.*}.log"       #replace this file's extension with "log"
 #log_file="/var/log/rclone_jobber.log"
 
-#set log_option for rclone
+# set log_option for rclone
 log_option="--log-file=$log_file"
 #log_option="--syslog"
 
-#set log_level for desired amount of information in rclone log entries  https://rclone.org/docs/#log-level-level
+# set log_level for desired amount of information in rclone log entries  https://rclone.org/docs/#log-level-level
 #log_level="DEBUG"  # outputs lots of debug info - useful for bug reports and really finding out what rclone is doing
 #log_level="INFO"   # outputs information about each transfer and prints stats once a minute
 log_level="NOTICE" # outputs warnings and significant events, which is very little when things are working normally
@@ -99,7 +102,7 @@ fi
 #default move_old_files_to="" will remove deleted or changed files from backup
 if [ "$move_old_files_to" = "dated_directory" ]; then
     #move deleted or changed files to $timestamp directory
-    backup_dir="--backup-dir=$dest/$timestamp"
+    backup_dir="--backup-dir=$dest/$archive_dir_name/$timestamp"
 elif [ "$move_old_files_to" = "dated_files" ]; then
     #move deleted or changed files to old directory, and append _$timestamp to file name
     backup_dir="--backup-dir=$dest/old_files --suffix=_$timestamp"
