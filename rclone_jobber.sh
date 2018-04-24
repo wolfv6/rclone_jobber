@@ -1,6 +1,6 @@
 #!/bin/sh
-#rclone_jobber.sh version 1.3
-#Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
+# rclone_jobber.sh version 1.4
+# Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 
 ################################### license ##################################
 # rclone_jobber.sh is a script that calls rclone sync to perform a backup.
@@ -31,9 +31,6 @@ new="last_snapshot"
 timestamp="$(date +%F_%T)"
 #timestamp="$(date +%F_%H%M%S)" #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
 
-# $archive_dir_name is the directory where the dated directories of moved files will be stored. $(date +%Y) adds a yearly directory i.e archive/2018
-archive_dir_name="archive/$(date +%Y)"
-
 # set log_file path
 path="$(realpath $0)"           #log file in same directory as this script
 log_file="${path%.*}.log"       #replace this file's extension with "log"
@@ -54,7 +51,7 @@ send_to_log()
 {
     msg="$1"
 
-    #set log - send msg to log
+    # set log - send msg to log
     echo "$msg" >> "$log_file"                             #send msg to log_file
     #printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 }
@@ -68,7 +65,7 @@ print_message()
     echo "$message"
     send_to_log "$(date +%F_%T) $message"
     warning_icon="/usr/share/icons/Adwaita/32x32/emblems/emblem-synchronizing.png"   #path in Fedora 27
-    #notify-send is a popup notification on most Linux desktops
+    # notify-send is a popup notification on most Linux desktops
     notify-send --urgency critical --icon "$warning_icon" "$message"
 }
 
@@ -83,7 +80,7 @@ if [ -z "$dest" ]; then
     exit 1
 fi
 
-#if source is empty
+# if source is empty
 if ! test "$(rclone ls $source)"; then    #rclone ls lists all files of source recursively
 #if ! test "$(rclone lsf $source)"; then  #rclone lsf requires rclone 1.40 or later
 #if ! test "$(rclone lsd $source)"; then  #rclone lsd produces a smaller output, but needs a sub-directory
@@ -91,20 +88,20 @@ if ! test "$(rclone ls $source)"; then    #rclone ls lists all files of source r
     exit 1
 fi
 
-#if job is already running (maybe previous run didn't finish)
+# if job is already running (maybe previous run didn't finish)
 if pidof -o $PPID -x "$job_name"; then
     print_message "WARNING" "aborted because it is already running."
     exit 1
 fi
 
 ############################### move_old_files_to #############################
-#deleted or changed files are removed or moved, depending on value of move_old_files_to variable
-#default move_old_files_to="" will remove deleted or changed files from backup
+# deleted or changed files are removed or moved, depending on value of move_old_files_to variable
+# default move_old_files_to="" will remove deleted or changed files from backup
 if [ "$move_old_files_to" = "dated_directory" ]; then
-    #move deleted or changed files to $timestamp directory
-    backup_dir="--backup-dir=$dest/$archive_dir_name/$timestamp"
+    # move deleted or changed files to archive/$(date +%Y)/$timestamp directory
+    backup_dir="--backup-dir=$dest/archive/$(date +%Y)/$timestamp"
 elif [ "$move_old_files_to" = "dated_files" ]; then
-    #move deleted or changed files to old directory, and append _$timestamp to file name
+    # move deleted or changed files to old directory, and append _$timestamp to file name
     backup_dir="--backup-dir=$dest/old_files --suffix=_$timestamp"
 elif [ "$move_old_files_to" != "" ]; then
     print_message "WARNING" "Parameter move_old_files_to=$move_old_files_to, but should be dated_directory or dated_files.\
@@ -115,11 +112,11 @@ fi
 ################################### back up ##################################
 cmd="rclone sync $source $dest/$new $backup_dir $log_option --log-level=$log_level $options"
 
-#progress message
+# progress message
 echo "Back up in progress $timestamp $job_name"
 echo "$cmd"
 
-#set logging to verbose
+# set logging to verbose
 #send_to_log "$timestamp $job_name"
 #send_to_log "$cmd"
 
