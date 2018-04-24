@@ -19,7 +19,7 @@ This tutorial and associated scripts are distributed without any warranty.
 I am not responsible for any lost data.
 
 * Table of Contents                                           :TOC_2:
-- [[#about-this-rclone_jobber-tutorial][About this rclone_jobber tutorial]]
+- [[#about-this-rclone_jobber-backup-script-tutorial][About this rclone_jobber backup script tutorial]]
 - [[#install-rclone][Install rclone]]
 - [[#install-rclone_jobber][Install rclone_jobber]]
 - [[#setup-test-directories-and-path-variables][Setup test directories and path variables]]
@@ -33,7 +33,7 @@ I am not responsible for any lost data.
   - [[#5-job_name][5) job_name]]
   - [[#6-monitoring_url][6) monitoring_URL]]
 - [[#filter-rules][Filter rules]]
-- [[#select-a-remote-data-storage-provider][Select a remote data-storage provider]]
+- [[#select-a-cloud-storage-provider][Select a cloud storage provider]]
 - [[#configure-a-remote][Configure a remote]]
 - [[#configure-a-crypt][Configure a crypt]]
 - [[#schedule-backup-jobs-to-run-automatically][Schedule backup jobs to run automatically]]
@@ -278,15 +278,15 @@ To see the example filter_rules_exc file in action, run:
 : $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
 : $ ~/rclone_jobber/examples/job_backup_to_USB_exc.sh
 
-* Select a remote data-storage provider
-All the rclone remote data-storage providers are listed on https://rclone.org/.
-Some of the remote data-storage-provider features are listed in two tables on https://rclone.org/overview/.
+* Select a cloud storage provider
+All the rclone cloud-storage providers are listed on https://rclone.org/.
+Some of the cloud-storage-provider features are listed in two tables on https://rclone.org/overview/.
 
 * Configure a remote
-Once you have an account with your chosen data-storage provider, the next step is to configure a remote.
+Once you have an account with your chosen cloud-storage provider, the next step is to configure its remote.
 Configuring a remote in rclone is surprisingly straightforward for the amount of under-the-covers authentication it does.
 
-There is one page of configuration instructions for each remote data-storage provider.
+There is one page of configuration instructions for each cloud-storage provider.
 Links to the configuration instructions are at https://rclone.org/docs/#configure and https://rclone.org/.
 Follow the instructions to configure your remote now, we will test the remote at the end of this section.
 
@@ -326,7 +326,7 @@ You can always rename a remote later via rclone config.
 To list all your rclone remotes:
 : $ rclone listremotes
 
-Most remote data-storage providers allow you to view your directory names and file names in a web browser.
+Most remote cloud-storage providers allow you to view your directory names and file names in a web browser.
 But that's not very useful if the directory and file names were encrypted by rclone.
 Use rclone to browse encrypted directory and file names.
 
