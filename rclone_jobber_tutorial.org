@@ -176,13 +176,18 @@ Argument to move deleted or changed files to a dated directory:
 : move_old_files_to="dated_directory" 
 
 Old files are moved to the dated directory in their original hierarchy.
-This is makes it easy to restore a deleted sub-directory.
-Also convenient to manually delete very old files e.g. delete dated directories more than a year old.
+This makes it easy to restore a deleted sub-directory.
+Also convenient to manually delete a directory from a previous year.
 : backup
-: ├── 2018-02-22_14:00:14   <<<<<<<< dated_directory contains old files
-: │   └── direc1
-: │       └── f1            <<<<<<<< old version of file f1 moved here on directory's date
-: └── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
+: ├── archive
+: │   └── 2018
+: │       ├── 2018-02-22_14:00:14
+: │       │   └── direc1
+: │       │       └── f1
+: │       └── 2018-02-22_15:00:14   <<<<<<<< dated_directory contains old files
+: │           └── direc1
+: │               └── f1            <<<<<<<< old version of file f1 moved here on directory's date
+: └── last_snapshot                 <<<<<<<< last_snapshot directory contains the most recent backup
 :     └── direc1
 :         └── f1
 
@@ -193,13 +198,13 @@ Argument to move old files to old_files directory, and append move date to file 
 Old files are moved to the old_files directory in their original hierarchy.
 This is makes it easy to browse a file's history, and restore a particular version of a file.
 : backup
-: ├── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
+: ├── last_snapshot                   <<<<<<<< last_snapshot directory contains the most recent backup
 : │   └── direc1
 : │       └── f1
-: └── old_files             <<<<<<<< old_files directory contains old dated_files
+: └── old_files                       <<<<<<<< old_files directory contains old dated_files
 :     └── direc1
-:         ├── f1_2018-02-22_14:00:14  <<<<<<<<< old version of file f1 moved here on appended date
-:         └── f1_2018-02-22_15:00:14
+:         ├── f1_2018-02-22_14:00:14
+:         └── f1_2018-02-22_15:00:14  <<<<<<<<< old version of file f1 moved here on appended date
 
 *** move_old_files_to=\"\"
 Argument to remove old files from backup:
@@ -395,8 +400,8 @@ On Linux Gnome desktop:
 : right click > Settings > Power > Automatic suspend: Off
 
 * Logging options
-You can skip this section if you like the default logging.
 The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh.
+You can skip this section if you like the default logging.
 
 Logging options are headed by "#set log" comments in rclone_logger.sh, with a variable set to default value on the following line.
 You can change the values to non-default values.

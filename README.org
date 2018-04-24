@@ -3,8 +3,6 @@
 It performs a backup job by calling rclone.
 [[https://rclone.org/][Rclone]] is a mature tool and many [[https://github.com/ncw/rclone/wiki/Third-Party-Integrations-with-rclone][third party tools use rclone]].
 
-rclone_jobber.sh has been tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
-
 The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-job and restore-job examples for a home computer.
 
 *rclone_jobber.sh features:*
@@ -28,6 +26,12 @@ The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-
 - Sync (one way) mode to make a directory identical
 - Partial syncs supported on a whole file basis
 - Free (open source MIT license)
+
+rclone_jobber is a pre-written script, which means it has the best of both worlds:
+- Like a backup tool, rclone_jobber is already developed, documented, and tested.
+  Only the job files need to be written, tested, and scheduled.
+  rclone_jobber.sh has been tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
+- because it is a script, rclone_jobber is easily customized.
 
 Both rclone and rclone_jobber.sh are command line tools.
 If you prefer a GUI, checkout [[https://mmozeiko.github.io/RcloneBrowser/][RcloneBrowser]].
