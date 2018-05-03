@@ -1,5 +1,5 @@
 #!/bin/sh
-# rclone_jobber.sh version 1.4
+# rclone_jobber.sh version 1.4.1
 # Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 
 ################################### license ##################################
@@ -66,7 +66,7 @@ print_message()
     send_to_log "$(date +%F_%T) $message"
     warning_icon="/usr/share/icons/Adwaita/32x32/emblems/emblem-synchronizing.png"   #path in Fedora 27
     # notify-send is a popup notification on most Linux desktops
-    which notify-send && notify-send --urgency critical --icon "$warning_icon" "$message"
+    command -v notify-send && notify-send --urgency critical --icon "$warning_icon" "$message"
 }
 
 ################################# range checks ################################
