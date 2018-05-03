@@ -31,7 +31,7 @@ rclone_jobber is a pre-written script, which means it has the best of both world
 - Like a backup tool, rclone_jobber is already developed, documented, and tested.
   Only the job files need to be written, tested, and scheduled.
   rclone_jobber.sh has been tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
-- because it is a script, rclone_jobber is easily customized.
+- Because it is a script, rclone_jobber is easily customized.
 
 Both rclone and rclone_jobber.sh are command line tools.
 If you prefer a GUI, checkout [[https://mmozeiko.github.io/RcloneBrowser/][RcloneBrowser]].
