@@ -66,7 +66,7 @@ print_message()
     send_to_log "$(date +%F_%T) $message"
     warning_icon="/usr/share/icons/Adwaita/32x32/emblems/emblem-synchronizing.png"   #path in Fedora 27
     # notify-send is a popup notification on most Linux desktops
-    notify-send --urgency critical --icon "$warning_icon" "$message"
+    which notify-send && notify-send --urgency critical --icon "$warning_icon" "$message"
 }
 
 ################################# range checks ################################
