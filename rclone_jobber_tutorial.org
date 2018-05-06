@@ -44,7 +44,7 @@ I am not responsible for any lost data.
   - [[#linux-logrotate][Linux Logrotate]]
   - [[#linux-log-to-systemd-journal][Linux log to systemd journal]]
 - [[#example-backup-jobs][Example backup jobs]]
-- [[#example-restore-data-jobs][Example restore-data jobs]]
+- [[#example-restore-data][Example restore-data]]
 - [[#test-backup-jobs-and-test-restore-data-jobs][Test backup jobs and test restore-data jobs]]
 - [[#recovery-plan][Recovery plan]]
 - [[#monitoring][Monitoring]]
@@ -488,11 +488,17 @@ The latest snapshot can be easily restored from either backup.
 In addition, job_backup_recovery_plan_to_remote.sh stores recovery-plan files off-site unecrypted.
 Recovery-plan files are listed in the "[[*Recovery plan][Recovery plan]]" section.
 
-* Example restore-data jobs
-Here are three ways to restore data:
+* Example restore-data
+To restore data, copy files from backup to destination.
+
+You can use cp (shell command) to restore data from local unecrypted backup:
+- to copy a single file from local backup:    cp -p localBackupPath destPath
+- to copy a last_snapshot from local backup:  cp -a localBackup/last_snapshot destPath
+
+Use rclone to restore data from remote or encrypted backup:
+- to copy a single file from remote backup:   rclone copy remote:sourcePath dest:destPath
 - [[./examples/job_restore_last_snapshot.sh][examples/job_restore_last_snapshot.sh]]
 - [[./examples/job_restore_directory_from_remote.sh][examples/job_restore_directory_from_remote.sh]]
-- use a file manager to copy a single file from local backup
 
 * Test backup jobs and test restore-data jobs
 It's human nature to neglect data recovery until it's too late.
