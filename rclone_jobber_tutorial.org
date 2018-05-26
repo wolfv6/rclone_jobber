@@ -53,6 +53,9 @@ I am not responsible for any lost data.
 - [[#license][License]]
 
 * Install rclone
+Install the latest rclone from https://rclone.org/downloads/
+or if your package manager has the latest version...
+
 On Debian-based Linux distributions:
 : $ apt-cache policy rclone
 : $ sudo apt-get install rclone
@@ -60,8 +63,6 @@ On Debian-based Linux distributions:
 On RPM-based Linux distributions:
 : $ dnf info rclone
 : $ sudo dnf install rclone
-
-Or download the latest rclone from https://rclone.org/downloads/
 
 * Install rclone_jobber
 Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber repository]] to your home directory.
@@ -268,7 +269,7 @@ Each rule starts with a "+ " or "- ", followed by a pattern.
 : A leading "-" means exclude if the pattern matches.
 
 Rclone has a sophisticated set of [[https://rclone.org/filtering/][filter rules]].
-For each file, the rules are processed in the order that they are defined.
+For each file in source, the filter rules are processed in the order that they are defined.
 If the matcher fails to find a match after testing all the filter rules, then the path is included.
 
 In the example filter_rules_exc file, each section starts with a ###### heading ######.
@@ -389,9 +390,11 @@ Schedule your backup jobs in your favorite job scheduler.
 The following example schedules jobs on cron (cron is a job scheduler installed on Linux).
 The first line runs a local job every hour on the hour.
 The second line runs a remote job every hour, 30 minutes past the hour.
+The third line runs at 2:18 and 14:18 every day
 : $ crontab -e
 : 00 * * * * /home/wolfv/rclone_jobber/job_backup_to_USB.sh
 : 30 * * * * /home/wolfv/rclone_jobber/job_backup_to_remote.sh
+: 18 2,14 * * * /home/wolfv/rclone_jobber/job_backup_recovery_plan_to_remote.sh
 
 The initial backup will take a long time (subsequent backups are much shorter).
 If your computer goes to sleep while a backup is in progress, the backup will not finish.
@@ -403,8 +406,8 @@ On Linux Gnome desktop:
 The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh.
 You can skip this section if you like the default logging.
 
-Logging options are headed by "#set log" comments in rclone_logger.sh, with a variable set to default value on the following line.
-You can change the values to non-default values.
+Logging options are headed by "# set log" comments with the option set on the following line.
+To change amount of information logged, search for these "# set log" comments and change their default values.
 
 ** Amount of information logged
 To change amount of information logged, look for these "#set log" comments in rclone_jobber.sh:
@@ -429,7 +432,7 @@ In this example, rclone_jobber.log ownership is given to wolfv:
 : -rw-rw-rw-. 1 wolfv root 19 Mar 21 13:58 /var/log/rclone_jobber.log
 
 In rclone_jobber.sh, set the new log_file path:
-: #set log_file path
+: # set log_file path
 : log_file="/var/log/rclone_jobber.log"
 
 ** Linux Logrotate
@@ -458,15 +461,15 @@ Execute a dry-run to see what logrotate would do:
 ** Linux log to systemd journal
 Linux and macOS can send all log output to systemd journal.
 All you have to do is setup /var/log/rclone_jobber.log (described in section "[[*Logging to Linux /var/log/rclone_jobber.log][Logging to Linux /var/log/rclone_jobber.log]]") and make these 3 changes to rclone_jobber.sh script:
-: #set log_file path
+: # set log_file path
 : log_file="/var/log/rclone_jobber.log"
 : 
-: #set log_option for rclone
+: # set log_option for rclone
 : log_option="--syslog"
 : 
 : ...
 : 
-: #set log - send msg to log
+: # set log - send msg to log
 : printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 
 * Example backup jobs
@@ -548,8 +551,10 @@ Here is how to setup the recovery-plan files for easy access.
 For each backup location, place the recovery-plan files in a directory to be backed up.
 - If a backup is not encrypted, then the recovery-plan files will be accessible in the backup.
 - If a backup is encrypted, create an unecrypted backup job to the same underlying remote, like this example:
-  [[rclone_jobber/examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]] and [[rclone_jobber/examples/filter_rules_recovery_plan][filter_rules_recovery_plan]].
-  And schedule the job to insure that your backup-recovery-plan files are always up-to date.
+  [[rclone_jobber/examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]]
+  [[rclone_jobber/examples/filter_rules_recovery_plan][filter_rules_recovery_plan]]
+  [[*Schedule backup jobs to run automatically][Schedule backup jobs to run automatically]]
+  Scheduling job_backup_recovery_plan_to_remote.sh insures that your backup recovery-plan files are always up-to date.
 
 That way the recovery-plan files are with the backups, and accessible without rclone.
 
@@ -564,8 +569,8 @@ Example monthly backup check.
 
 For each backup job:
 - check that recently changed files are in the backup
+:    $ ls -l /run/media/wolfv/big_stick/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
 :    $ rclone lsl onedrive_wolfv_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
-:    $ ls -l /run/media/wolfv/Fedora/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
 - check space usage and available space
 - check rclone_jobber.log
 :    $ cat /var/log/rclone_jobber.log

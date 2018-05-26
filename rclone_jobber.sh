@@ -1,6 +1,8 @@
 #!/bin/sh
 # rclone_jobber.sh version 1.4.1
 # Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
+# Logging options are headed by "# set log" comments with the option set on the following line.
+# To change amount of information logged, search for these "# set log" comments and change their default values.
 
 ################################### license ##################################
 # rclone_jobber.sh is a script that calls rclone sync to perform a backup.
@@ -22,10 +24,10 @@ move_old_files_to="$3" #move_old_files_to is one of:
 options="$4"           #rclone options like "--filter-from=filter_patterns --checksum --dry-run"
                        #do not put these in options: --backup-dir, --suffix, --log-file, --log-level
 job_name="$5"          #job_name="$(basename $0)"
-monitoring_URL="$6"    #cron monitoring service URL to send email if cron or other errors prevented back up
+monitoring_URL="$6"    #cron monitoring service URL to send email if cron failure or other error prevented back up
 
 ################################ set variables ###############################
-# $new is the directory name of the current snapshot (the name "last_snapshot" makes more sense in the future)
+# $new is the directory name of the current snapshot
 # $timestamp is time that old file was moved out of new (not time file was copied from source)
 new="last_snapshot"
 timestamp="$(date +%F_%T)"
@@ -81,9 +83,7 @@ if [ -z "$dest" ]; then
 fi
 
 # if source is empty
-if ! test "$(rclone ls $source)"; then    #rclone ls lists all files of source recursively
-#if ! test "$(rclone lsf $source)"; then  #rclone lsf requires rclone 1.40 or later
-#if ! test "$(rclone lsd $source)"; then  #rclone lsd produces a smaller output, but needs a sub-directory
+if ! ( ls -1qA $source | grep -q . ); then
     print_message "ERROR" "aborted because source is empty."
     exit 1
 fi

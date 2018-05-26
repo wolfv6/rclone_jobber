@@ -7,7 +7,8 @@ The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-
 
 *rclone_jobber.sh features:*
 - Options to archive old backup files in their original hierarchy
-- Abort if job is already running (maybe previous run didn't finish)
+- Can backup to multiple destinations for redundant backups (one backup job per destination)
+- Aborts if backup job is already running (maybe previous run didn't finish)
 - Pop-up for error conditions
 - Option for a cron-monitoring service
 - Logging
