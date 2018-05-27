@@ -9,12 +9,12 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-#replace ${HOME}, ${USB} and {$rclone_jobber} with paths on your system
-source="${HOME}/test_rclone_data"
-dest="${USB}/test_rclone_backup"
+#replace $HOME, $usb and {$rclone_jobber} with paths on your system
+source="$HOME/test_rclone_data"
+dest="$usb/test_rclone_backup"
 options="--dry-run"
 
-${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)"
+$rclone_jobber/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)"
 
 #display test directories (comment these if calling from job scheduler)
 tree -a $source

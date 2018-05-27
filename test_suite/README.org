@@ -14,13 +14,14 @@ Test procedure for each test script:
 2. manually inspect output for expected results (expected results are listed in test output and enclosed in parenthesis)
 
 rlcone_jobber.sh was tested on Linux Fedora 27, Gnome 3.26.2, rclone v1.39
+rlcone_jobber.sh was tested on Linux Debian 9, Gnome 3.22.2, rclone v1.41
 
 * test_last_snapshot.sh
 Testing:
 - filter exclude files ending with listed suffix
 - attempt to restore deleted sub-directory from last snapshot
 
-Passed 3/28/18
+Passed 5/27/18
 
 Expected result:
 - file names ending in "_exe" are excluded from backup
@@ -40,7 +41,7 @@ Testing:
 - attempt to back up a deleted top directory gets rclone message, and does not delete files
 - restore deleted sub-directory
 
-Passed 3/28/18
+Passed 5/27/18
 
 Expected result:
 - 2 pop-up warnings:
@@ -61,11 +62,11 @@ Dependencies:
 
 * test_USB.sh
 This test script uses environment variable USB, set it to your USB's path.
-For example, in Linux add this line to ~/.bashrc file:
+For example, in Linux add this line to ~./profile file:
 : export USB="/run/media/user/myUSB"
 
-and then from command line:
-: $ source ~/.bashrc
+and then source from command line:
+: $ source ~/.profile
 : $ echo $USB
 : /run/media/user/myUSB
 
@@ -75,7 +76,7 @@ Testing:
 - restore dated file
 - --checksum option
 
-Passed 3/28/18
+Passed 5/27/18
 
 Expected result:
 - old f1 file is restored in f1_<date>
@@ -102,15 +103,16 @@ Testing:
 - abort if job is already running (maybe previous run didn't finish)
 - --checksum option
 
+Open two terminals
 Manually test "job aborted because it is already running."
 : $ ./test_1d.sh
 
-(it takes 1 minute for a remote job to complete)
-While that's running, call the backup job again from another terminal:
+It takes 1 minute for a remote job to complete.
+While that's running, call the backup job again from the other terminal:
 : $ ./job_1d_backup_to_dated_directory.sh
 : job_1d_backup_to_dated_directory.sh aborted because it is already running.
 
-Passed 3/28/18
+Passed 5/27/18
 
 Expected result:
 - see expected result listing in [[*test_restore_deleted_directory.sh][test_restore_deleted_directory.sh]]
@@ -131,7 +133,7 @@ Testing:
 - null dest string
 - monitoring_URL
 
-Passed 3/28/18
+Passed 5/27/18
 
 Expected result:
 - all 3 backup jobs generate an error message, no backups are made

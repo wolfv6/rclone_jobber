@@ -1,5 +1,5 @@
-#!/bin/sh
-# rclone_jobber.sh version 1.4.1
+#!/usr/bin/env sh
+# rclone_jobber.sh version 1.5
 # Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 # Logging options are headed by "# set log" comments with the option set on the following line.
 # To change amount of information logged, search for these "# set log" comments and change their default values.
@@ -15,14 +15,14 @@
 # rclone_jobber is not affiliated with rclone.
 
 ################################# parameters #################################
-source="$1"            #the directory to back up
+source="$1"            #the directory to back up (without a trailing slash)
 dest="$2"              #destination=$dest/last_snapshot
 move_old_files_to="$3" #move_old_files_to is one of:
                        # "dated_directory" - move old files to a dated directory (an incremental backup)
                        # "dated_files"     - move old files to old_files directory, and append move date to file names (an incremental backup)
                        # ""                - old files are overwritten or deleted (a plain one-way sync backup)
-options="$4"           #rclone options like "--filter-from=filter_patterns --checksum --dry-run"
-                       #do not put these in options: --backup-dir, --suffix, --log-file, --log-level
+options="$4"           #rclone options like "--filter-from=filter_patterns --checksum --log-level="INFO" --dry-run"
+                       #do not put these in options: --backup-dir, --suffix, --log-file
 job_name="$5"          #job_name="$(basename $0)"
 monitoring_URL="$6"    #cron monitoring service URL to send email if cron failure or other error prevented back up
 
@@ -34,19 +34,13 @@ timestamp="$(date +%F_%T)"
 #timestamp="$(date +%F_%H%M%S)" #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
 
 # set log_file path
-path="$(realpath $0)"           #log file in same directory as this script
+path="$(realpath "$0")"           #log file in same directory as this script
 log_file="${path%.*}.log"       #replace this file's extension with "log"
 #log_file="/var/log/rclone_jobber.log"
 
 # set log_option for rclone
 log_option="--log-file=$log_file"
 #log_option="--syslog"
-
-# set log_level for desired amount of information in rclone log entries  https://rclone.org/docs/#log-level-level
-#log_level="DEBUG"  # outputs lots of debug info - useful for bug reports and really finding out what rclone is doing
-#log_level="INFO"   # outputs information about each transfer and prints stats once a minute
-log_level="NOTICE" # outputs warnings and significant events, which is very little when things are working normally
-#log_level="ERROR"  # outputs only error messages
 
 ################################## functions #################################
 send_to_log()
@@ -58,6 +52,7 @@ send_to_log()
     #printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 }
 
+#print message to echo, log, and popup
 print_message()
 {
     urgency="$1"
@@ -67,7 +62,7 @@ print_message()
     echo "$message"
     send_to_log "$(date +%F_%T) $message"
     warning_icon="/usr/share/icons/Adwaita/32x32/emblems/emblem-synchronizing.png"   #path in Fedora 27
-    # notify-send is a popup notification on most Linux desktops
+    # notify-send is a popup notification on most Linux desktops, install libnotify-bin
     command -v notify-send && notify-send --urgency critical --icon "$warning_icon" "$message"
 }
 
@@ -110,7 +105,7 @@ elif [ "$move_old_files_to" != "" ]; then
 fi
 
 ################################### back up ##################################
-cmd="rclone sync $source $dest/$new $backup_dir $log_option --log-level=$log_level $options"
+cmd="rclone sync $source $dest/$new $backup_dir $log_option $options"
 
 # progress message
 echo "Back up in progress $timestamp $job_name"
@@ -127,10 +122,8 @@ exit_code=$?
 if [ "$exit_code" -eq 0 ]; then            #if no errors
     confirmation="$(date +%F_%T) completed $job_name"
     echo "$confirmation"
-    if [ "$log_level" != "INFO" ]; then     #if rclone log_level not already giving enough information
-        send_to_log "$confirmation"
-        send_to_log ""
-    fi
+    send_to_log "$confirmation"
+    send_to_log ""
     wget $monitoring_URL -O /dev/null
     exit 0
 else

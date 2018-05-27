@@ -12,9 +12,9 @@
 #assign relative path of directory to restore
 path="relative path of directory to restore"
 
-#replace ${HOME} and ${remote} with paths on your system
+#replace $HOME and ${remote} with paths on your system
 source="${remote}:last_snapshot/${path}"
-destination="${HOME}/${path}_last_snapshot"
+destination="$HOME/${path}_last_snapshot"
 
 cmd="rclone copy $source $destination --dry-run"
 

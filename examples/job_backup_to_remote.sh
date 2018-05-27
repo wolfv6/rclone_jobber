@@ -9,16 +9,16 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-#replace {$rclone_jobber}, ${HOME} and ${remote} with paths on your system
-rclone_jobber=${rclone_jobber} #path to rclone_jobber directory
+#replace {$rclone_jobber}, $HOME and ${remote} with paths on your system
+rclone_jobber=$rclone_jobber #path to rclone_jobber directory
 
-source="${HOME}/test_rclone_data"
+source="$HOME/test_rclone_data"
 dest="${remote}:"
 move_old_files_to="dated_directory"
-options="--filter-from=${rclone_jobber}/examples/filter_rules"
+options="--filter-from=$rclone_jobber/examples/filter_rules"
 monitoring_URL=""
 
-${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
+$rclone_jobber/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 
 #display test directories (comment these if calling from job scheduler)
 tree -a $source

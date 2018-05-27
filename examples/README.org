@@ -1,15 +1,14 @@
-* Example scripts use environment variables for \"${path}\"
+* Example scripts use environment variables for \"$path\"
 The files in this directory are examples used by rclone_jobber_tutorial.org.
-The example scripts have path variables inside \"${}\" e.g.
-: source="${HOME}/test_rclone_data"
-: dest="${USB}/test_rclone_backup"
-: options="--filter-from=${rclone_jobber}/examples/filter_rules --checksum"
+The example scripts have path variables preceded by $ e.g.
+: source="$HOME/test_rclone_data"
+: dest="$usb/test_rclone_backup"
 
-You can set your system's environment variables, or you can manually replace occurrences of \"${}\" with your system's paths.
+You can set your system's environment variables, or you can manually replace occurrences of $variable with your system's paths.
 
 The example scripts use the following environment path variables:
 - HOME
 - USER
 - rclone_jobber
-- USB
+- usb
 - remote

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-source="${HOME}/test_rclone_data"
-dest="${USB}/test_rclone_backup"
+source="$HOME/test_rclone_data"
+dest="$USB/test_rclone_backup"
 move_old_files_to="dated_files"
 options="--checksum"
 

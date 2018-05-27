@@ -79,7 +79,7 @@ To setup a test directory from the command line:
 
 The examples directory contains all the scripts used by this tutorial.
 The example scripts have path variables inside \"${}\" e.g.
-: dest="${USB}/test_rclone_backup"
+: dest="$usb/test_rclone_backup"
 
 You can set the variables in your system's environment (recommended), or you can replace occurrences of \"${}\" with your system's paths.
 
@@ -89,11 +89,11 @@ The example scripts use the following environment path variables:
 - rclone_jobber
 - USB
 
-If you're on Linux, add these lines to your .bashrc file, but with your system paths:
+If you're on Linux, add these lines to your ~/.profile file, but with your system paths:
 : export rclone_jobber="/home/wolfv/rclone_jobber"
 : export USB="/run/media/wolfv/USB_name"
-and reload .bachrc:
-: $ source ~/.bachrc
+and reload .profile:
+: $ source ~/.profile
 
 The USB is just a path name used in the examples, it doesn't actually have to be a USB drive (e.g. export USB=\"/home/wolfv/test_rclone\").
 
@@ -103,10 +103,10 @@ Once you have the test directories and path variables setup, you can take rclone
 Here is a minimal backup job script for rclone_jobber:
 : #!/bin/sh
 : 
-: source="${HOME}/test_rclone_data"
-: dest="${USB}/test_rclone_backup"
+: source="$HOME/test_rclone_data"
+: dest="$usb/test_rclone_backup"
 : 
-: ${rclone_jobber}/rclone_jobber.sh "$source" "$dest"
+: $rclone_jobber/rclone_jobber.sh "$source" "$dest"
 
 The last line calls rclone_jobber.sh with arguments =source= and =dest=.
 
@@ -134,13 +134,13 @@ Here are some more things you can try with rclone_jobber:
 Here is an example backup job with all the rclone_jobber arguments defined:
 : #!/bin/sh
 : 
-: source="${HOME}/test_rclone_data"
-: dest="${USB}/test_rclone_backup"
+: source="$HOME/test_rclone_data"
+: dest="$usb/test_rclone_backup"
 : move_old_files_to="dated_files"
-: options="--filter-from=${rclone_jobber}/examples/filter_rules --checksum --dry-run"
+: options="--filter-from=$rclone_jobber/examples/filter_rules --checksum --dry-run"
 : monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
 : 
-: ${rclone_jobber}/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
+: $rclone_jobber/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 
 The last line calls rclone_jobber.sh with arguments.
 =source= and =dest= are required, the remaining arguments can be \"\" or undefined.
@@ -304,10 +304,10 @@ To list all your rclone remotes:
 
 You can set the "remote" variable in your system's environment (recommended), or you can manually replace occurrences of \"${remote}\" with your remote path.
 
-If you're on Linux, add this line to your .bashrc file, but with your remote path:
+If you're on Linux, add this line to your ~/.profile file, but with your remote path:
 : export remote="onedrive_test_rclone_backup"
-and reload .bachrc:
-: $ source ~/.bachrc
+and reload .profile:
+: $ source ~/.profile
 
 To test your remote, run:
 : $ ~/rclone_jobber/examples/job_backup_to_remote.sh
@@ -524,7 +524,7 @@ Then restore data:
 : $ ~/rclone_jobber/examples/job_restore_last_snapshot.sh
 
 Verify that the files were faithfully restored:
-: $ diff -r ${HOME}/test_rclone_data/direc0 /home/${USER}/last_snapshot/direc0
+: $ diff -r $HOME/test_rclone_data/direc0 /home/$USER/last_snapshot/direc0
 
 Notice that rclone does not back up empty directories.
 
