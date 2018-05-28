@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # clear remote test backup for rclone_jobber.sh
 # substitute ${remote} with your remote test backup path

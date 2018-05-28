@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 #restore old version of f1 to it's original location
 
 #source and destination paths

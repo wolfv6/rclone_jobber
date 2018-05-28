@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 ################################### license ##################################
 # job_restore_directory_from_remote.sh restores directory in path from onedrive to it's original location, with "_last_snapshot" appended to directory name
@@ -13,7 +13,7 @@
 path="relative_path_of_directory_to_restore"
 
 #substitute ${remote} with paths on your system
-source="${remote}:last_snapshot/${path}"
+source="${remote}:last_snapshot/$path"
 destination="$HOME/${path}_last_snapshot"
 
 cmd="rclone copy $source $destination --dry-run"

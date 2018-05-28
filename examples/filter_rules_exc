@@ -8,9 +8,9 @@
 ##############################################################################
 
 # paths in this file are from source="~/test_rclone_data/"
+
 ########################## 1) include specific files #########################
-# include specific files that would otherwise not be included
-# include these files before they are excluded by section 2
+# include specific files before they are excluded by section 2
 
 # config files
 + .bashrc

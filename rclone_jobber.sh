@@ -52,7 +52,7 @@ send_to_log()
     #printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 }
 
-#print message to echo, log, and popup
+# print message to echo, log, and popup
 print_message()
 {
     urgency="$1"

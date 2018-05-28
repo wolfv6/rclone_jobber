@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 ################################### license ##################################
 # job_backup_to_remote.sh calls rclone_jobber to perform a backup to remote.
@@ -22,4 +22,4 @@ $rclone_jobber/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options
 
 #display test directories (comment these if calling from job scheduler)
 tree -a $source
-rclone ls ${dest}
+rclone ls $dest

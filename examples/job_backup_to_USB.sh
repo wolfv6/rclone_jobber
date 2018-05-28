@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 ################################### license ##################################
 # job_backup_to_USB.sh calls rclone_jobber to perform a backup to USB.

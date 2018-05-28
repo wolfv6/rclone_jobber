@@ -3,10 +3,13 @@
 #paths in this file are from source="/home/wolfv/Documents/pc_maintenance"
 
 ########################## include specific files ######################
-+ /fedora_27/fedora_27_install.org
-+ /fedora_27/fedora_notes.org
 + /backup_systems/rclone_jobber/rclone_jobber_tutorial.org
 + /backup_systems/rclone_wolf/job_restore_last_snapshot.sh
++ /linux_notes/GPT_fdisk.txt
++ /linux_notes/GPT_gdisk.txt
++ /linux_notes/GPT_sgdisk.bin
++ /linux_notes/debian_9_install.org
++ /linux_notes/linux_install_notes.org
 
 ########################## exclude everything else #####################
 - *

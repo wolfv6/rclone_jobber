@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 source="$HOME/test_rclone_data"
 dest="$HOME/test_rclone_backup"

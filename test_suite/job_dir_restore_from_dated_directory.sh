@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 #restore direc1 directory to it's original location
 
 #source and destination paths

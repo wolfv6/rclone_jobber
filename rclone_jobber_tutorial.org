@@ -118,7 +118,7 @@ Here is a minimal backup-job script for rclone_jobber:
 
 The last line calls rclone_jobber.sh with arguments =source= and =dest=.
 
-*Important:* Since a bad backup job can cause data loss, test first with the =--dry-run= flag to see exactly what would be copied and deleted.
+*Important:* Since a bad backup job can cause data loss, first test with the =--dry-run= flag to see exactly what would be copied and deleted.
 
 Open the [[./examples/job_backup_to_USB_minimal.sh][examples/job_backup_to_USB_minimal.sh]] in your favorite [[https://en.wikipedia.org/wiki/Text_editor][text editor]] and set options to =--dry-run=:
 : options="--dry-run"
@@ -127,7 +127,7 @@ Run the backup job:
 : $ ~/rclone_jobber/examples/job_backup_to_USB_minimal.sh
 
 Here are some more things you can try with rclone_jobber:
-1. Open rclone_jobber.log (rclone_jobber.log is in same directory as rclone_jobber.sh) so you can see what is happening.
+1. Open rclone_jobber.log (rclone_jobber.log is in same directory as rclone_jobber.sh).
 2. Run the backup job again, this time without =--dry-run=.
 3. Inspect changes in the destination files.
 4. Change some files in source:
@@ -150,7 +150,7 @@ Here is an example backup job with all the rclone_jobber arguments defined:
 : 
 : $rclone_jobber/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 
-The last line calls rclone_jobber.sh with arguments.
+The last line calls rclone_jobber.sh.
 =source= and =dest= are required, the remaining arguments can be \"\" or undefined.
 
 Rclone_jobber has 6 parameters, which are described in the next 6 sections:
@@ -188,7 +188,7 @@ Old files are moved to the dated directory in their original hierarchy.
 This makes it easy to restore a deleted sub-directory.
 Also convenient to manually delete a directory from a previous year.
 : backup
-: ├── archive
+: ├── archive                       <<<<<<<< archive contains dated directories
 : │   └── 2018
 : │       ├── 2018-02-22_14:00:14
 : │       │   └── direc1
@@ -233,7 +233,7 @@ You can put any [[https://rclone.org/docs/#options][rclone options]] in the opti
 : --suffix
 : --log-file
 
-The those options are set in rclone_jobber.sh.
+Those options are set in rclone_jobber.sh.
 
 Example options argument containing four rclone options:
 : options="--filter-from=filter_rules --checksum --log-level=INFO --dry-run"
@@ -251,14 +251,14 @@ The =job_name= argument specifies the job's file name:
 The shell command \"$(basename $0)\" will fill in the job's file name for you.
 
 Rclone_jobber guards against =job_name= running again before the previous run is finished.
-If rclone_jobber is called directly (from a job scheduler or command line without a job file), the guard will not work.
 
 Rclone_jobber prints =job_name= in warnings and log entries.
-If the =job_name= argument is undefined, then the origin of the job will be missing from the warnings and log entries.
 
 ** 6) monitoring_URL
 The =monitoring_URL= argument specifies a ping URL for a cron-monitoring service.
-=monitoring_URL= is optional, and no two jobs should share the same =monitoring_URL=.
+
+=monitoring_URL= is optional.
+Some remote data-storage providers offer an integrated monitoring service, in which case =monitoring_URL= is not needed.
 
 Example =monitoring_URL=:
 : monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
@@ -267,23 +267,24 @@ Every time rclone_jobber.sh completes a job without error, it pings the monitori
 If the cron monitoring service hasn't been pinged within a set amount of time, then it sends you an email alert.
 Many cron monitoring services offer free plans.
 
-Some remote data-storage providers offer an integrated monitoring service, in which case =monitoring_URL= is not needed.
+No two jobs should share the same =monitoring_URL=.
 
 * Filter rules
+Rclone has a sophisticated set of [[https://rclone.org/filtering/][filter rules]].
 Filter rules tell rclone which files to include or exclude.
+
 Open the [[./examples/filter_rules_exc][examples/filter_rules_exc]] file.
 Each rule starts with a "+ " or "- ", followed by a pattern.
 : A leading "+" means include if the pattern matches.
 : A leading "-" means exclude if the pattern matches.
 
-Rclone has a sophisticated set of [[https://rclone.org/filtering/][filter rules]].
 For each file in source, the filter rules are processed in the order that they are defined.
 If the matcher fails to find a match after testing all the filter rules, then the path is included.
 
 In the example filter_rules_exc file, each section starts with a ###### heading ######.
 The sections alternate between include and exclude, progressing from fine to coarse grained.
 This example has four sections, but any number of sections are possible.
-[[filter_rules][examples/filter_rules]] has two sections.
+[[./examples/filter_rules][examples/filter_rules]] has two sections.
 
 The filter_rules_exc file is specified in the rclone_jobber =options= argument like this:
 : options="--filter-from filter_rules_exc"
@@ -293,16 +294,15 @@ To see the example filter_rules_exc file in action, run:
 : $ ~/rclone_jobber/examples/job_backup_to_USB_exc.sh
 
 * Select a cloud storage provider
-All the rclone cloud-storage providers are listed on https://rclone.org/.
+All rclone cloud-storage providers are listed on https://rclone.org/.
 Some of the cloud-storage-provider features are listed in two tables on https://rclone.org/overview/.
 
 * Configure a remote
 Once you have an account with your chosen cloud-storage provider, the next step is to configure its remote.
-Configuring a remote in rclone is surprisingly straightforward for the amount of under-the-covers authentication it does.
 
 There is one page of configuration instructions for each cloud-storage provider.
 Links to the configuration instructions are at https://rclone.org/docs/#configure and https://rclone.org/.
-Follow the instructions to configure your remote now, we will test the remote at the end of this section.
+Follow the instructions to configure your remote now.
 
 Rclone stores all the configuration information you entered in the default location ~/.config/rclone/rclone.conf.
 The remote's password is stored in the rclone.conf file, so be careful about giving people access to it.
@@ -310,12 +310,13 @@ The remote's password is stored in the rclone.conf file, so be careful about giv
 To list all your rclone remotes:
 : $ rclone listremotes
 
-substitute occurrences of \"${remote}\" with your remote path.
-
 If you're on Linux, add this line to your ~/.profile file, but with your remote path:
 : export remote="onedrive_test_rclone_backup"
 and reload .profile:
 : $ source ~/.profile
+
+If you don't edit your .profile, you can edit the example scripts:
+ replace occurrences of \"${remote}\" with your remote path.
 
 To test your remote, run:
 : $ ~/rclone_jobber/examples/job_backup_to_remote.sh
@@ -330,10 +331,11 @@ Instructions for configuring a crypt remote are at https://rclone.org/crypt/ and
 
 When configuring a crypt remote, rclone will ask you to give it a name.
 Put some thought into naming your remotes.
-In the following example, the crypt remote name is a concatenation of its underlying remote name and source-folder name:
+In this example, the crypt remote name is a concatenation of its underlying remote name, folder to encrypt, and "_crypt":
 : name> myremote_myfolder_crypt
 
-And then rclone will ask for the name of an underlying remote:
+And then rclone will ask for the underlying remote.
+This example will encrypt myfolder in myremote:
 : remote> myremote:myfolder
 You can always rename a remote later via rclone config.
 
@@ -391,7 +393,7 @@ After the backup jobs are scheduled, you will have an automated back up system t
 1. a job scheduler calls a backup job script
 2. the job script calls rclone_jobber.sh
 3. rclone_jobber.sh calls rclone
-4. rclone consults your filter rules, connects to a backup storage, and uploads your data
+4. rclone consults your filter rules, connects to a backup storage, and uploads files that have changed
 
 Schedule your backup jobs in your favorite job scheduler.
 
@@ -406,7 +408,7 @@ The third line runs at 2:18 and 14:18 every day
 
 The initial backup will take a long time (subsequent backups are much shorter).
 If your computer goes to sleep while a backup is in progress, the backup will not finish.
-Consider disabling sleep on your computer.
+Consider disabling sleep on your computer for the initial backup.
 On Linux Gnome desktop:
 : right click > Settings > Power > Automatic suspend: Off
 
@@ -414,16 +416,18 @@ On Linux Gnome desktop:
 The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh.
 You can skip this section if you like the default logging.
 
-Logging options are headed by "# set log" comments with the option set on the following line.
-To change logging behavior, search for these "# set log" comments and change their default values.
+Logging options are set in rclone_jobber.sh, headed by "# set log" comments.
+To change logging behavior, search for "# set log" and change the default values.
+
+Logging options are described in the next 5 sections.
 
 ** # set logging to verbose
-For additional logging information, use the send_to_log function in rclone_jobber.sh:
+To send more information to the log, use the send_to_log function in rclone_jobber.sh:
 : # set logging to verbose
 : send_to_log "$timestamp $job_name"
 : send_to_log "$cmd"
 
-Additionally, you can place [[https://rclone.org/docs/#log-level-level][--log-level]] in the job's "options" parameter.
+Additionally, you can set [[https://rclone.org/docs/#log-level-level][--log-level]] in the job's "options" parameter.
 
 ** # set log_file path
 In rclone_jobber.sh, variable log_file contains the log file's path.
@@ -450,11 +454,11 @@ In rclone_jobber.sh, set the new log_file path:
 Over time a log file can grow to unwieldy size.
 The logrotate utility can automatically archive the current log, start a fresh log, and delete older logs.
 
-All you have to do is setup /var/log/rclone_jobber.log (described in previous section) and create a logrotate configuration file.
-Here is creating a logrotate configuration file:
+To setup logrotate, setup /var/log/rclone_jobber.log (described in previous section).
+Then create a logrotate configuration file in /etc/logrotate.d:
 : $ sudo vi /etc/logrotate.d/rclone_jobber
 
-And insert text something like this:
+And paste this text into the logrotate configuration file:
 : /var/log/rclone_jobber.log {
 : monthly
 : rotate 2
@@ -471,10 +475,7 @@ Execute a dry-run to see what logrotate would do:
 
 ** Send /var/log/rclone_jobber.log to systemd journal (Linux)
 Linux and macOS can send all log output to systemd journal.
-All you have to do is setup /var/log/rclone_jobber.log (described in section "[[*Logging to Linux /var/log/rclone_jobber.log][Logging to Linux /var/log/rclone_jobber.log]]") and make these 3 changes to rclone_jobber.sh script:
-: # set log_file path
-: log_file="/var/log/rclone_jobber.log"
-: 
+All you have to do is setup /var/log/rclone_jobber.log (described in section "# set log_file path to /var/log/rclone_jobber.log") and make these two changes to rclone_jobber.sh script:
 : # set log_option for rclone
 : log_option="--syslog"
 : 
@@ -500,14 +501,16 @@ The latest snapshot can be easily restored from either backup.
 - schedule hourly, 30 min past the hour (for a back up every 30 minutes when combined with job_backup_to_USB.sh)
 
 In addition, job_backup_recovery_plan_to_remote.sh stores recovery-plan files off-site unecrypted.
-Recovery-plan files are listed in the "[[*Recovery plan][Recovery plan]]" section.
+Recovery-plan files are listed in the "Recovery plan" section.
 
 * Example restore-data
 To restore data, copy files from backup to destination.
 
 You can use cp (shell command) to restore data from local unecrypted backup:
-- to copy a single file from local backup:    cp -p localBackupPath destPath
-- to copy a last_snapshot from local backup:  cp -a localBackup/last_snapshot destPath
+- to copy a single file from local backup:
+: $ cp -p localBackupPath destPath
+- to copy a last_snapshot from local backup:
+: $ cp -a localBackup/last_snapshot destPath
 
 Use rclone to restore data from remote or encrypted backup:
 - to copy a single file from remote backup:   rclone copy remote:sourcePath dest:destPath
@@ -515,12 +518,10 @@ Use rclone to restore data from remote or encrypted backup:
 - [[./examples/job_restore_directory_from_remote.sh][examples/job_restore_directory_from_remote.sh]]
 
 * Test backup jobs and test restore-data jobs
-It's human nature to neglect data recovery until it's too late.
-Better to test your entire data recovery system end to end, testing both the data backup and data recovery together.
 The following commands test the example backup and restore jobs.
+They test your entire data recovery system end to end, testing both the data backup and data recovery together.
 Don't worry, the tutorial's environment is setup to make testing painless.
 
-Previous tests modified the test directories.
 Clear and setup test directories in preparation for a new test run:
 : $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
 : $ ~/rclone_jobber/examples/clear_remote_test_backup.sh
@@ -539,7 +540,7 @@ Verify that the files were faithfully restored:
 
 Notice that rclone does not back up empty directories.
 
-Follow a similar procedure when you practice your recovery plan, but with real data.
+Follow a similar test procedure when you practice your recovery plan, but with real data.
 
 * Recovery plan
 Example recovery plan:
@@ -548,26 +549,26 @@ Example recovery plan:
    - recovery plan (this file)
    - job_restore_last_snapshot.sh
    - ~/.config/rclone/rclone.conf
-2. Install OS
+2. Install operating system
 3. Install rclone
 4. Restore ~/.config/rclone/rclone.conf
 5. Edit source variable in job_restore_last_snapshot.sh, and then run job_restore_last_snapshot.sh
 
 The rclone.conf configuration file should be in a secure location because it contains the encryption key for backup.
 I keep my backup rclone.conf in a password manager (LastPass).
-The other recovery-plan files (listed in item 1.) are not encrypted so that they can be accessed before the OS or rclone are installed.
+The other recovery-plan files (listed in item 1.) are not encrypted so that they can be accessed before rclone is installed.
 With this setup, all I need to bootstrap the recovery process is a web browser and my LastPass master password.
 
-Here is how to setup the recovery-plan files for easy access.
+Scheduling the backup of your backup recovery plan insures that your backup recovery-plan files are always up-to date.
+Here is how to setup the recovery-plan backup for easy access.
 For each backup location, place the recovery-plan files in a directory to be backed up.
 - If a backup is not encrypted, then the recovery-plan files will be accessible in the backup.
 - If a backup is encrypted, create an unecrypted backup job to the same underlying remote, like this example:
-  [[rclone_jobber/examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]]
-  [[rclone_jobber/examples/filter_rules_recovery_plan][filter_rules_recovery_plan]]
-  [[*Schedule backup jobs to run automatically][Schedule backup jobs to run automatically]]
-  Scheduling job_backup_recovery_plan_to_remote.sh insures that your backup recovery-plan files are always up-to date.
+  -  [[rclone_jobber/examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]]
+  -  [[rclone_jobber/examples/filter_rules_recovery_plan][filter_rules_recovery_plan]]
+  -  [[*Schedule backup jobs to run automatically][Schedule backup jobs to run automatically]]
 
-That way the recovery-plan files are with the backups, and accessible without rclone.
+That way the recovery-plan files are with the backups, and accessible before installing rclone.
 
 Practice the recovery plan.
 Start from scratch with a blank environment (or use a different location on current machine).
@@ -588,12 +589,12 @@ For each backup job:
 - make sure monitoring URLs are still active
 
 Do not rely solely on warning messages or rclone_jobber.log for monitoring; they do not prove that data was saved to destination.
-Check the actual backup.
+Check each backup job as described above.
 
 ** Check recovery plan
 Example yearly recovery-plan check:
 1. review your recovery plan
-2. make sure the recovery-plan files are still accessible and up-to date (the 4 files listed in "[[*Recovery plan][Recovery plan]]" section)
+2. make sure the recovery-plan files are still accessible and up-to date (listed in "[[*Recovery plan][Recovery plan]]" section)
    - on site copy
    - off site copy
 3. practice restore-data on small test directory, from ~/rclone_jobber/examples:
