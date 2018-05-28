@@ -1,9 +1,8 @@
 #!/bin/sh
 
 # clear remote test backup for rclone_jobber.sh
-# replace ${remote} with your remote test backup
+# substitute ${remote} with your remote test backup path
 ###############################################
-remote=${remote}
 
 #delete test backup
 rclone purge ${remote}:

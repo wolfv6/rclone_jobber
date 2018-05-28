@@ -2,7 +2,7 @@
 # rclone_jobber.sh version 1.5
 # Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 # Logging options are headed by "# set log" comments with the option set on the following line.
-# To change amount of information logged, search for these "# set log" comments and change their default values.
+# Details are in the tutorial's "Logging options" section.
 
 ################################### license ##################################
 # rclone_jobber.sh is a script that calls rclone sync to perform a backup.
@@ -31,10 +31,10 @@ monitoring_URL="$6"    #cron monitoring service URL to send email if cron failur
 # $timestamp is time that old file was moved out of new (not time file was copied from source)
 new="last_snapshot"
 timestamp="$(date +%F_%T)"
-#timestamp="$(date +%F_%H%M%S)" #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
+#timestamp="$(date +%F_%H%M%S)"  #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
 
 # set log_file path
-path="$(realpath "$0")"           #log file in same directory as this script
+path="$(realpath "$0")"         #log file in same directory as this script
 log_file="${path%.*}.log"       #replace this file's extension with "log"
 #log_file="/var/log/rclone_jobber.log"
 

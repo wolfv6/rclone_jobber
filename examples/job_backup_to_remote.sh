@@ -9,7 +9,7 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-#replace {$rclone_jobber}, $HOME and ${remote} with paths on your system
+#substitute $rclone_jobber and ${remote} with paths on your system
 rclone_jobber=$rclone_jobber #path to rclone_jobber directory
 
 source="$HOME/test_rclone_data"

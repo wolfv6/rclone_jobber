@@ -10,9 +10,9 @@
 ##############################################################################
 
 #assign relative path of directory to restore
-path="relative path of directory to restore"
+path="relative_path_of_directory_to_restore"
 
-#replace $HOME and ${remote} with paths on your system
+#substitute ${remote} with paths on your system
 source="${remote}:last_snapshot/${path}"
 destination="$HOME/${path}_last_snapshot"
 

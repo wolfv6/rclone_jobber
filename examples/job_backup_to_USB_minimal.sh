@@ -9,7 +9,7 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-#replace $HOME, $usb and {$rclone_jobber} with paths on your system
+#substitute $rclone_jobber and $usb with paths on your system
 source="$HOME/test_rclone_data"
 dest="$usb/test_rclone_backup"
 options="--dry-run"

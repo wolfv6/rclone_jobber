@@ -1,10 +1,4 @@
-* Example scripts use environment variables for \"$path\"
 The files in this directory are examples used by rclone_jobber_tutorial.org.
-The example scripts have path variables preceded by $ e.g.
-: source="$HOME/test_rclone_data"
-: dest="$usb/test_rclone_backup"
-
-You can set your system's environment variables, or you can manually replace occurrences of $variable with your system's paths.
 
 The example scripts use the following environment path variables:
 - HOME
@@ -12,3 +6,5 @@ The example scripts use the following environment path variables:
 - rclone_jobber
 - usb
 - remote
+
+Detailed instructions are in the tutorial's "Setup test directories and path variables" section.

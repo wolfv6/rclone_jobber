@@ -9,7 +9,7 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-#replace $usb or ${remote} with path on your system
+#substitute $usb and ${remote} with paths on your system
 
 #edit the source to restore data from:
 #source="$usb/test_rclone_backup/last_snapshot"
