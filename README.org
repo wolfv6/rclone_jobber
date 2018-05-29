@@ -1,6 +1,6 @@
 * About rclone_jobber backup script
 [[./rclone_jobber.sh][rclone_jobber.sh]] is a shell script to make backups.
-It performs a backup job by calling rclone.
+It performs a backup jobs by calling rclone.
 [[https://rclone.org/][Rclone]] is a mature tool and many [[https://github.com/ncw/rclone/wiki/Third-Party-Integrations-with-rclone][third party tools use rclone]].
 
 The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-job and restore-job examples for a home computer.
@@ -12,7 +12,8 @@ The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-
 - Pop-up for error conditions
 - Option for a cron-monitoring service
 - Logging
-- POSIX compliant
+- POSIX compliant shell script so it is easy to customize
+- tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]]
 - Free (open source Creative Commons Zero license)
 
 *Rclone features:*
@@ -28,14 +29,31 @@ The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-
 - Partial syncs supported on a whole file basis
 - Free (open source MIT license)
 
-rclone_jobber is a pre-written script, which means it has the best of both worlds:
-- Like a backup tool, rclone_jobber is already developed, documented, and tested.
-  Only the job files need to be written, tested, and scheduled.
-  rclone_jobber.sh has been tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
-- Because it is a shell script, rclone_jobber is easily customized.
-
 Both rclone and rclone_jobber.sh are command line tools.
 If you prefer a GUI, checkout [[https://mmozeiko.github.io/RcloneBrowser/][RcloneBrowser]].
+
+* Example job scripts
+rclone_jobber.sh is already developed, documented, and tested.
+Only the backup-job files need to be written.
+
+Example minimal backup-job script for rclone_jobber:
+: #!/usr/bin/env sh
+: 
+: source="$HOME"
+: dest="$usb/rclone_jobber_backup"
+: 
+: $rclone_jobber/rclone_jobber.sh "$source" "$dest"
+
+Example backup job with all the rclone_jobber.sh arguments defined:
+: #!/usr/bin/env sh
+: 
+: source="$HOME"
+: dest="$usb/rclone_jobber_backup"
+: move_old_files_to="dated_files"
+: options="--filter-from=$rclone_jobber/filter_rules --checksum --dry-run"
+: monitoring_URL="https://monitor.io/12345678-1234-1234-1234-1234567890ab"
+: 
+: $rclone_jobber/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 
 * Contact
 Submit issues to https://github.com/wolfv6/rclone_jobber/issues.

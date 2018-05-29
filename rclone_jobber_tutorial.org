@@ -7,7 +7,7 @@ This tutorial assumes:
 - the reader has basic command-line skills
 - the computer can run shell scripts (shell scripts can run on Linux, macOS, and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]])
 
-The examples are for making backups for a home PC.
+The examples are of making backups for a home PC.
 The rclone_jobber.sh and job scripts can be adapted to suit your own backup needs.
 
 Backup trivia: the verb form to "back up" is two words, whereas the noun is "backup".
@@ -53,8 +53,8 @@ I am not responsible for any lost data.
 - [[#license][License]]
 
 * Install rclone
-Install the latest rclone from https://rclone.org/downloads/
-or if your package manager has the latest version...
+Install the latest rclone from https://rclone.org/downloads/ or,
+if your package manager has the latest version, ...
 
 On Debian-based Linux distributions:
 : $ apt-cache policy rclone
@@ -79,15 +79,15 @@ To setup a test directory from the command line:
 
 The "examples" directory contains all the scripts used by this tutorial.
 Most tutorials use <value> notation to indicate substitution.
-This tutorial use environment path $variables e.g.:
-: source="$HOME/test_rclone_data"
+This tutorial use path variables $rclone_jobber and $usb e.g.:
+: options="--filter-from=$rclone_jobber/examples/filter_rules"
 : dest="$usb/test_rclone_backup"
-You can automate the substitution of $variables from your .profile.
+You can automate the substitution of path variables from your .profile.
 There is no need to edit the scripts.
 
 If you're on Linux, add these lines to your ~/.profile file, but with your system paths:
 : export rclone_jobber="/home/wolfv/rclone_jobber"
-: export usb="/run/media/wolfv/USB_device_name"
+: export usb="/media/wolfv/USB_device_name"
 and reload .profile:
 : $ source ~/.profile
 
@@ -118,8 +118,6 @@ Here is a minimal backup-job script for rclone_jobber:
 
 The last line calls rclone_jobber.sh with arguments =source= and =dest=.
 
-*Important:* Since a bad backup job can cause data loss, first test with the =--dry-run= flag to see exactly what would be copied and deleted.
-
 Open the [[./examples/job_backup_to_USB_minimal.sh][examples/job_backup_to_USB_minimal.sh]] in your favorite [[https://en.wikipedia.org/wiki/Text_editor][text editor]] and set options to =--dry-run=:
 : options="--dry-run"
 
@@ -137,9 +135,11 @@ Here are some more things you can try with rclone_jobber:
    - move a file
    And run the backup job again.
 
+*Important:* Since a bad backup job can cause data loss, first test with the =--dry-run= flag to see exactly what would be copied and deleted.
+
 * Backup job and rclone_jobber.sh parameters
 ** Backup job script
-Here is an example backup job with all the rclone_jobber arguments defined:
+Here is an example backup job with all the rclone_jobber.sh arguments defined:
 : #!/usr/bin/env sh
 : 
 : source="$HOME/test_rclone_data"
@@ -171,7 +171,7 @@ Example =source= argument:
 Data is backed up to =destination=$dest/last_snapshot=.
 
 Example =dest= argument for [[https://rclone.org/local/][local file system]] data storage:
-: dest="/run/media/wolfv/USB/wolfv_backup"
+: dest="/media/wolfv/USB/wolfv_backup"
 
 Example =dest= for remote data storage:
 : dest="onedrive_wolfv_backup_crypt:"
@@ -193,9 +193,9 @@ Also convenient to manually delete a directory from a previous year.
 : │       ├── 2018-02-22_14:00:14
 : │       │   └── direc1
 : │       │       └── f1
-: │       └── 2018-02-22_15:00:14   <<<<<<<< dated_directory contains old files
+: │       └── 2018-02-22_15:00:14   <<<<<<<< old files were moved here on dated_directory's date
 : │           └── direc1
-: │               └── f1            <<<<<<<< old version of file f1 moved here on directory's date
+: │               └── f1            <<<<<<<< old version of file f1
 : └── last_snapshot                 <<<<<<<< last_snapshot directory contains the most recent backup
 :     └── direc1
 :         └── f1
@@ -224,7 +224,7 @@ This can save a little storage space.
 : backup
 : └── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
 :     └── direc1
-:         └── f1            <<<<<<<< old versions of file f1 are overwritten or removed
+:         └── f1            <<<<<<<< old versions of file f1 were overwritten or removed
 
 ** 4) options
 The =options= argument can contain any number of rclone options.
@@ -560,15 +560,13 @@ The other recovery-plan files (listed in item 1.) are not encrypted so that they
 With this setup, all I need to bootstrap the recovery process is a web browser and my LastPass master password.
 
 Scheduling the backup of your backup recovery plan insures that your backup recovery-plan files are always up-to date.
-Here is how to setup the recovery-plan backup for easy access.
+The recovery-plan files should not be encrypted so that they can accessed before installing rclone.
 For each backup location, place the recovery-plan files in a directory to be backed up.
 - If a backup is not encrypted, then the recovery-plan files will be accessible in the backup.
 - If a backup is encrypted, create an unecrypted backup job to the same underlying remote, like this example:
   -  [[rclone_jobber/examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]]
   -  [[rclone_jobber/examples/filter_rules_recovery_plan][filter_rules_recovery_plan]]
-  -  [[*Schedule backup jobs to run automatically][Schedule backup jobs to run automatically]]
-
-That way the recovery-plan files are with the backups, and accessible before installing rclone.
+  -  and schedule job_backup_recovery_plan_to_remote.sh to run automatically
 
 Practice the recovery plan.
 Start from scratch with a blank environment (or use a different location on current machine).
@@ -581,7 +579,7 @@ Example monthly backup check.
 
 For each backup job:
 - check that recently changed files are in the backup
-:    $ ls -l /run/media/wolfv/big_stick/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
+:    $ ls -l /media/wolfv/big_stick/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
 :    $ rclone lsl onedrive_wolfv_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
 - check space usage and available space
 - check rclone_jobber.log
@@ -598,11 +596,11 @@ Example yearly recovery-plan check:
    - on site copy
    - off site copy
 3. practice restore-data on small test directory, from ~/rclone_jobber/examples:
-    1) setup_test_data_directory.sh
-    2) job_backup_to_USB.sh
-    3) job_backup_to_remote.sh
-    4) delete the ~/test_data_directory
-    5) job_restore_last_snapshot.sh
+    1. setup_test_data_directory.sh
+    2. job_backup_to_USB.sh
+    3. job_backup_to_remote.sh
+    4. delete the ~/test_data_directory
+    5. job_restore_last_snapshot.sh
 
 * License
 [[http://creativecommons.org/licenses/by-nc-sa/4.0/][https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png]]\\
