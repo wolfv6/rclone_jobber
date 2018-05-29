@@ -93,7 +93,7 @@ and reload .profile:
 
 The "usb" is just a variable name used in the examples, it doesn't actually have to be a USB drive.
 For example:
-: export usb=\"/home/wolfv/test_rclone\"
+: export usb="/home/wolfv/test_rclone"
 
 If you don't edit your .profile, you can edit the example scripts:
  replace occurrences of "$rclone_jobber" and "$usb" with your system's paths.
@@ -248,7 +248,7 @@ Rclone options used in this tutorial are:
 The =job_name= argument specifies the job's file name:
 : job_name="$(basename $0)"
 
-The shell command \"$(basename $0)\" will fill in the job's file name for you.
+The shell command "$(basename $0)" will fill in the job's file name for you.
 
 Rclone_jobber guards against =job_name= running again before the previous run is finished.
 
@@ -275,8 +275,8 @@ Filter rules tell rclone which files to include or exclude.
 
 Open the [[./examples/filter_rules_exc][examples/filter_rules_exc]] file.
 Each rule starts with a "+ " or "- ", followed by a pattern.
-: A leading "+" means include if the pattern matches.
-: A leading "-" means exclude if the pattern matches.
+- a leading "+" means include if the pattern matches
+- a leading "-" means exclude if the pattern matches
 
 For each file in source, the filter rules are processed in the order that they are defined.
 If the matcher fails to find a match after testing all the filter rules, then the path is included.
@@ -316,7 +316,7 @@ and reload .profile:
 : $ source ~/.profile
 
 If you don't edit your .profile, you can edit the example scripts:
- replace occurrences of \"${remote}\" with your remote path.
+ replace occurrences of "${remote}" with your remote path.
 
 To test your remote, run:
 : $ ~/rclone_jobber/examples/job_backup_to_remote.sh
@@ -361,7 +361,7 @@ To list all files in path recursively:
 
 [[./examples/job_backup_to_remote.sh][/examples/job_backup_to_remote.sh]] uses a remote, which could be of type crypt.
 
-To test your crypt remote, set the path variable as described in the "[[*Configure a remote][Configure a remote]]" section, and then run:
+To test your crypt remote, set the path variable as described in the "Configure a remote" section, and then run:
 : $ ~/rclone_jobber/examples/job_backup_to_remote.sh
 
 *** pathIsTooLong error
@@ -508,9 +508,9 @@ To restore data, copy files from backup to destination.
 
 You can use cp (shell command) to restore data from local unecrypted backup:
 - to copy a single file from local backup:
-: $ cp -p localBackupPath destPath
+:    $ cp -p localBackupPath destPath
 - to copy a last_snapshot from local backup:
-: $ cp -a localBackup/last_snapshot destPath
+:    $ cp -a localBackup/last_snapshot destPath
 
 Use rclone to restore data from remote or encrypted backup:
 - to copy a single file from remote backup:   rclone copy remote:sourcePath dest:destPath
@@ -594,7 +594,7 @@ Check each backup job as described above.
 ** Check recovery plan
 Example yearly recovery-plan check:
 1. review your recovery plan
-2. make sure the recovery-plan files are still accessible and up-to date (listed in "[[*Recovery plan][Recovery plan]]" section)
+2. make sure the recovery-plan files are still accessible and up-to date (listed in "Recovery plan" section)
    - on site copy
    - off site copy
 3. practice restore-data on small test directory, from ~/rclone_jobber/examples:
