@@ -7,8 +7,8 @@ This tutorial assumes:
 - the reader has basic command-line skills
 - the computer can run shell scripts (shell scripts can run on Linux, macOS, and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]])
 
-The examples are of making backups for a home PC.
-The rclone_jobber.sh and job scripts can be adapted to suit your own backup needs.
+The examples make backups for a home PC.
+The rclone_jobber.sh and its job scripts can be adapted to suit your own backup needs.
 
 Backup trivia: the verb form to "back up" is two words, whereas the noun is "backup".
 
@@ -53,16 +53,7 @@ I am not responsible for any lost data.
 - [[#license][License]]
 
 * Install rclone
-Install the latest rclone from https://rclone.org/downloads/ or,
-if your package manager has the latest version, ...
-
-On Debian-based Linux distributions:
-: $ apt-cache policy rclone
-: $ sudo apt-get install rclone
-
-On RPM-based Linux distributions:
-: $ dnf info rclone
-: $ sudo dnf install rclone
+Install the latest rclone from https://rclone.org/downloads/ 
 
 * Install rclone_jobber
 Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber repository]] to your home directory.
@@ -79,7 +70,7 @@ To setup a test directory from the command line:
 
 The "examples" directory contains all the scripts used by this tutorial.
 Most tutorials use <value> notation to indicate substitution.
-This tutorial use path variables $rclone_jobber and $usb e.g.:
+This tutorial uses path variables $rclone_jobber and $usb e.g.:
 : options="--filter-from=$rclone_jobber/examples/filter_rules"
 : dest="$usb/test_rclone_backup"
 You can automate the substitution of path variables from your .profile.
@@ -283,7 +274,7 @@ If the matcher fails to find a match after testing all the filter rules, then th
 
 In the example filter_rules_exc file, each section starts with a ###### heading ######.
 The sections alternate between include and exclude, progressing from fine to coarse grained.
-This example has four sections, but any number of sections are possible.
+This example has four sections, but any number of sections is possible.
 [[./examples/filter_rules][examples/filter_rules]] has two sections.
 
 The filter_rules_exc file is specified in the rclone_jobber =options= argument like this:
@@ -310,7 +301,7 @@ The remote's password is stored in the rclone.conf file, so be careful about giv
 To list all your rclone remotes:
 : $ rclone listremotes
 
-If you're on Linux, add this line to your ~/.profile file, but with your remote path:
+To run the tutorial's example remote backup job on Linux, add this line to your ~/.profile file, but with your remote path:
 : export remote="onedrive_test_rclone_backup"
 and reload .profile:
 : $ source ~/.profile
@@ -400,11 +391,11 @@ Schedule your backup jobs in your favorite job scheduler.
 The following example schedules jobs on cron (cron is a job scheduler installed on Linux).
 The first line runs a local job every hour on the hour.
 The second line runs a remote job every hour, 30 minutes past the hour.
-The third line runs at 2:18 and 14:18 every day
+The third line runs at 3:18 and 15:18 every day
 : $ crontab -e
 : 00 * * * * /home/wolfv/rclone_jobber/job_backup_to_USB.sh
 : 30 * * * * /home/wolfv/rclone_jobber/job_backup_to_remote.sh
-: 18 2,14 * * * /home/wolfv/rclone_jobber/job_backup_recovery_plan_to_remote.sh
+: 18 3,15 * * * /home/wolfv/rclone_jobber/job_backup_recovery_plan_to_remote.sh
 
 The initial backup will take a long time (subsequent backups are much shorter).
 If your computer goes to sleep while a backup is in progress, the backup will not finish.
@@ -434,8 +425,8 @@ In rclone_jobber.sh, variable log_file contains the log file's path.
 You can change log_file to any path you like.
 The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh:
 : # set log_file path
-: path="$(realpath "$0")"         #log file in same directory as this script
-: log_file="${path%.*}.log"       #replace this file's extension with "log"
+: path="$(realpath "$0")"         #path of this script
+: log_file="${path%.*}.log"       #replace path extension with "log"
 
 ** # set log_file path to /var/log/rclone_jobber.log (Linux)
 To set the rclone_jobber log location to /var/log/, create the log file and give it the user's ownership and read-write permission.
@@ -454,7 +445,7 @@ In rclone_jobber.sh, set the new log_file path:
 Over time a log file can grow to unwieldy size.
 The logrotate utility can automatically archive the current log, start a fresh log, and delete older logs.
 
-To setup logrotate, setup /var/log/rclone_jobber.log (described in previous section).
+To setup logrotate, set log_file path to /var/log/rclone_jobber.log (described in previous section).
 Then create a logrotate configuration file in /etc/logrotate.d:
 : $ sudo vi /etc/logrotate.d/rclone_jobber
 
@@ -475,14 +466,14 @@ Execute a dry-run to see what logrotate would do:
 
 ** Send /var/log/rclone_jobber.log to systemd journal (Linux)
 Linux and macOS can send all log output to systemd journal.
-All you have to do is setup /var/log/rclone_jobber.log (described in section "# set log_file path to /var/log/rclone_jobber.log") and make these two changes to rclone_jobber.sh script:
+To do so, make these two changes to rclone_jobber.sh script:
+1. change log_option to --syslog
 : # set log_option for rclone
 : log_option="--syslog"
-: 
-: ...
-: 
-: # set log - send msg to log
-: printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
+2. send msg to systemd journal (sending msg to log_file is optional, and is commented in this example)
+:     # set log - send msg to log
+:     #echo "$msg" >> "$log_file"                            #send msg to log_file
+:     printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 
 * Example backup jobs
 The following system uses two backup jobs with complementary attributes (this is how I backup my home PC).
@@ -502,6 +493,9 @@ The latest snapshot can be easily restored from either backup.
 
 In addition, job_backup_recovery_plan_to_remote.sh stores recovery-plan files off-site unecrypted.
 Recovery-plan files are listed in the "Recovery plan" section.
+
+Backup to both local and remote locations in case disaster destroys one.
+If Internet connection fails, local backup is still made.
 
 * Example restore-data
 To restore data, copy files from backup to destination.

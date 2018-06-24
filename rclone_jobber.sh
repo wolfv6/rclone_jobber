@@ -1,8 +1,7 @@
 #!/usr/bin/env sh
 # rclone_jobber.sh version 1.5
 # Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
-# Logging options are headed by "# set log" comments with the option set on the following line.
-# Details are in the tutorial's "Logging options" section.
+# Logging options are headed by "# set log".  Details are in the tutorial's "Logging options" section.
 
 ################################### license ##################################
 # rclone_jobber.sh is a script that calls rclone sync to perform a backup.
@@ -34,13 +33,13 @@ timestamp="$(date +%F_%T)"
 #timestamp="$(date +%F_%H%M%S)"  #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
 
 # set log_file path
-path="$(realpath "$0")"         #log file in same directory as this script
-log_file="${path%.*}.log"       #replace this file's extension with "log"
-#log_file="/var/log/rclone_jobber.log"
+path="$(realpath "$0")"                 #path of this script
+log_file="${path%.*}.log"               #replace path extension with "log"
+#log_file="/var/log/rclone_jobber.log"  #for Logrotate
 
 # set log_option for rclone
-log_option="--log-file=$log_file"
-#log_option="--syslog"
+log_option="--log-file=$log_file"       #log to log_file
+#log_option="--syslog"                  #log to systemd journal
 
 ################################## functions #################################
 send_to_log()
@@ -48,8 +47,8 @@ send_to_log()
     msg="$1"
 
     # set log - send msg to log
-    echo "$msg" >> "$log_file"                             #send msg to log_file
-    #printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
+    echo "$msg" >> "$log_file"                             #log msg to log_file
+    #printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #log msg to systemd journal
 }
 
 # print message to echo, log, and popup
