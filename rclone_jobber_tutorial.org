@@ -294,6 +294,7 @@ Once you have an account with your chosen cloud-storage provider, the next step 
 There is one page of configuration instructions for each cloud-storage provider.
 Links to the configuration instructions are at https://rclone.org/docs/#configure and https://rclone.org/.
 Follow the instructions to configure your remote now.
+: $ rclone config
 
 Rclone stores all the configuration information you entered in the default location ~/.config/rclone/rclone.conf.
 The remote's password is stored in the rclone.conf file, so be careful about giving people access to it.
