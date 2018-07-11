@@ -264,7 +264,7 @@ No two jobs should share the same =monitoring_URL=.
 Rclone has a sophisticated set of [[https://rclone.org/filtering/][filter rules]].
 Filter rules tell rclone which files to include or exclude.
 
-Open the [[./examples/filter_rules_exc][examples/filter_rules_exc]] file.
+Open the [[./examples/filter_rules_excldld][examples/filter_rules_excld]] file.
 Each rule starts with a "+ " or "- ", followed by a pattern.
 - a leading "+" means include if the pattern matches
 - a leading "-" means exclude if the pattern matches
@@ -272,20 +272,20 @@ Each rule starts with a "+ " or "- ", followed by a pattern.
 For each file in source, the filter rules are processed in the order that they are defined.
 If the matcher fails to find a match after testing all the filter rules, then the path is included.
 
-Comment lines start with '#'.
+Comment add filter rules '#' comment to tutorial
 Comments on the end of rules is not supported because file names can contain a '#'.
 
-In the example filter_rules_exc file, each section starts with a ###### heading ######.
+In the example filter_rules_excld file, each section starts with a ###### heading ######.
 The sections alternate between include and exclude, progressing from fine to coarse grained.
 This example has four sections, but any number of sections is possible.
 [[./examples/filter_rules][examples/filter_rules]] has two sections.
 
-The filter_rules_exc file is specified in the rclone_jobber =options= argument like this:
-: options="--filter-from filter_rules_exc"
+The filter_rules_excld file is specified in the rclone_jobber =options= argument like this:
+: options="--filter-from filter_rules_excld"
 
-To see the example filter_rules_exc file in action, run:
+To see the example filter_rules_excld file in action, run:
 : $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
-: $ ~/rclone_jobber/examples/job_backup_to_USB_exc.sh
+: $ ~/rclone_jobber/examples/job_backup_to_USB_excld.sh
 
 * Select a cloud storage provider
 All rclone cloud-storage providers are listed on https://rclone.org/.

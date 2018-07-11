@@ -15,7 +15,7 @@ rclone_jobber=$rclone_jobber #path to rclone_jobber directory
 source="$HOME/test_rclone_data"
 dest="$usb/test_rclone_backup"
 move_old_files_to="dated_files"
-options="--filter-from=$rclone_jobber/examples/filter_rules_exc --checksum"
+options="--filter-from=$rclone_jobber/examples/filter_rules_excld --checksum"
 monitoring_URL=""
 
 $rclone_jobber/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
