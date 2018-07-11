@@ -22,7 +22,8 @@ I am not responsible for any lost data.
 - [[#about-this-rclone_jobber-backup-script-tutorial][About this rclone_jobber backup script tutorial]]
 - [[#install-rclone][Install rclone]]
 - [[#install-rclone_jobber][Install rclone_jobber]]
-- [[#setup-test-directories-and-path-variables][Setup test directories and path variables]]
+- [[#setup-a-test-directory][Setup a test directory]]
+- [[#setup-path-variables][Setup path variables]]
 - [[#take-rclone_jobbersh-for-a-test-drive][Take rclone_jobber.sh for a test drive]]
 - [[#backup-job-and-rclone_jobbersh-parameters][Backup job and rclone_jobber.sh parameters]]
   - [[#backup-job-script][Backup job script]]
@@ -43,13 +44,14 @@ I am not responsible for any lost data.
   - [[#-set-log_file-path-to-varlogrclone_jobberlog-linux][# set log_file path to /var/log/rclone_jobber.log (Linux)]]
   - [[#logrotate-varlogrclone_jobberlog-linux][Logrotate /var/log/rclone_jobber.log (Linux)]]
   - [[#send-varlogrclone_jobberlog-to-systemd-journal-linux][Send /var/log/rclone_jobber.log to systemd journal (Linux)]]
-- [[#example-backup-jobs][Example backup jobs]]
-- [[#example-restore-data][Example restore-data]]
-- [[#test-backup-jobs-and-test-restore-data-jobs][Test backup jobs and test restore-data jobs]]
-- [[#recovery-plan][Recovery plan]]
-- [[#monitoring][Monitoring]]
-  - [[#check-backups][Check backups]]
-  - [[#check-recovery-plan][Check recovery plan]]
+- [[#back-up-and-restore][Back up and restore]]
+  - [[#example-backup-jobs][Example backup jobs]]
+  - [[#example-restore-data][Example restore data]]
+  - [[#test-backup-jobs-and-test-restore-data-jobs][Test backup jobs and test restore-data jobs]]
+  - [[#backup-monitoring-checklist][Backup monitoring checklist]]
+- [[#data-recovery-plan][Data recovery plan]]
+  - [[#data-recovery-plan-documents][Data recovery plan documents]]
+  - [[#data-recovery-plan-monitoring-checklist][Data-recovery-plan monitoring checklist]]
 - [[#license][License]]
 
 * Install rclone
@@ -59,34 +61,36 @@ Install the latest rclone from https://rclone.org/downloads/
 Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber repository]] to your home directory.
 
 This tutorial assume that the rclone_jobber directory is in your home directory.
+The "examples" directory contains all the scripts used by this tutorial.
 
-* Setup test directories and path variables
-This tutorial uses example scripts that backup a small test directory.
+* Setup a test directory
+This tutorial's example scripts backup a small test directory.
 
-The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup a small test directory.
+The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup the small test directory.
 It recursively deletes the ~/test_rclone_data directory and rebuilds a fresh copy.
 To setup a test directory from the command line:
 : $ ~/rclone_jobber/examples/setup_test_data_directory.sh
 
-The "examples" directory contains all the scripts used by this tutorial.
+* Setup path variables
 Most tutorials use <value> notation to indicate substitution.
-This tutorial uses path variables $rclone_jobber and $usb e.g.:
+This tutorial uses path variables to automate the substitution.
+For example, $rclone_jobber and $usb are substituted in:
 : options="--filter-from=$rclone_jobber/examples/filter_rules"
 : dest="$usb/test_rclone_backup"
-You can automate the substitution of path variables from your .profile.
 There is no need to edit the scripts.
 
-If you're on Linux, add these lines to your ~/.profile file, but with your system paths:
+If you're on Linux, automate the substitution of path variables from your .profile.
+Add these lines to your ~/.profile file, but with your system paths:
 : export rclone_jobber="/home/wolfv/rclone_jobber"
 : export usb="/media/wolfv/USB_device_name"
 and reload .profile:
 : $ source ~/.profile
 
-The "usb" is just a variable name used in the examples, it doesn't actually have to be a USB drive.
+The above "usb" is just a variable name used in the examples, it doesn't actually have to be a USB drive.
 For example:
 : export usb="/home/wolfv/test_rclone"
 
-If you don't edit your .profile, you can edit the example scripts:
+If you don't want to edit your .profile, you can edit the example scripts:
  replace occurrences of "$rclone_jobber" and "$usb" with your system's paths.
 
 The example scripts use the following environment path variables:
@@ -130,6 +134,16 @@ Here are some more things you can try with rclone_jobber:
 
 * Backup job and rclone_jobber.sh parameters
 ** Backup job script
+Each backup job contains arguments which are passed to rclone_script.sh.
+
+rclone_jobber.sh has 6 parameters, which are described in the next 6 sections:
+1) source
+2) dest
+3) move_old_files_to
+4) options
+5) job_name
+6) monitoring_URL
+
 Here is an example backup job with all the rclone_jobber.sh arguments defined:
 : #!/usr/bin/env sh
 : 
@@ -143,14 +157,6 @@ Here is an example backup job with all the rclone_jobber.sh arguments defined:
 
 The last line calls rclone_jobber.sh.
 =source= and =dest= are required, the remaining arguments can be \"\" or undefined.
-
-Rclone_jobber has 6 parameters, which are described in the next 6 sections:
-1) source
-2) dest
-3) move_old_files_to
-4) options
-5) job_name
-6) monitoring_URL
 
 ** 1) source
 =source= is the directory to back up.
@@ -272,8 +278,8 @@ Each rule starts with a "+ " or "- ", followed by a pattern.
 For each file in source, the filter rules are processed in the order that they are defined.
 If the matcher fails to find a match after testing all the filter rules, then the path is included.
 
-Comment add filter rules '#' comment to tutorial
-Comments on the end of rules is not supported because file names can contain a '#'.
+Lines starting with '#' are comments.
+Comments at the end of a rule is not supported because file names can contain a '#'.
 
 In the example filter_rules_excld file, each section starts with a ###### heading ######.
 The sections alternate between include and exclude, progressing from fine to coarse grained.
@@ -288,8 +294,13 @@ To see the example filter_rules_excld file in action, run:
 : $ ~/rclone_jobber/examples/job_backup_to_USB_excld.sh
 
 * Select a cloud storage provider
+Rclone uses cloud storage providers to backup data to an off-site storage system.
+Off-site storage systems are safe from local disaster.
+
 All rclone cloud-storage providers are listed on https://rclone.org/.
 Some of the cloud-storage-provider features are listed in two tables on https://rclone.org/overview/.
+Most cloud-storage providers offer small storage capacities for free.
+Pick one, you can always try other cloud-storage providers after you finish this tutorial.
 
 * Configure a remote
 Once you have an account with your chosen cloud-storage provider, the next step is to configure its remote.
@@ -319,7 +330,7 @@ To test your remote, run:
 * Configure a crypt
 "crypt" is a kind of remote that:
 - encrypts and decrypts the data stream for an underlying remote
-- performs encryption and decryption on client side
+- performs encryption and decryption on the client side
 - uses the same command interface as other kinds of remotes
 
 Instructions for configuring a crypt remote are at https://rclone.org/crypt/ and https://rclone.org/docs/#configuration-encryption.
@@ -384,7 +395,7 @@ There are 3 work-a-rounds:
 - use a different remote data-storage provider
 
 * Schedule backup jobs to run automatically
-After the backup jobs are scheduled, you will have an automated back up system that follows this workflow:
+After you schedule backup jobs, you will have an automated back up system that follows this workflow:
 1. a job scheduler calls a backup job script
 2. the job script calls rclone_jobber.sh
 3. rclone_jobber.sh calls rclone
@@ -392,7 +403,7 @@ After the backup jobs are scheduled, you will have an automated back up system t
 
 Schedule your backup jobs in your favorite job scheduler.
 
-The following example schedules jobs on cron (cron is a job scheduler installed on Linux).
+The following example schedules jobs on cron (cron is a popular job scheduler installed on Linux).
 The first line runs a local job every hour on the hour.
 The second line runs a remote job every hour, 30 minutes past the hour.
 The third line runs at 3:18 and 15:18 every day
@@ -408,8 +419,8 @@ On Linux Gnome desktop:
 : right click > Settings > Power > Automatic suspend: Off
 
 * Logging options
-The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh.
-You can skip this section if you like the default logging.
+rclone_jobber.sh default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh.
+If you want to log to a different location, read this section.
 
 Logging options are set in rclone_jobber.sh, headed by "# set log" comments.
 To change logging behavior, search for "# set log" and change the default values.
@@ -426,11 +437,11 @@ Additionally, you can set [[https://rclone.org/docs/#log-level-level][--log-leve
 
 ** # set log_file path
 In rclone_jobber.sh, variable log_file contains the log file's path.
-You can change log_file to any path you like.
 The default behavior is to place rclone_jobber.log in the same directory as rclone_jobber.sh:
 : # set log_file path
 : path="$(realpath "$0")"         #path of this script
 : log_file="${path%.*}.log"       #replace path extension with "log"
+You can change log_file to any path you like.
 
 ** # set log_file path to /var/log/rclone_jobber.log (Linux)
 To set the rclone_jobber log location to /var/log/, create the log file and give it the user's ownership and read-write permission.
@@ -479,7 +490,8 @@ To do so, make these two changes to rclone_jobber.sh script:
 :     #echo "$msg" >> "$log_file"                            #send msg to log_file
 :     printf "$msg" | systemd-cat -t RCLONE_JOBBER -p info   #send msg to systemd journal
 
-* Example backup jobs
+* Back up and restore
+** Example backup jobs
 The following system uses two backup jobs with complementary attributes (this is how I backup my home PC).
 The latest snapshot can be easily restored from either backup.
 
@@ -499,23 +511,25 @@ In addition, job_backup_recovery_plan_to_remote.sh stores recovery-plan files of
 Recovery-plan files are listed in the "Recovery plan" section.
 
 Backup to both local and remote locations in case disaster destroys one.
-If Internet connection fails, local backup is still made.
+If the Internet connection fails, local backup is still made.
 
-* Example restore-data
+** Example restore data
 To restore data, copy files from backup to destination.
 
-You can use cp (shell command) to restore data from local unecrypted backup:
-- to copy a single file from local backup:
+You can use cp (shell command) to restore data from local unecrypted backup.\\
+To copy a single file from local backup:
 :    $ cp -p localBackupPath destPath
-- to copy a last_snapshot from local backup:
+To copy a last_snapshot directory from local backup:
 :    $ cp -a localBackup/last_snapshot destPath
 
-Use rclone to restore data from remote or encrypted backup:
-- to copy a single file from remote backup:   rclone copy remote:sourcePath dest:destPath
+Use rclone to restore data from remote or encrypted backup.\\
+To copy a single file from remote backup:
+:    $ rclone copy remote:sourcePath dest:destPath
+To copy a single file from remote backup, use one of these scripts:
 - [[./examples/job_restore_last_snapshot.sh][examples/job_restore_last_snapshot.sh]]
 - [[./examples/job_restore_directory_from_remote.sh][examples/job_restore_directory_from_remote.sh]]
 
-* Test backup jobs and test restore-data jobs
+** Test backup jobs and test restore-data jobs
 The following commands test the example backup and restore jobs.
 They test your entire data recovery system end to end, testing both the data backup and data recovery together.
 Don't worry, the tutorial's environment is setup to make testing painless.
@@ -540,8 +554,26 @@ Notice that rclone does not back up empty directories.
 
 Follow a similar test procedure when you practice your recovery plan, but with real data.
 
-* Recovery plan
-Example recovery plan:
+** Backup monitoring checklist
+Monitor your backups to make that data is actually being backed up.
+Do not rely solely on warning messages or rclone_jobber.log; they do not prove that data was saved to destination.
+Use a checklist like the following example.
+
+For each backup job:
+- check that recently changed files are in the backup
+:    $ ls -l /media/wolfv/big_stick/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
+:    $ rclone lsl onedrive_wolfv_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
+- check space usage and available space
+- check rclone_jobber.log
+:    $ cat /var/log/rclone_jobber.log
+- make sure monitoring URLs are still active
+
+* Data recovery plan
+** Data recovery plan documents
+A data recovery plan is a documented process to recover and protect data in the event of a disaster.
+The data recovery plan presented here also includes re-installing the operating system, in case of hardware loss.
+
+Example data recovery plan:
 1. Retrieve recovery-plan files from on-site or off-site location
    - notes for installing OS
    - recovery plan (this file)
@@ -571,24 +603,8 @@ Start from scratch with a blank environment (or use a different location on curr
 You’ll run into snags, and that is the point.  Workout the snags BEFORE data is lost.
 If you have enough disk space, restore all your data to a different directory, and then use diff to verify the accuracy of the restored data.
 
-* Monitoring
-** Check backups
-Example monthly backup check.
-
-For each backup job:
-- check that recently changed files are in the backup
-:    $ ls -l /media/wolfv/big_stick/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
-:    $ rclone lsl onedrive_wolfv_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
-- check space usage and available space
-- check rclone_jobber.log
-:    $ cat /var/log/rclone_jobber.log
-- make sure monitoring URLs are still active
-
-Do not rely solely on warning messages or rclone_jobber.log for monitoring; they do not prove that data was saved to destination.
-Check each backup job as described above.
-
-** Check recovery plan
-Example yearly recovery-plan check:
+** Data-recovery-plan monitoring checklist
+Example annual recovery-plan checklist:
 1. review your recovery plan
 2. make sure the recovery-plan files are still accessible and up-to date (listed in "Recovery plan" section)
    - on site copy
