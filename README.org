@@ -6,6 +6,7 @@ It performs a backup jobs by calling rclone.
 The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-job and restore-job examples for a home computer.
 
 *rclone_jobber.sh features:*
+- tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]]
 - Options to archive old backup files in their original hierarchy
 - Can backup to multiple destinations for redundant backups (one backup job per destination)
 - Aborts if backup job is already running (maybe previous run didn't finish)
@@ -13,7 +14,6 @@ The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-
 - Option for a cron-monitoring service
 - Logging
 - POSIX compliant shell script so it is easy to customize
-- tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]]
 - Free (open source Creative Commons Zero license)
 
 *Rclone features:*

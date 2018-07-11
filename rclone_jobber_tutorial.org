@@ -2,13 +2,13 @@
 This tutorial shows you how to setup and test the rclone_jobber backup script.
 The final product will perform local and remote backups automatically.
 
-Both rclone and rclone_jobber.sh are command line tools.
-This tutorial assumes:
-- the reader has basic command-line skills
-- the computer can run shell scripts (shell scripts can run on Linux, macOS, and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]])
+The tutorial is written for Linux, and most of the contents is also useful for macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
 
-The examples make backups for a home PC.
-The rclone_jobber.sh and its job scripts can be adapted to suit your own backup needs.
+Both rclone and rclone_jobber.sh are command line tools.
+This tutorial assumes that the reader has basic command-line skills.
+
+The example jobs scripts make backups for a home PC.
+rclone_jobber.sh and the example job scripts can be adapted to suit your own backup needs.
 
 Backup trivia: the verb form to "back up" is two words, whereas the noun is "backup".
 
@@ -271,6 +271,9 @@ Each rule starts with a "+ " or "- ", followed by a pattern.
 
 For each file in source, the filter rules are processed in the order that they are defined.
 If the matcher fails to find a match after testing all the filter rules, then the path is included.
+
+Comment lines start with '#'.
+Comments on the end of rules is not supported because file names can contain a '#'.
 
 In the example filter_rules_exc file, each section starts with a ###### heading ######.
 The sections alternate between include and exclude, progressing from fine to coarse grained.
