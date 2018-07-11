@@ -2,7 +2,7 @@
 This tutorial shows you how to setup and test the rclone_jobber backup script.
 The final product will perform local and remote backups automatically.
 
-The tutorial is written for Linux, and most of the contents is also useful for macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
+The tutorial is written for Linux, and most of the content is also useful for macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
 
 Both rclone and rclone_jobber.sh are command line tools.
 This tutorial assumes that the reader has basic command-line skills.
@@ -60,7 +60,7 @@ Install the latest rclone from https://rclone.org/downloads/
 * Install rclone_jobber
 Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber repository]] to your home directory.
 
-This tutorial assume that the rclone_jobber directory is in your home directory.
+This tutorial assumes that the rclone_jobber directory is in your home directory.
 The "examples" directory contains all the scripts used by this tutorial.
 
 * Setup a test directory
@@ -120,7 +120,7 @@ Run the backup job:
 : $ ~/rclone_jobber/examples/job_backup_to_USB_minimal.sh
 
 Here are some more things you can try with rclone_jobber:
-1. Open rclone_jobber.log (rclone_jobber.log is in same directory as rclone_jobber.sh).
+1. Open rclone_jobber.log (rclone_jobber.log is in the same directory as rclone_jobber.sh).
 2. Run the backup job again, this time without =--dry-run=.
 3. Inspect changes in the destination files.
 4. Change some files in source:
@@ -202,7 +202,7 @@ Argument to move old files to old_files directory, and append move date to file 
 : move_old_files_to="dated_files"
 
 Old files are moved to the old_files directory in their original hierarchy.
-This is makes it easy to browse a file's history, and restore a particular version of a file.
+This makes it easy to browse a file's history, and restore a particular version of a file.
 : backup
 : ├── last_snapshot                   <<<<<<<< last_snapshot directory contains the most recent backup
 : │   └── direc1
@@ -279,7 +279,7 @@ For each file in source, the filter rules are processed in the order that they a
 If the matcher fails to find a match after testing all the filter rules, then the path is included.
 
 Lines starting with '#' are comments.
-Comments at the end of a rule is not supported because file names can contain a '#'.
+Comment at the end of a rule is not supported because file names can contain a '#'.
 
 In the example filter_rules_excld file, each section starts with a ###### heading ######.
 The sections alternate between include and exclude, progressing from fine to coarse grained.
@@ -377,7 +377,7 @@ If the path is too long, rclone returns this ERROR:
 : Failed to copy: invalidRequest: pathIsTooLong: Path exceeds maximum length
 
 There are 3 work-a-rounds:
-- turn off "enrcrypt directory names" in rclone config (file content can still be encrypted)
+- turn off "encrypt directory names" in rclone config (file content can still be encrypted)
 - shorten your paths
 - Long Path Tool (I have not tried this)
 
@@ -389,13 +389,12 @@ rclone crypt file-name and directory-name encryption don’t work with Backblaze
 So then rclone can’t decrypt the file names.
 
 There are 3 work-a-rounds:
-- turn off "enrcrypt file names" and "enrcrypt directory names" in rclone config (file content can still be encrypted)
-- turn off b2 lifecycle, set move_old_files_to=\"dated_directory\" in backup job,
-  and manually delete old files at end of life
+- turn off "encrypt file names" and "encrypt directory names" in rclone config (file content can still be encrypted)
+- turn off b2 lifecycle, set move_old_files_to=\"dated_directory\" in the backup job, and manually delete old files at end of life
 - use a different remote data-storage provider
 
 * Schedule backup jobs to run automatically
-After you schedule backup jobs, you will have an automated back up system that follows this workflow:
+After you schedule backup jobs, you will have an automated backup system that follows this workflow:
 1. a job scheduler calls a backup job script
 2. the job script calls rclone_jobber.sh
 3. rclone_jobber.sh calls rclone
@@ -498,16 +497,16 @@ The latest snapshot can be easily restored from either backup.
 [[./examples/job_backup_to_USB.sh][examples/job_backup_to_USB.sh]] has attributes that make it convenient to browse file history:
 - local storage (for fast navigation)
 - move_old_files_to=\"dated_files\" (old versions of a file are grouped together)
-- not encrypted (brows files in a file manager) (unecrypted local storage is OK if storage is safe from theft, and useful if the remote storage password is lost)
+- not encrypted (browse files in a file manager) (unencrypted local storage is OK if storage is safe from theft, and useful if the remote storage password is lost)
 - schedule hourly, on the hour (this assumes the USB drive is always plugged in and mounted)
 
 [[./examples/job_backup_to_remote.sh][/examples/job_backup_to_remote.sh]] has attributes that make it secure, and easy to restore a deleted sub-directory:
-- remote storage (off site is safe from on-site disaster)
+- remote storage (off-site is safe from on-site disaster)
 - move_old_files_to=\"dated_directory\" (easy to restore a deleted sub-directory e.g. Documents)
 - encrypted (please keep your password in a safe place)
 - schedule hourly, 30 min past the hour (for a back up every 30 minutes when combined with job_backup_to_USB.sh)
 
-In addition, job_backup_recovery_plan_to_remote.sh stores recovery-plan files off-site unecrypted.
+In addition, job_backup_recovery_plan_to_remote.sh stores recovery-plan files off-site unencrypted.
 Recovery-plan files are listed in the "Recovery plan" section.
 
 Backup to both local and remote locations in case disaster destroys one.
@@ -516,7 +515,7 @@ If the Internet connection fails, local backup is still made.
 ** Example restore data
 To restore data, copy files from backup to destination.
 
-You can use cp (shell command) to restore data from local unecrypted backup.\\
+You can use cp (shell command) to restore data from local unencrypted backup.\\
 To copy a single file from local backup:
 :    $ cp -p localBackupPath destPath
 To copy a last_snapshot directory from local backup:
@@ -574,7 +573,7 @@ A data recovery plan is a documented process to recover and protect data in the 
 The data recovery plan presented here also includes re-installing the operating system, in case of hardware loss.
 
 Example data recovery plan:
-1. Retrieve recovery-plan files from on-site or off-site location
+1. Retrieve recovery-plan files from an on-site or off-site location
    - notes for installing OS
    - recovery plan (this file)
    - job_restore_last_snapshot.sh
@@ -589,26 +588,26 @@ I keep my backup rclone.conf in a password manager (LastPass).
 The other recovery-plan files (listed in item 1.) are not encrypted so that they can be accessed before rclone is installed.
 With this setup, all I need to bootstrap the recovery process is a web browser and my LastPass master password.
 
-Scheduling the backup of your backup recovery plan insures that your backup recovery-plan files are always up-to date.
-The recovery-plan files should not be encrypted so that they can accessed before installing rclone.
+Scheduling the backup of your backup recovery plan ensures that your backup recovery-plan files are always up-to-date.
+The recovery-plan files should not be encrypted so that they can be accessed before installing rclone.
 For each backup location, place the recovery-plan files in a directory to be backed up.
 - If a backup is not encrypted, then the recovery-plan files will be accessible in the backup.
-- If a backup is encrypted, create an unecrypted backup job to the same underlying remote, like this example:
+- If a backup is encrypted, create an unencrypted backup job to the same underlying remote, like this example:
   -  [[rclone_jobber/examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]]
   -  [[rclone_jobber/examples/filter_rules_recovery_plan][filter_rules_recovery_plan]]
   -  and schedule job_backup_recovery_plan_to_remote.sh to run automatically
 
 Practice the recovery plan.
-Start from scratch with a blank environment (or use a different location on current machine).
+Start from scratch with a blank environment (or use a different location on the current machine).
 You’ll run into snags, and that is the point.  Workout the snags BEFORE data is lost.
 If you have enough disk space, restore all your data to a different directory, and then use diff to verify the accuracy of the restored data.
 
 ** Data-recovery-plan monitoring checklist
 Example annual recovery-plan checklist:
 1. review your recovery plan
-2. make sure the recovery-plan files are still accessible and up-to date (listed in "Recovery plan" section)
+2. make sure the recovery-plan files are still accessible and up-to-date (listed in "Recovery plan" section)
    - on site copy
-   - off site copy
+   - off-site copy
 3. practice restore-data on small test directory, from ~/rclone_jobber/examples:
     1. setup_test_data_directory.sh
     2. job_backup_to_USB.sh

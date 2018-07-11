@@ -1,7 +1,7 @@
 * About rclone_jobber backup script
 [[./rclone_jobber.sh][rclone_jobber.sh]] is a shell script to make backups.
-It performs a backup jobs by calling rclone.
-[[https://rclone.org/][Rclone]] is a mature tool and many [[https://github.com/ncw/rclone/wiki/Third-Party-Integrations-with-rclone][third party tools use rclone]].
+It performs backup jobs by calling rclone.
+[[https://rclone.org/][Rclone]] is a mature tool and many [[https://github.com/ncw/rclone/wiki/Third-Party-Integrations-with-rclone][third-party tools use rclone]].
 
 The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-job and restore-job examples for a home computer.
 
@@ -9,7 +9,7 @@ The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-
 - tested on Linux, and should also run on macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]]
 - Options to archive old backup files in their original hierarchy
 - Can backup to multiple destinations for redundant backups (one backup job per destination)
-- Aborts if backup job is already running (maybe previous run didn't finish)
+- Aborts if the backup job is already running (maybe the previous run didn't finish)
 - Pop-up for error conditions
 - Option for a cron-monitoring service
 - Logging
