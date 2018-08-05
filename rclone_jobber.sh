@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# rclone_jobber.sh version 1.5
+# rclone_jobber.sh version 1.5.1
 # Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 # Logging options are headed by "# set log".  Details are in the tutorial's "Logging options" section.
 
@@ -15,7 +15,7 @@
 
 ################################# parameters #################################
 source="$1"            #the directory to back up (without a trailing slash)
-dest="$2"              #destination=$dest/last_snapshot
+dest="$2"              #the directory to back up to (without a trailing slash or "last_snapshot") destination=$dest/last_snapshot
 move_old_files_to="$3" #move_old_files_to is one of:
                        # "dated_directory" - move old files to a dated directory (an incremental backup)
                        # "dated_files"     - move old files to old_files directory, and append move date to file names (an incremental backup)
@@ -114,7 +114,7 @@ echo "$cmd"
 #send_to_log "$timestamp $job_name"
 #send_to_log "$cmd"
 
-$cmd
+eval $cmd
 exit_code=$?
 
 ############################ confirmation and logging ########################

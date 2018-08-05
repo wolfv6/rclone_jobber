@@ -23,5 +23,5 @@ echo "$cmd"
 echo ">>>>>>>>>>>>>>> Run the above rclone command? (y) <<<<<<<<<<<<<<<<< "
 read reply
 case "$reply" in ^[Yy]$)
-    $cmd  #restore last_snapshot
+    eval $cmd  #restore last_snapshot
 esac

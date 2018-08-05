@@ -80,7 +80,7 @@ For example, Linux shell will substitute $rclone_jobber and $usb in:
 There is no need to edit the scripts.
 
 If you're on Linux, automate the substitution of path variables from your .profile.
-Add these lines to your ~/.profile file, but with your system paths:
+Add these lines to your ~/.profile (or ~/.bash_profile) file, but with your system paths:
 : export rclone_jobber="/home/wolfv/rclone_jobber"
 : export usb="/media/wolfv/USB_device_name"
 and reload .profile:
@@ -166,6 +166,7 @@ Example =source= argument:
 : source="/home/wolfv"
 
 ** 2) dest
+=dest= is the directory to back up to.
 Data is backed up to =destination=$dest/last_snapshot=.
 
 Example =dest= argument for [[https://rclone.org/local/][local file system]] data storage:
@@ -173,6 +174,17 @@ Example =dest= argument for [[https://rclone.org/local/][local file system]] dat
 
 Example =dest= for remote data storage:
 : dest="onedrive_wolfv_backup_crypt:"
+
+** If source or dest path contains a space
+If your path contains a space, then you must use extra quotes.
+
+For Linux / OSX =source= argument:
+: source="'/home/wolf v'"
+
+For Windows =source= argument:
+: source='"/home/wolf v"'
+
+Details at https://rclone.org/docs/#quoting-and-the-shell.
 
 ** 3) move_old_files_to
 When a file is changed or deleted, the old version already in backup is either moved or removed.
@@ -604,8 +616,8 @@ For each backup location, place the recovery-plan files in a directory to be bac
 - If a backup is not encrypted, then the recovery-plan files will be accessible in the backup.
 - If a backup is encrypted, create an unencrypted backup job to the same underlying remote.
   Like this example:
-  -  [[rclone_jobber/examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]]
-  -  [[rclone_jobber/examples/filter_rules_recovery_plan][filter_rules_recovery_plan]]
+  -  [[./examples/job_backup_recovery_plan_to_remote.sh][job_backup_recovery_plan_to_remote.sh]]
+  -  [[./examples/filter_rules_recovery_plan][filter_rules_recovery_plan]]
   -  and schedule job_backup_recovery_plan_to_remote.sh to run automatically
 
 Practice the recovery plan.
