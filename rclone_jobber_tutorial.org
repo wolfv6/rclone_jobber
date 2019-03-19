@@ -29,7 +29,7 @@ I am not responsible for any lost data.
   - [[#backup-job-script][Backup job script]]
   - [[#1-source][1) source]]
   - [[#2-dest][2) dest]]
-  - [[#if-source-or-dest-path-contains-a-space][If source or dest path contains a space]]
+  -    [[#if-source-or-dest-paths-contain-a-space][If source or dest paths contain a space]]
   - [[#3-move_old_files_to][3) move_old_files_to]]
   - [[#4-options][4) options]]
   - [[#5-job_name][5) job_name]]
@@ -49,7 +49,7 @@ I am not responsible for any lost data.
   - [[#example-backup-jobs][Example backup jobs]]
   - [[#example-restore-data][Example restore data]]
   - [[#test-backup-jobs-and-test-restore-data-jobs][Test backup jobs and test restore-data jobs]]
-  - [[#backup-monitoring-checklist][Backup monitoring checklist]]
+  - [[#monitor-your-backups][Monitor your backups]]
 - [[#data-recovery-plan][Data recovery plan]]
   - [[#data-recovery-plan-documents][Data recovery plan documents]]
   - [[#data-recovery-plan-monitoring-checklist][Data-recovery-plan monitoring checklist]]
@@ -152,7 +152,7 @@ Here is an example backup job with all the rclone_jobber.sh arguments defined:
 The last line calls rclone_jobber.sh.
 =source= and =dest= are required, the remaining arguments can be \"\" or undefined.
 
-The next 6 sections describe rclone_jobber.sh parameters:
+The next sections describe rclone_jobber.sh parameters:
 1) source
 2) dest
 3) move_old_files_to
@@ -176,7 +176,7 @@ Example =dest= argument for [[https://rclone.org/local/][local file system]] dat
 Example =dest= for remote data storage:
 : dest="onedrive_wolfv_backup_crypt:"
 
-** If source or dest path contains a space
+**    If source or dest paths contain a space
 If your path contains a space, then you must use extra quotes.
 
 For Linux / OSX =source= argument:
@@ -573,20 +573,34 @@ Notice that rclone does not back up empty directories.
 
 Follow a similar test procedure when you practice your recovery plan, but with real data.
 
-** Backup monitoring checklist
+** Monitor your backups
 Monitor your backups to make that data is actually being backed up.
 Do not rely solely on warning messages or rclone_jobber.log.
 They do not prove that data was saved to destination.
-Use a checklist like the following example.
 
-For each backup job:
-- check that recently changed files are in the backup
-:    $ ls -l /media/wolfv/big_stick/wolfv_backup/last_snapshot/Documents/tasks/tasks.org
-:    $ rclone lsl onedrive_wolfv_backup_crypt:last_snapshot/Documents/tasks --max-depth 1
-- check space usage and available space
-- check rclone_jobber.log
-:    $ cat /var/log/rclone_jobber.log
-- make sure monitoring URLs are still active
+Manually run a checklist script once per month, similar to this monitor_backups.sh:
+
+#+BEGIN_EXAMPLE
+#!/bin/bash
+
+echo ""
+echo ">>>> Check recently changed file time in local backup:"
+ls -l /run/media/wolfv/big_stick/wolfv_backup/last_snapshot/DATA/Documents/tasks/tasks.org
+
+echo ""
+echo ">>>> Check recently changed file time in remote backup:"
+rclone lsl onedrive_wolfv_backup_crypt:last_snapshot/DATA/Documents/tasks --max-depth 1
+
+echo ""
+echo ">>>> Check last log time:"
+tail -5 /var/log/rclone_jobber.log
+
+echo ""
+echo ">>>> Check my Monthly Report emailed from my monitoring service."
+
+echo ""
+echo ">>>> Check space usage and available space."
+#+END_EXAMPLE
 
 * Data recovery plan
 ** Data recovery plan documents

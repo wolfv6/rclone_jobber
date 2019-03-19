@@ -27,7 +27,7 @@ monitoring_URL="$6"    #cron monitoring service URL to send email if cron failur
 
 ################################ set variables ###############################
 # $new is the directory name of the current snapshot
-# $timestamp is time that old file was moved out of new (not time file was copied from source)
+# $timestamp is time that old file was moved out of new (not the time file was copied from source)
 new="last_snapshot"
 timestamp="$(date +%F_%T)"
 #timestamp="$(date +%F_%H%M%S)"  #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
@@ -66,11 +66,13 @@ print_message()
 }
 
 ################################# range checks ################################
+# if source is empty string
 if [ -z "$source" ]; then
     print_message "ERROR" "aborted because source is empty string."
     exit 1
 fi
 
+# if dest is empty string
 if [ -z "$dest" ]; then
     print_message "ERROR" "aborted because dest is empty string."
     exit 1
@@ -123,7 +125,9 @@ if [ "$exit_code" -eq 0 ]; then            #if no errors
     echo "$confirmation"
     send_to_log "$confirmation"
     send_to_log ""
-    wget $monitoring_URL -O /dev/null
+    if [ ! -z "$monitoring_URL" ]; then
+        wget $monitoring_URL -O /dev/null
+    fi
     exit 0
 else
     print_message "ERROR" "failed.  rclone exit_code=$exit_code"
