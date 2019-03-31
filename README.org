@@ -17,9 +17,11 @@ The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-
 - Free (open source Creative Commons Zero license)
 
 *Rclone features:*
+- Back up data from local machine
+- Back up data from a cloud provider (like Google Drive)
+- Back up to local storage
 - Back up to remote cloud storage (safe from local disaster)
 - Over 30 cloud-storage providers to choose from (so you're never locked into a provider)
-- Back up to local storage
 - Optional encryption (Crypt)
 - MD5/SHA1 hashes checked at all times for file integrity
 - Timestamps preserved on files

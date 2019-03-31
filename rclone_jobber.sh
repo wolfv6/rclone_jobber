@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# rclone_jobber.sh version 1.5.2
+# rclone_jobber.sh version 1.5.3
 # Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 # Logging options are headed by "# set log".  Details are in the tutorial's "Logging options" section.
 
