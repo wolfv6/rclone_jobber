@@ -79,12 +79,12 @@ if [ -z "$dest" ]; then
 fi
 
 # if source is empty
-if ! ( ls -1qA $source | grep -q . ); then
+if ! ( rclone ls -q $source | grep -q . ); then
     print_message "ERROR" "aborted because source is empty."
     exit 1
 fi
 
-# if job is already running (maybe previous run didn't finish)
+# if job is already running (maybe previous run hasn't finish)
 if pidof -o $PPID -x "$job_name"; then
     print_message "WARNING" "aborted because it is already running."
     exit 1
