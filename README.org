@@ -18,7 +18,7 @@ The [[file:rclone_jobber_tutorial.org][rclone jobber tutorial]] includes backup-
 
 *Rclone features:*
 - Back up data from local machine
-- Back up data from a cloud provider (like Google Drive)
+- Back up data from a cloud provider (Google Drive for example)
 - Back up to local storage
 - Back up to remote cloud storage (safe from local disaster)
 - Over 30 cloud-storage providers to choose from (so you're never locked into a provider)

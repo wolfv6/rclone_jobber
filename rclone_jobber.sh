@@ -27,7 +27,7 @@ monitoring_URL="$6"    #cron monitoring service URL to send email if cron failur
 
 ################################ set variables ###############################
 # $new is the directory name of the current snapshot
-# $timestamp is time that old file was moved out of new (not the time file was copied from source)
+# $timestamp is time that old file was moved out of new (not time that file was copied from source)
 new="last_snapshot"
 timestamp="$(date +%F_%T)"
 #timestamp="$(date +%F_%H%M%S)"  #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
@@ -84,7 +84,7 @@ if ! ( rclone ls -q $source | grep -q . ); then
     exit 1
 fi
 
-# if job is already running (maybe previous run hasn't finish)
+# if job is already running (maybe previous run didn't finish)
 if pidof -o $PPID -x "$job_name"; then
     print_message "WARNING" "aborted because it is already running."
     exit 1
