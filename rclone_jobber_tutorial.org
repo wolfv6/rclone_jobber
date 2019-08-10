@@ -232,6 +232,7 @@ Argument to remove old files from backup:
 
 Only the most recent version of each file remains in the backup.
 This can save a little storage space.
+Useful for making an extra backup before OS upgrade or OS clean install.
 : backup
 : └── last_snapshot         <<<<<<<< last_snapshot directory contains the most recent backup
 :     └── direc1
@@ -291,14 +292,10 @@ Each rule starts with a "+ " or "- ", followed by a pattern.
 
 For each file in source, filter rules are processed in the order that they are defined.
 If the matcher fails to find a match after testing all the filter rules, then the path is included.
+Read the [[./examples/filter_rules_excldld][examples/filter_rules_excld]] file to see how this works.
 
 Lines starting with '#' are comments.
 Comment at the end of a rule is not supported because file names can contain a '#'.
-
-In the example filter_rules_excld file, each section starts with a ###### heading ######.
-The sections alternate between include and exclude, progressing from fine to coarse grained.
-This example has four sections, but any number of sections is possible.
-[[./examples/filter_rules][examples/filter_rules]] has two sections.
 
 The rclone_jobber =options= argument specifies the filter_rules_excld file like this:
 : options="--filter-from filter_rules_excld"
@@ -644,7 +641,7 @@ And then use diff to verify the accuracy of the restored data.
 ** Data-recovery-plan monitoring checklist
 Example annual recovery-plan checklist:
 1. review your recovery plan
-2. make sure the recovery-plan files are still accessible and up-to-date (listed in "Recovery plan" section)
+2. make sure the recovery-plan files are still accessible and up-to-date (listed in previous section)
    - on-site copy
    - off-site copy
 3. practice restore-data on small test directory, from ~/rclone_jobber/examples:

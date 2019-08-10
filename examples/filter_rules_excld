@@ -7,10 +7,11 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-# paths in this file are from source="~/test_rclone_data/"
+# Paths in this file are from source="~/test_rclone_data/".
+# The sections alternate between include and exclude, progressing from fine to coarse grained.
 
 ########################## 1) include specific files #########################
-# include specific files before they are excluded by section 2
+# Include specific files before they are excluded by section 2.
 
 # config files
 + .bashrc
@@ -20,32 +21,33 @@
 + .git/**
 
 ########################## 2) exclude patterns ###############################
-# exclude these patterns before they are included by section 3
+# Exclude these patterns before they are included by section 3.
+# Exclude directories first because filter is faster when directories are not entered.
+# Then exclude file types.
+
+# directory names ending in "_exc"
+- *_exc/**
+
+# hidden directories
+- .*/**
 
 # file names with extension
 - *.bak
 - *.log
 - *.tmp
 
-# file names ending in "_exc" without extension
-- *_exc
-
 # file names ending in "_exc." and any extension
 - *_exc.*
 
-# directory names ending in "_exc"
-- *_exc/**
-
-# hidden files and directories
+# hidden files
 - .*
-- .*/**
 
 ########################## 3) include directories ############################
-# include these directories before they are excluded by section 4
+# Include these directories before they are excluded by section 4.
 + direc_empty/**
 + direc0/**
 + direc1/**
 
 ########################## 4) exclude everything else ########################
-# exclude all top directories and files
+# Exclude all top directories and files.
 - *

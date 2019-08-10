@@ -85,6 +85,7 @@ if ! ( rclone ls -q $source | grep -q . ); then
 fi
 
 # if job is already running (maybe previous run didn't finish)
+# https://github.com/wolfv6/rclone_jobber/pull/9 said this is not working in macOS
 if pidof -o $PPID -x "$job_name"; then
     print_message "WARNING" "aborted because it is already running."
     exit 1
