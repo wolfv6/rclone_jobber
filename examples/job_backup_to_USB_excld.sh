@@ -20,6 +20,6 @@ monitoring_URL=""
 
 $rclone_jobber/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 
-#display test directories (comment these if calling from job scheduler)
+#display test directories (display for tutorial only, don't do this in production)
 tree -a $source
 tree -a $dest

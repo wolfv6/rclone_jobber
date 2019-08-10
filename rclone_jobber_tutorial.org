@@ -80,18 +80,20 @@ For example, Linux shell will substitute $rclone_jobber and $usb in:
 : dest="$usb/test_rclone_backup"
 There is no need to edit the scripts.
 
-If you're on Linux, automate the substitution of path variables from your .profile.
+If you're on Linux, automate the substitution of path variables from your .profile
+ (for tutorial scripts only, don't do this for production).
 Add these lines to your ~/.profile (or ~/.bash_profile) file, but with your system paths:
 : export rclone_jobber="/home/wolfv/rclone_jobber"
 : export usb="/media/wolfv/USB_device_name"
-and reload .profile:
-: $ source ~/.profile
 
 The above "usb" is just a variable name used in the examples, it doesn't actually have to be a USB drive.
 For example:
 : export usb="/home/wolfv/test_rclone"
 
-If you can't edit your .profile, edit the example scripts:
+Reload the .profile:
+: $ source ~/.profile
+
+To use a tutorial example script as a template for production backups, edit the tutorial scripts:
 replace occurrences of "$rclone_jobber" and "$usb" with your system's paths.
 
 The example scripts use the following environment path variables:
@@ -114,12 +116,17 @@ Here is a minimal backup-job script for rclone_jobber:
 
 The last line calls rclone_jobber.sh with arguments =source= and =dest=.
 
-Open the [[./examples/job_backup_to_USB_minimal.sh][examples/job_backup_to_USB_minimal.sh]] in your favorite [[https://en.wikipedia.org/wiki/Text_editor][text editor]].
+Open the [[./examples/job_backup_to_USB_minimal.sh][examples/job_backup_to_USB_minimal.sh]] in your favorite text editor.
 Set options to =--dry-run=:
 : options="--dry-run"
 
 Run the backup job:
 : $ ~/rclone_jobber/examples/job_backup_to_USB_minimal.sh
+
+No backup was created because --dry-run.
+
+*Important:* A bad backup job can cause data loss.
+First test with the =--dry-run= flag to see exactly what would be copied and deleted.
 
 Here are some more things you can try with rclone_jobber:
 1. Open rclone_jobber.log (rclone_jobber.log is in the same directory as rclone_jobber.sh).
@@ -131,9 +138,6 @@ Here are some more things you can try with rclone_jobber:
    - add a file
    - move a file
    And run the backup job again.
-
-*Important:* A bad backup job can cause data loss.
-First test with the =--dry-run= flag to see exactly what would be copied and deleted.
 
 * Backup job and rclone_jobber.sh parameters
 ** Backup job script
@@ -329,13 +333,14 @@ The remote's password is stored in the rclone.conf file, so be careful about giv
 To list all your rclone remotes:
 : $ rclone listremotes
 
-Here is how to run the tutorial's example remote backup job on Linux.
+Here is how to run the tutorial's example remote backup job on Linux
+ (for tutorial scripts only, don't do this for production).
 Add this line to your ~/.profile file, but with your remote path:
 : export remote="onedrive_test_rclone_backup"
 and reload .profile:
 : $ source ~/.profile
 
-If you can't edit your .profile, edit the example scripts:
+To use a tutorial example script as a template for production backups, edit the tutorial scripts:
 replace occurrences of "${remote}" with your remote path.
 
 To test your remote, run:
