@@ -3,7 +3,7 @@ Each of the following sections describes one test case.
 
 Test-script names start with "test_".
 Each test_ script creates two directories:
-- test_rclone_data
+- rclone_test_data
 - test_rclone_backup
 
 Each test_ script tests two or three job_ scripts.

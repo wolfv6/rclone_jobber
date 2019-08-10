@@ -7,7 +7,7 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-# Paths in this file are from source="~/test_rclone_data/".
+# Paths in this file are from source="~/rclone_test_data/".
 # The sections alternate between include and exclude, progressing from fine to coarse grained.
 
 ########################## 1) include specific files #########################

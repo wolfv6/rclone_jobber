@@ -12,7 +12,7 @@
 #substitute $rclone_jobber and ${remote} with paths on your system
 rclone_jobber=$rclone_jobber #path to rclone_jobber directory
 
-source="$HOME/test_rclone_data"
+source="$HOME/rclone_test_data"
 dest="${remote}:"
 move_old_files_to="dated_directory"
 options="--filter-from=$rclone_jobber/examples/filter_rules"

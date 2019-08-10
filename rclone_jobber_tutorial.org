@@ -68,7 +68,7 @@ The "examples" directory contains all the scripts used by this tutorial.
 This tutorial's example scripts backup a small test directory.
 
 The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup the small test directory.
-It recursively deletes the ~/test_rclone_data directory and rebuilds a fresh copy.
+It recursively deletes the ~/rclone_test_data directory and rebuilds a fresh copy.
 To setup a test directory from the command line:
 : $ ~/rclone_jobber/examples/setup_test_data_directory.sh
 
@@ -109,7 +109,7 @@ Once you have the test directories and path variables setup, you can take rclone
 Here is a minimal backup-job script for rclone_jobber:
 : #!/usr/bin/env sh
 : 
-: source="$HOME/test_rclone_data"
+: source="$HOME/rclone_test_data"
 : dest="$usb/test_rclone_backup"
 : 
 : $rclone_jobber/rclone_jobber.sh "$source" "$dest"
@@ -145,7 +145,7 @@ Each backup job contains arguments and a call to rclone_jobber.sh.
 Here is an example backup job with all the rclone_jobber.sh arguments defined:
 : #!/usr/bin/env sh
 : 
-: source="$HOME/test_rclone_data"
+: source="$HOME/rclone_test_data"
 : dest="$usb/test_rclone_backup"
 : move_old_files_to="dated_files"
 : options="--filter-from=$rclone_jobber/examples/filter_rules --checksum --dry-run"
@@ -569,7 +569,7 @@ Then restore data:
 : $ ~/rclone_jobber/examples/job_restore_last_snapshot.sh
 
 Verify that the files were faithfully restored:
-: $ diff -r $HOME/test_rclone_data/direc0 /home/$USER/last_snapshot/direc0
+: $ diff -r $HOME/rclone_test_data/direc0 /home/$USER/last_snapshot/direc0
 
 Notice that rclone does not back up empty directories.
 

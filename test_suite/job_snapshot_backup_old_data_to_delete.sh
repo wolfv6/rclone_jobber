@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-source="$HOME/test_rclone_data"
+source="$HOME/rclone_test_data"
 dest="$HOME/test_rclone_backup"
 options="--filter-from=filter_rules"
 

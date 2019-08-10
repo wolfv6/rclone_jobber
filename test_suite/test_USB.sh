@@ -2,21 +2,21 @@
 
 ############## setup directories #############
 
-#delete and recreate test_rclone_data
-rm -r ~/test_rclone_data
-mkdir ~/test_rclone_data
+#delete and recreate rclone_test_data
+rm -r ~/rclone_test_data
+mkdir ~/rclone_test_data
 
-mkdir ~/test_rclone_data/direc0
-touch ~/test_rclone_data/direc0/f0
+mkdir ~/rclone_test_data/direc0
+touch ~/rclone_test_data/direc0/f0
 
-mkdir ~/test_rclone_data/direc1
-printf "original" > ~/test_rclone_data/direc1/f1
+mkdir ~/rclone_test_data/direc1
+printf "original" > ~/rclone_test_data/direc1/f1
 
-mkdir ~/test_rclone_data/direc1/direc1a
-touch ~/test_rclone_data/direc1/direc1a/f1a
+mkdir ~/rclone_test_data/direc1/direc1a
+touch ~/rclone_test_data/direc1/direc1a/f1a
 
-mkdir ~/test_rclone_data/direc1/direc1b
-touch ~/test_rclone_data/direc1/direc1b/f1b
+mkdir ~/rclone_test_data/direc1/direc1b
+touch ~/rclone_test_data/direc1/direc1b/f1b
 
 #delete and recreate test_rclone_backup
 rm -r $usb/test_rclone_backup
@@ -31,10 +31,10 @@ printf "\n*** performing first backup ***\n"
 ./job_USB_backup_to_USB.sh
 
 printf "\n*** editing f1 file ***\n"
-printf "edited" > ~/test_rclone_data/direc1/f1
+printf "edited" > ~/rclone_test_data/direc1/f1
 
 printf "*** data directory ***\n"
-tree $HOME/test_rclone_data
+tree $HOME/rclone_test_data
 
 printf "\n*** performing second backup ***\n"
 ./job_USB_backup_to_USB.sh
@@ -46,4 +46,4 @@ printf "\n*** restoring old f1 ***\n"
 ./job_USB_restore_from_USB.sh
 
 printf "*** data directory (f1_<timestamp> and f1 should be in direc1) ***\n"
-tree $HOME/test_rclone_data
+tree $HOME/rclone_test_data
