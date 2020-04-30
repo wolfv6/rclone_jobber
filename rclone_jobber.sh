@@ -33,7 +33,7 @@ timestamp="$(date +%F_%T)"
 #timestamp="$(date +%F_%H%M%S)"  #time w/o colons if thumb drive is FAT format, which does not allow colons in file name
 
 # set log_file path
-path="$(realpath "$0")"                 #path of this script
+path="$(realpath "$0")"                 #this will place log in the same directory as this script
 log_file="${path%.*}.log"               #replace path extension with "log"
 #log_file="/var/log/rclone_jobber.log"  #for Logrotate
 

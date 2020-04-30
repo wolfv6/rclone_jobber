@@ -90,7 +90,7 @@ The above "usb" is just a variable name used in the examples, it doesn't actuall
 For example:
 : export usb="/home/wolfv/test_rclone"
 
-Reload the .profile:
+Reload your .profile:
 : $ source ~/.profile
 
 To use a tutorial example script as a template for production backups, edit the tutorial scripts:

@@ -58,8 +58,9 @@ Example backup job with all the rclone_jobber.sh arguments defined:
 : $rclone_jobber/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 
 * Contact
-Submit issues to https://github.com/wolfv6/rclone_jobber/issues.
+Please tell me if something is wrong, you’re helping me improve this project.
 
+Submit issues to https://github.com/wolfv6/rclone_jobber/issues.
 Pull requests are welcome.
 
 * Licenses
