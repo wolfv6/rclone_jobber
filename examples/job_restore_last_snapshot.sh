@@ -11,9 +11,9 @@
 
 #substitute $usb and ${remote} with paths on your system
 
-#edit the source to restore data from:
-#source="$usb/test_rclone_backup/last_snapshot"
-source="${remote}:last_snapshot"
+#uncomment the source variable to restore data from:
+source="$usb/test_rclone_backup/last_snapshot"
+#source="${remote}:last_snapshot"
 
 destination="/home/$USER/last_snapshot"
 
@@ -21,7 +21,9 @@ cmd="rclone copy $source $destination"
 
 echo "$cmd"
 echo ">>>>>>>>>>>>>>> Run the above rclone command? (y) <<<<<<<<<<<<<<<<< "
-read reply
-case "$reply" in ^[Yy]$)
+read -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
     eval $cmd  #restore last_snapshot
-esac
+fi

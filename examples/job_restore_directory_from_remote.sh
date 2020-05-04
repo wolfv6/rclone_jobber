@@ -20,7 +20,9 @@ cmd="rclone copy $source $destination --dry-run"
 
 echo "$cmd"
 echo ">>>>>>>>>>>>>>> Run the above rclone command? (y) <<<<<<<<<<<<<<<<< "
-read reply
-case "$reply" in ^[Yy]$)
+read -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
     eval $cmd  #restore last_snapshot
-esac
+fi

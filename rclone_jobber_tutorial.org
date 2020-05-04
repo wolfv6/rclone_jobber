@@ -59,42 +59,14 @@ I am not responsible for any lost data.
 Install the latest rclone from https://rclone.org/downloads/ 
 
 * Install rclone_jobber
-Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber repository]] to your home directory.
+Download or clone the [[https://github.com/wolfv6/rclone_jobber][rclone_jobber repository]].
 
-This tutorial assumes that the rclone_jobber directory is in your home directory.
 The "examples" directory contains all the scripts used by this tutorial.
 
-* Setup a test directory
-This tutorial's example scripts backup a small test directory.
-
-The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup the small test directory.
-It recursively deletes the ~/rclone_test_data directory and rebuilds a fresh copy.
-To setup a test directory from the command line:
-: $ ~/rclone_jobber/examples/setup_test_data_directory.sh
-
-* Setup path variables
+* Setup environment path variables
 Most tutorials use <value> notation to indicate substitution.
-This tutorial uses path variables to automate the substitution.
-For example, Linux shell will substitute $rclone_jobber and $usb in:
-: options="--filter-from=$rclone_jobber/examples/filter_rules"
-: dest="$usb/test_rclone_backup"
-There is no need to edit the scripts.
-
-If you're on Linux, automate the substitution of path variables from your .profile
- (for tutorial scripts only, don't do this for production).
-Add these lines to your ~/.profile (or ~/.bash_profile) file, but with your system paths:
-: export rclone_jobber="/home/wolfv/rclone_jobber"
-: export usb="/media/wolfv/USB_device_name"
-
-The above "usb" is just a variable name used in the examples, it doesn't actually have to be a USB drive.
-For example:
-: export usb="/home/wolfv/test_rclone"
-
-Reload your .profile:
-: $ source ~/.profile
-
-To use a tutorial example script as a template for production backups, edit the tutorial scripts:
-replace occurrences of "$rclone_jobber" and "$usb" with your system's paths.
+This tutorial uses environment path variables to automate the substitutions.
+Thus, all the examples in this tutorial can run on your system without you having to edit the scripts.
 
 The example scripts use the following environment path variables:
 - HOME
@@ -103,8 +75,31 @@ The example scripts use the following environment path variables:
 - usb
 - remote (explained in "Configure a remote" section)
 
+The above "rclone_jobber" path is the location of the rclone_jobber repository you downloaded.
+
+Tutorial examples use the "usb" path variable to demonstrate local back ups.
+The "usb" path doesn't actually have to be a USB drive.
+
+If you're on Linux, automate the substitution of path variables from your .profile.
+Add these lines to your ~/.profile (or ~/.bash_profile) file, but with your system paths:
+: export rclone_jobber="/home/wolfv/rclone_jobber"
+: export usb="/media/wolfv/USB_device_name"
+
+Reload your .profile:
+: $ source ~/.profile
+
+Now Linux shell should substitute $rclone_jobber and $usb.
+
+* Setup a test_data directory
+This tutorial's example scripts backup a small test-source directory.
+
+The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup the small source directory.
+It recursively deletes the ~/rclone_test_data directory and rebuilds a fresh copy.
+To setup a test source directory from the command line:
+: $ $rclone_jobber/examples/setup_test_data_directory.sh
+
 * Take rclone_jobber.sh for a test drive
-Once you have the test directories and path variables setup, you can take rclone_jobber for a test drive.
+Once you have the path variables and test_data directories setup, you can take rclone_jobber for a test drive.
 
 Here is a minimal backup-job script for rclone_jobber:
 : #!/usr/bin/env sh
@@ -121,7 +116,7 @@ Set options to =--dry-run=:
 : options="--dry-run"
 
 Run the backup job:
-: $ ~/rclone_jobber/examples/job_backup_to_USB_minimal.sh
+: $ $rclone_jobber/examples/job_backup_to_USB_minimal.sh
 
 No backup was created because --dry-run.
 
@@ -154,7 +149,7 @@ Here is an example backup job with all the rclone_jobber.sh arguments defined:
 : $rclone_jobber/rclone_jobber.sh "$source" "$dest" "$move_old_files_to" "$options" "$(basename $0)" "$monitoring_URL"
 
 The last line calls rclone_jobber.sh.
-=source= and =dest= are required, the remaining arguments can be \"\" or undefined.
+=source= and =dest= are required, the remaining arguments can be empty string \"\" or undefined.
 
 The next sections describe rclone_jobber.sh parameters:
 1) source
@@ -266,9 +261,9 @@ The =job_name= argument specifies the job's file name:
 
 The shell command "$(basename $0)" will fill in the job's file name for you.
 
-Rclone_jobber guards against =job_name= running again before the previous run is finished.
+rclone_jobber.sh guards against =job_name= running again before the previous run is finished.
 
-Rclone_jobber prints =job_name= in warnings and log entries.
+rclone_jobber.sh prints =job_name= in warnings and log entries.
 
 ** 6) monitoring_URL
 The =monitoring_URL= argument specifies a ping URL for a cron-monitoring service.
@@ -289,14 +284,14 @@ No two jobs should share the same =monitoring_URL=.
 Rclone has a sophisticated set of [[https://rclone.org/filtering/][filter rules]].
 Filter rules tell rclone which files to include or exclude.
 
-Open the [[./examples/filter_rules_excldld][examples/filter_rules_excld]] file.
+Open the [[./examples/filter_rules_excld][examples/filter_rules_excld]] file.
 Each rule starts with a "+ " or "- ", followed by a pattern.
 - a leading "+" means include if the pattern matches
 - a leading "-" means exclude if the pattern matches
 
 For each file in source, filter rules are processed in the order that they are defined.
 If the matcher fails to find a match after testing all the filter rules, then the path is included.
-Read the [[./examples/filter_rules_excldld][examples/filter_rules_excld]] file to see how this works.
+Read the [[./examples/filter_rules_excld][examples/filter_rules_excld]] file to see how this works.
 
 Lines starting with '#' are comments.
 Comment at the end of a rule is not supported because file names can contain a '#'.
@@ -440,7 +435,7 @@ On Linux Gnome desktop:
 
 * Logging options
 rclone_jobber.sh default behavior places rclone_jobber.log in the same directory as rclone_jobber.sh.
-Read this section if you want to log in a different location.
+Read this section if you want the log in a different location.
 
 Logging options are set in rclone_jobber.sh, headed by "# set log" comments.
 To change logging behavior, search for "# set log" and change the default values.
@@ -556,24 +551,24 @@ They test your entire data recovery system end to end, testing both the data bac
 Don't worry, the tutorial's environment is setup to make testing painless.
 
 Clear and setup test directories in preparation for a new test run:
-: $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
-: $ ~/rclone_jobber/examples/clear_remote_test_backup.sh
-: $ ~/rclone_jobber/examples/setup_test_data_directory.sh
+: $ $rclone_jobber/examples/clear_USB_test_backup.sh
+: $ $rclone_jobber/examples/clear_remote_test_backup.sh
+: $ $rclone_jobber/examples/setup_test_data_directory.sh
 
 Back up data:
-: $ ~/rclone_jobber/examples/job_backup_to_USB.sh
-: $ ~/rclone_jobber/examples/job_backup_to_remote.sh
+: $ $rclone_jobber/examples/job_backup_to_USB.sh
+: $ $rclone_jobber/examples/job_backup_to_remote.sh
 
-In job_restore_last_snapshot.sh, edit source variable to restore data from.
+In job_restore_last_snapshot.sh, uncomment source variable to restore data from.
 Then restore data:
-: $ ~/rclone_jobber/examples/job_restore_last_snapshot.sh
+: $ $rclone_jobber/examples/job_restore_last_snapshot.sh
 
 Verify that the files were faithfully restored:
-: $ diff -r $HOME/rclone_test_data/direc0 /home/$USER/last_snapshot/direc0
+: $ diff -r $HOME/rclone_test_data/direc0 $HOME/last_snapshot/direc0
 
 Notice that rclone does not back up empty directories.
 
-Follow a similar test procedure when you practice your recovery plan, but with real data.
+Follow a similar test procedure when practicing your recovery plan, but with real data.
 
 ** Monitor your backups
 Monitor your backups to make that data is actually being backed up.
@@ -662,4 +657,4 @@ rclone_jobber_tutorial.org by Wolfram Volpi is licensed under a [[http://creativ
 Based on a work at https://github.com/wolfv6/rclone_jobber.
 Permissions beyond the scope of this license may be available at https://github.com/wolfv6/rclone_jobber/issues.
 
-Rclone_jobber is not affiliated with rclone.
+rclone_jobber is not affiliated with rclone.
