@@ -10,7 +10,7 @@
 ##############################################################################
 
 #substitute $rclone_jobber and $usb with paths on your system
-source="$HOME/rclone_test_data"
+source="$HOME/test_rclone_data"
 dest="$usb/test_rclone_backup"
 options="--dry-run"
 

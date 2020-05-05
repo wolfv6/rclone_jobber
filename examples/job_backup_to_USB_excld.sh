@@ -12,7 +12,7 @@
 #substitute $rclone_jobber and $usb with paths on your system
 rclone_jobber=$rclone_jobber #path to rclone_jobber directory
 
-source="$HOME/rclone_test_data"
+source="$HOME/test_rclone_data"
 dest="$usb/test_rclone_backup"
 move_old_files_to="dated_files"
 options="--filter-from=$rclone_jobber/examples/filter_rules_excld --checksum"

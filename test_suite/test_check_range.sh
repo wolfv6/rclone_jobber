@@ -2,14 +2,14 @@
 
 ############## setup directories #############
 
-#delete and recreate rclone_test_data
-rm -r ~/rclone_test_data
-mkdir ~/rclone_test_data
+#delete and recreate test_rclone_data
+rm -r ~/test_rclone_data
+mkdir ~/test_rclone_data
 
-touch ~/rclone_test_data/f
+touch ~/test_rclone_data/f
 
-mkdir ~/rclone_test_data/direc0
-touch ~/rclone_test_data/direc0/f0
+mkdir ~/test_rclone_data/direc0
+touch ~/test_rclone_data/direc0/f0
 
 #delete and recreate test_rclone_backup
 rm -r $usb/test_rclone_backup
@@ -33,8 +33,8 @@ printf "\n*** backup (should be empty) ***\n"
 tree $usb/test_rclone_backup
 
 printf "\n*** deleting data directory ***\n"
-rm -r ~/rclone_test_data
-mkdir ~/rclone_test_data
+rm -r ~/test_rclone_data
+mkdir ~/test_rclone_data
 
 printf "*** performing backup from empty source (should have pop-up ERROR: job_check_null_source.sh aborted) ***\n"
 ./job_check_empty_source.sh

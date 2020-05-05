@@ -7,7 +7,7 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-# paths in this file are from source="~/rclone_test_data/"
+# paths in this file are from source="~/test_rclone_data/"
 
 ########################## 1) includes #######################################
 + direc0/**

@@ -22,8 +22,8 @@ I am not responsible for any lost data.
 - [[#about-this-rclone_jobber-backup-script-tutorial][About this rclone_jobber backup script tutorial]]
 - [[#install-rclone][Install rclone]]
 - [[#install-rclone_jobber][Install rclone_jobber]]
-- [[#setup-a-test-directory][Setup a test directory]]
-- [[#setup-path-variables][Setup path variables]]
+- [[#setup-environment-path-variables][Setup environment path variables]]
+- [[#setup-a-test_data-directory][Setup a test_data directory]]
 - [[#take-rclone_jobbersh-for-a-test-drive][Take rclone_jobber.sh for a test drive]]
 - [[#backup-job-and-rclone_jobbersh-parameters][Backup job and rclone_jobber.sh parameters]]
   - [[#backup-job-script][Backup job script]]
@@ -93,7 +93,7 @@ Now Linux shell should substitute $rclone_jobber and $usb.
 This tutorial's example scripts backup a small test-source directory.
 
 The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup the small source directory.
-It recursively deletes the ~/rclone_test_data directory and rebuilds a fresh copy.
+It recursively deletes the ~/test_rclone_data directory and rebuilds a fresh copy.
 To setup a test source directory from the command line:
 : $ $rclone_jobber/examples/setup_test_data_directory.sh
 
@@ -103,7 +103,7 @@ Once you have the path variables and test_data directories setup, you can take r
 Here is a minimal backup-job script for rclone_jobber:
 : #!/usr/bin/env sh
 : 
-: source="$HOME/rclone_test_data"
+: source="$HOME/test_rclone_data"
 : dest="$usb/test_rclone_backup"
 : 
 : $rclone_jobber/rclone_jobber.sh "$source" "$dest"
@@ -139,7 +139,7 @@ Each backup job contains arguments and a call to rclone_jobber.sh.
 Here is an example backup job with all the rclone_jobber.sh arguments defined:
 : #!/usr/bin/env sh
 : 
-: source="$HOME/rclone_test_data"
+: source="$HOME/test_rclone_data"
 : dest="$usb/test_rclone_backup"
 : move_old_files_to="dated_files"
 : options="--filter-from=$rclone_jobber/examples/filter_rules --checksum --dry-run"
@@ -563,7 +563,7 @@ Then restore data:
 : $ $rclone_jobber/examples/job_restore_last_snapshot.sh
 
 Verify that the files were faithfully restored:
-: $ diff -r $HOME/rclone_test_data/direc0 $HOME/last_snapshot/direc0
+: $ diff -r $HOME/test_rclone_data/direc0 $HOME/last_snapshot/direc0
 
 Notice that rclone does not back up empty directories.
 
