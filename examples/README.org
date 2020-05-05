@@ -2,7 +2,6 @@ The files in this directory are examples used by rclone_jobber_tutorial.org.
 
 The example scripts use the following environment path variables:
 - HOME
-- USER
 - rclone_jobber
 - usb
 - remote

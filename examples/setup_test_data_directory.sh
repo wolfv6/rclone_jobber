@@ -46,5 +46,5 @@ touch ~/rclone_test_data/direc1/.hide/f8
 mkdir ~/rclone_test_data/direc1/.git
 touch ~/rclone_test_data/direc1/.git/f7
 
-#display test data directory
+#display test_data directory
 tree -a ~/rclone_test_data

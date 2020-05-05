@@ -15,7 +15,7 @@
 source="$usb/test_rclone_backup/last_snapshot"
 #source="${remote}:last_snapshot"
 
-destination="/home/$USER/last_snapshot"
+destination="$HOME/last_snapshot"
 
 cmd="rclone copy $source $destination"
 

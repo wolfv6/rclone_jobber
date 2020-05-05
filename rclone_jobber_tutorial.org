@@ -70,14 +70,13 @@ Thus, all the examples in this tutorial can run on your system without you havin
 
 The example scripts use the following environment path variables:
 - HOME
-- USER
 - rclone_jobber
 - usb
 - remote (explained in "Configure a remote" section)
 
 The above "rclone_jobber" path is the location of the rclone_jobber repository you downloaded.
 
-Tutorial examples use the "usb" path variable to demonstrate local back ups.
+Tutorial examples use the "usb" path variable to demonstrate backup to local mass storage.
 The "usb" path doesn't actually have to be a USB drive.
 
 If you're on Linux, automate the substitution of path variables from your .profile.
@@ -534,13 +533,13 @@ To restore data, copy files from backup to destination.
 
 You can use cp (shell command) to restore data from local unencrypted backup.\\
 To copy a single file from local backup:
-:    $ cp -p localBackupPath destPath
+:    $ cp -p local_backup_path dest_path
 To copy a last_snapshot directory from local backup:
-:    $ cp -a localBackup/last_snapshot destPath
+:    $ cp -a local_backup/last_snapshot dest_path
 
 Use rclone to restore data from remote or encrypted backup.\\
 To copy a single file from remote backup:
-:    $ rclone copy remote:sourcePath dest:destPath
+:    $ rclone copy remote:source_path dest:dest_path
 To copy a single file from remote backup, use one of these scripts:
 - [[./examples/job_restore_last_snapshot.sh][examples/job_restore_last_snapshot.sh]]
 - [[./examples/job_restore_directory_from_remote.sh][examples/job_restore_directory_from_remote.sh]]
