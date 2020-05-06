@@ -12,7 +12,7 @@
 #assign relative path of directory to restore
 path="relative_path_of_directory_to_restore"
 
-#substitute ${remote} with paths on your system
+#this script uses these user-defined environment variables: remote
 source="${remote}:last_snapshot/$path"
 destination="$HOME/${path}_last_snapshot"
 

@@ -9,7 +9,7 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-#substitute $usb and ${remote} with paths on your system
+#this script uses these user-defined environment variables: remote
 
 #uncomment the source variable to restore data from:
 source="$usb/test_rclone_backup/last_snapshot"

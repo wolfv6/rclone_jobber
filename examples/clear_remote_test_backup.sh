@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-# clear remote test backup for rclone_jobber.sh
-# substitute ${remote} with your remote test backup path
+# clears remote test backup for rclone_jobber.sh
+# this script uses these user-defined environment variables: remote
 ###############################################
 
 #delete test backup

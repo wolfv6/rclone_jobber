@@ -2,7 +2,7 @@
 This tutorial shows you how to setup and test the rclone_jobber backup script.
 The final product will perform local and remote backups automatically.
 
-The tutorial is written for Linux, and most of the content is also useful for macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
+The tutorial is written for Linux and most of the content is also useful for macOS and [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows 10 wsl]].
 
 Both rclone and rclone_jobber.sh are command line tools.
 This tutorial assumes that the reader has basic command-line skills.
@@ -79,8 +79,7 @@ The above "rclone_jobber" path is the location of the rclone_jobber repository y
 Tutorial examples use the "usb" path variable to demonstrate backup to local mass storage.
 The "usb" path doesn't actually have to be a USB drive.
 
-If you're on Linux, automate the substitution of path variables from your .profile.
-Add these lines to your ~/.profile (or ~/.bash_profile) file, but with your system paths:
+If you're on Linux, add these lines to your ~/.profile (or ~/.bash_profile) file, but with your system paths:
 : export rclone_jobber="/home/wolfv/rclone_jobber"
 : export usb="/media/wolfv/USB_device_name"
 
@@ -90,11 +89,11 @@ Reload your .profile:
 Now Linux shell should substitute $rclone_jobber and $usb.
 
 * Setup a test_data directory
-This tutorial's example scripts backup a small test-source directory.
+This tutorial's example scripts backup a small test directory.
 
 The [[./examples/setup_test_data_directory.sh][setup_test_data_directory.sh]] script will setup the small source directory.
 It recursively deletes the ~/test_rclone_data directory and rebuilds a fresh copy.
-To setup a test source directory from the command line:
+To setup a test directory from the command line:
 : $ $rclone_jobber/examples/setup_test_data_directory.sh
 
 * Take rclone_jobber.sh for a test drive
@@ -108,7 +107,7 @@ Here is a minimal backup-job script for rclone_jobber:
 : 
 : $rclone_jobber/rclone_jobber.sh "$source" "$dest"
 
-The last line calls rclone_jobber.sh with arguments =source= and =dest=.
+That last line calls rclone_jobber.sh with arguments =source= and =dest=.
 
 Open the [[./examples/job_backup_to_USB_minimal.sh][examples/job_backup_to_USB_minimal.sh]] in your favorite text editor.
 Set options to =--dry-run=:
@@ -117,7 +116,7 @@ Set options to =--dry-run=:
 Run the backup job:
 : $ $rclone_jobber/examples/job_backup_to_USB_minimal.sh
 
-No backup was created because --dry-run.
+The backup, $dest, was not created because --dry-run.
 
 *Important:* A bad backup job can cause data loss.
 First test with the =--dry-run= flag to see exactly what would be copied and deleted.
@@ -299,8 +298,8 @@ The rclone_jobber =options= argument specifies the filter_rules_excld file like 
 : options="--filter-from filter_rules_excld"
 
 To see the example filter_rules_excld file in action, run:
-: $ ~/rclone_jobber/examples/clear_USB_test_backup.sh
-: $ ~/rclone_jobber/examples/job_backup_to_USB_excld.sh
+: $ $rclone_jobber/examples/clear_USB_test_backup.sh
+: $ $rclone_jobber/examples/job_backup_to_USB_excld.sh
 
 * Select a cloud storage provider
 Rclone uses cloud storage providers to backup data to an off-site storage system.
@@ -338,7 +337,7 @@ To use a tutorial example script as a template for production backups, edit the 
 replace occurrences of "${remote}" with your remote path.
 
 To test your remote, run:
-: $ ~/rclone_jobber/examples/job_backup_to_remote.sh
+: $ $rclone_jobber/examples/job_backup_to_remote.sh
 
 * Configure a crypt
 "crypt" is a kind of remote that:
@@ -380,7 +379,7 @@ To list all files in path recursively:
 [[./examples/job_backup_to_remote.sh][/examples/job_backup_to_remote.sh]] uses a remote, which could be of type crypt.
 
 To test your crypt remote, set the path variable as described in the "Configure a remote" section, and then run:
-: $ ~/rclone_jobber/examples/job_backup_to_remote.sh
+: $ $rclone_jobber/examples/job_backup_to_remote.sh
 
 *** pathIsTooLong error
 Most cloud storage providers have a 254 character-path-length limit.
@@ -643,7 +642,7 @@ Example annual recovery-plan checklist:
 2. make sure the recovery-plan files are still accessible and up-to-date (listed in previous section)
    - on-site copy
    - off-site copy
-3. practice restore-data on small test directory, from ~/rclone_jobber/examples:
+3. practice restore-data on small test directory, from $rclone_jobber/examples:
     1. setup_test_data_directory.sh
     2. job_backup_to_USB.sh
     3. job_backup_to_remote.sh

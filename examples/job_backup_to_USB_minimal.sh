@@ -9,7 +9,7 @@
 # rclone_jobber is not affiliated with rclone.
 ##############################################################################
 
-#substitute $rclone_jobber and $usb with paths on your system
+#this script uses these user-defined environment variables: rclone_jobber, usb
 source="$HOME/test_rclone_data"
 dest="$usb/test_rclone_backup"
 options="--dry-run"
