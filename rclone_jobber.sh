@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# rclone_jobber.sh version 1.5.4
+# rclone_jobber.sh version 1.5.5
 # Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 # Logging options are headed by "# set log".  Details are in the tutorial's "Logging options" section.
 
@@ -79,7 +79,7 @@ if [ -z "$dest" ]; then
 fi
 
 # if source is empty
-if ! test "$(rclone lsf --max-depth 1 $source)"; then  # rclone lsf requires rclone 1.40 or later
+if ! test "rclone lsf --max-depth 1 $source"; then  # rclone lsf requires rclone 1.40 or later
     print_message "ERROR" "aborted because source is empty."
     exit 1
 fi
