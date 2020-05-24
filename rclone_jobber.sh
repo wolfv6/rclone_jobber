@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# rclone_jobber.sh version 1.5.5
+# rclone_jobber.sh version 1.5.6
 # Tutorial, backup-job examples, and source code at https://github.com/wolfv6/rclone_jobber
 # Logging options are headed by "# set log".  Details are in the tutorial's "Logging options" section.
 
@@ -127,7 +127,7 @@ if [ "$exit_code" -eq 0 ]; then            #if no errors
     send_to_log "$confirmation"
     send_to_log ""
     if [ ! -z "$monitoring_URL" ]; then
-        wget $monitoring_URL -O /dev/null
+        wget --quiet $monitoring_URL -O /dev/null
     fi
     exit 0
 else
